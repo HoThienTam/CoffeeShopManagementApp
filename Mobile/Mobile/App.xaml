@@ -1,11 +1,89 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
+             xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms" 
+             xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
+             xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives" 
              x:Class="Mobile.App">
 	<Application.Resources>
 
 		<!-- Application resource dictionary -->
+        
+        <!-- Icon -->
+        <OnPlatform x:Key="FontAwesomeBrands" x:TypeArguments="x:String">
+            <On Platform="Android"
+                    Value="Font Awesome 5 Brands-Regular-400.otf#Font Awesome 5 Brands Regular" />
+        </OnPlatform>
+        <OnPlatform x:Key="FontAwesomeSolid" x:TypeArguments="x:String">
+            <On Platform="Android"
+                    Value="Font Awesome 5 Pro-Solid-900.otf#Font Awesome 5 Pro Solid" />
+        </OnPlatform>
+        <OnPlatform x:Key="FontAwesomeRegular" x:TypeArguments="x:String">
+            <On Platform="Android"
+                    Value="Font Awesome 5 Pro-Regular-400.otf#Font Awesome 5 Pro Regular" />
+        </OnPlatform>
+        <OnPlatform x:Key="FontAwesomeLight" x:TypeArguments="x:String">
+            <On Platform="Android"
+                    Value="Font Awesome 5 Pro-Light-300.otf#Font Awesome 5 Pro Light" />
+        </OnPlatform>
 
-	</Application.Resources>
+        <!-- Thickness -->
+        <x:Double x:Key="SmallThickness">5</x:Double>
+        <x:Double x:Key="CommonThickness">10</x:Double>
+        <x:Double x:Key="LargeThickness">15</x:Double>
+
+
+        <!-- Color -->
+        <Color x:Key="MainColor">#9b59b6</Color>
+
+        <tlrInput:BorderStyle x:Key="EntryBorderStyle" BorderThickness="0"/>
+
+        <!--  Common item -->
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="Black" />
+            <Setter Property="FontSize" Value="Medium" />
+        </Style>
+
+        <Style TargetType="tlrInput:RadEntry">
+            <Setter Property="BorderStyle" Value="{StaticResource EntryBorderStyle}" />
+        </Style>
+
+
+        <Style x:Key="CommonIcon" TargetType="Label">
+            <Setter Property="FontSize" Value="Title" />
+            <Setter Property="TextColor" Value="{StaticResource MainColor}" />
+            <Setter Property="FontFamily" Value="{StaticResource FontAwesomeSolid}" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+        </Style>
+
+        <Style x:Key="CommonBorder" TargetType="tlrPrimitives:RadBorder">
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="BorderColor" Value="{StaticResource MainColor}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+
+        <Style x:Key="CommonUpperBorder" TargetType="tlrPrimitives:RadBorder">
+            <Setter Property="CornerRadius" Value="5,5,0,0" />
+            <Setter Property="BorderColor" Value="{StaticResource MainColor}" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+
+        <Style x:Key="CommonLowerBorder" TargetType="tlrPrimitives:RadBorder">
+            <Setter Property="CornerRadius" Value="0,0,5,5" />
+            <Setter Property="BorderColor" Value="{StaticResource MainColor}" />
+            <Setter Property="BorderThickness" Value="1,0,1,1" />
+        </Style>
+
+        <Style x:Key="LoadingIndicator"
+                TargetType="tlrPrimitives:RadBusyIndicator">
+            <Setter Property="AnimationContentHeightRequest" Value="100" />
+            <Setter Property="AnimationContentWidthRequest" Value="100" />
+            <Setter Property="AnimationType" Value="Animation4" />
+            <Setter Property="IsBusy" Value="True" />
+            <Setter Property="AnimationContentColor" Value="{StaticResource MainColor}" />
+            <Setter Property="IsVisible" Value="{Binding IsBusy, Mode=OneWay}" />
+        </Style>
+        
+    </Application.Resources>
 </prism:PrismApplication>

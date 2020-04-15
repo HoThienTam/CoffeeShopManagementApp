@@ -23,13 +23,21 @@ namespace Mobile
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/MainPage");
+            if (Application.Current.Properties.ContainsKey("token"))
+            {
+                await NavigationService.NavigateAsync("NavigationPage/MainPage");
+            }
+            else
+            {
+                await NavigationService.NavigateAsync("NavigationPage/LoginPage");
+            }            
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
         }
     }
 }

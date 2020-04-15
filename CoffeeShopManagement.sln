@@ -5,13 +5,15 @@ VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{158F2727-6F90-444F-8A5D-18DD68C4E494}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{4463FF2C-EC85-4B3E-9B14-0C216CF19884}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{4463FF2C-EC85-4B3E-9B14-0C216CF19884}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationCore", "ApplicationCore\ApplicationCore.csproj", "{10853FC1-196C-47B3-9580-7FF103402956}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationCore", "ApplicationCore\ApplicationCore.csproj", "{10853FC1-196C-47B3-9580-7FF103402956}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mobile", "Mobile\Mobile\Mobile.csproj", "{3C38E89C-75A4-40AD-A15B-110307DB416E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mobile", "Mobile\Mobile\Mobile.csproj", "{3C38E89C-75A4-40AD-A15B-110307DB416E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mobile.Android", "Mobile\Mobile.Android\Mobile.Android.csproj", "{11E984AC-8F03-4DF3-AA19-47FDAA58AA4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dtos", "Dtos\Dtos.csproj", "{C11E156C-DD53-4BEC-A6A0-3D782C57E700}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{11E984AC-8F03-4DF3-AA19-47FDAA58AA4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11E984AC-8F03-4DF3-AA19-47FDAA58AA4B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{11E984AC-8F03-4DF3-AA19-47FDAA58AA4B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{C11E156C-DD53-4BEC-A6A0-3D782C57E700}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C11E156C-DD53-4BEC-A6A0-3D782C57E700}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C11E156C-DD53-4BEC-A6A0-3D782C57E700}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C11E156C-DD53-4BEC-A6A0-3D782C57E700}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
