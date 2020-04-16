@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms" 
              xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
-             xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives" 
-             x:Class="Mobile.App">
+             xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives" xmlns:numericInput="clr-namespace:Telerik.XamarinForms.Input.NumericInput;assembly=Telerik.XamarinForms.Input"
+                        x:Class="Mobile.App">
 	<Application.Resources>
 
 		<!-- Application resource dictionary -->
@@ -32,9 +32,20 @@
         <x:Double x:Key="CommonThickness">10</x:Double>
         <x:Double x:Key="LargeThickness">15</x:Double>
 
+        <Thickness x:Key="CommonHorizontalThickness">
+            <Thickness.Left>10</Thickness.Left>
+            <Thickness.Right>10</Thickness.Right>
+        </Thickness>
 
+        <Thickness x:Key="CommonVerticalThickness">
+            <Thickness.Top>10</Thickness.Top>
+            <Thickness.Bottom>10</Thickness.Bottom>
+        </Thickness>
+        
         <!-- Color -->
         <Color x:Key="MainColor">#9b59b6</Color>
+        <Color x:Key="SubColor">#CE93D8</Color>
+        <Color x:Key="ContrastColor">#ffffff</Color>
 
         <tlrInput:BorderStyle x:Key="EntryBorderStyle" BorderThickness="0"/>
 
@@ -42,6 +53,11 @@
         <Style TargetType="Label">
             <Setter Property="TextColor" Value="Black" />
             <Setter Property="FontSize" Value="Medium" />
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="TextColor" Value="{StaticResource ContrastColor}" />
+            <Setter Property="BackgroundColor" Value="{StaticResource MainColor}" />
         </Style>
 
         <Style TargetType="tlrInput:RadEntry">
@@ -55,6 +71,10 @@
             <Setter Property="FontFamily" Value="{StaticResource FontAwesomeSolid}" />
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Center" />
+        </Style>
+
+        <Style x:Key="ContrastIcon" TargetType="Label" BasedOn="{StaticResource CommonIcon}">
+            <Setter Property="TextColor" Value="{StaticResource ContrastColor}" />
         </Style>
 
         <Style x:Key="CommonBorder" TargetType="tlrPrimitives:RadBorder">
@@ -75,6 +95,51 @@
             <Setter Property="BorderThickness" Value="1,0,1,1" />
         </Style>
 
+        <Style x:Key="CommonWrapper" TargetType="Grid">
+            <Setter Property="ColumnSpacing" Value="0" />
+            <Setter Property="RowSpacing" Value="0" />
+        </Style>
+        
+        <Style x:Key="CommonTitle" TargetType="Label">
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="BackgroundColor" Value="White"/>
+            <Setter Property="Padding" Value="{StaticResource CommonHorizontalThickness}" />
+        </Style>
+
+        <Style x:Key="CommonTitleRule" TargetType="BoxView">
+            <Setter Property="HeightRequest" Value="1" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="BackgroundColor" Value="{StaticResource MainColor}" />
+        </Style>
+
+        <Style x:Key="CommonHeaderText" TargetType="Label">
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="FontSize" Value="Large" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Grid.ColumnSpan" Value="3" />
+            <Setter Property="Margin" Value="{StaticResource CommonThickness}" />
+        </Style>
+
+        <Style x:Key="CommonHeaderLeft" TargetType="Grid">
+            <Setter Property="Margin" Value="{StaticResource CommonThickness}" />
+            <Setter Property="HorizontalOptions" Value="StartAndExpand" />
+        </Style>
+        
+        <Style x:Key="CommonLeftText" TargetType="Label">
+            <Setter Property="HorizontalOptions" Value="Start" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="Margin" Value="{StaticResource CommonHorizontalThickness}" />
+        </Style>
+        
+        <Style x:Key="CommonRightEntry" TargetType="tlrInput:RadEntry">
+            <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            <Setter Property="HorizontalTextAlignment" Value="End" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="Margin" Value="{StaticResource CommonHorizontalThickness}" />
+        </Style>
+        
         <Style x:Key="LoadingIndicator"
                 TargetType="tlrPrimitives:RadBusyIndicator">
             <Setter Property="AnimationContentHeightRequest" Value="100" />
@@ -84,6 +149,30 @@
             <Setter Property="AnimationContentColor" Value="{StaticResource MainColor}" />
             <Setter Property="IsVisible" Value="{Binding IsBusy, Mode=OneWay}" />
         </Style>
+
+        <!--  Removed buttons and unused style, columns and spacing  -->
+        <ControlTemplate x:Key="NumericInput">
+            <Grid HeightRequest="45" MinimumHeightRequest="28">
+                <Grid.Resources>
+                    <ResourceDictionary>
+                        <Style Class="DefaultNumericInputEntryStyle" TargetType="numericInput:NumericInputEntry">
+                            <Setter Property="HorizontalTextAlignment" Value="End" />
+                            <Setter Property="VerticalTextAlignment" Value="Center" />
+                            <Setter Property="Padding" Value="0,0,0,0" />
+                            <Setter Property="Keyboard" Value="Numeric" />
+                            <Setter Property="BorderStyle" Value="{StaticResource EntryBorderStyle}"/>
+                        </Style>
+                    </ResourceDictionary>
+                </Grid.Resources>
+
+                <numericInput:NumericInputEntry
+                        x:Name="PART_Entry"
+                        AutomationId="NumericEntry"
+                        InputTransparent="{TemplateBinding IsReadOnly}"
+                        StyleClass="DefaultNumericInputEntryStyle"
+                        Text="{TemplateBinding Value, Mode=OneWay}" />
+            </Grid>
+        </ControlTemplate>
         
     </Application.Resources>
 </prism:PrismApplication>

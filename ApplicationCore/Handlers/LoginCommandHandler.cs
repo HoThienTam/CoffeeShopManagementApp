@@ -1,12 +1,16 @@
 ﻿using ApplicationCore.Commands;
-using Infrastructure.IRepositories;
+using Infrastructure.Data;
+using Infrastructure.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,18 +19,18 @@ namespace ApplicationCore.Handlers
 {
     public class LoginCommandHandler : IRequestHandler<LoginCommand, string>
     {
-        private readonly IUserRepository _repo;
         private readonly IConfiguration _config;
+        private DataContext _context;
 
-        public LoginCommandHandler(IUserRepository repo, IConfiguration config)
+        public LoginCommandHandler(IConfiguration config, DataContext context)
         {
-            _repo = repo;
             _config = config;
+            _context = context;
         }
 
         public async Task<string> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var dbUser = await _repo.LoginAsync(request.Username.ToLower(), request.Password);
+            var dbUser = await LoginAsync(request.Username.ToLower(), request.Password);
 
             if (dbUser == null)
             {
@@ -56,5 +60,37 @@ namespace ApplicationCore.Handlers
 
             return tokenHandler.WriteToken(token);
         }
+
+        public async Task<User> LoginAsync(string username, string password)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(h => h.Username == username);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            if (!VerifyPassword(password, user.PasswordHash, user.PasswordSalt))
+            {
+                return null;
+            }
+
+            return user;
+        }
+
+        private bool VerifyPassword(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512(passwordSalt))
+            {
+                var hashedPassword = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+                if (!hashedPassword.SequenceEqual(passwordHash))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
     }
 }

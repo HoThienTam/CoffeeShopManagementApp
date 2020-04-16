@@ -14,7 +14,7 @@ namespace Mobile.Models
             PageDialogService = pageDialogService;
         }
 
-        public INavigationService NavigationService { get; set; }
-        public IPageDialogService PageDialogService { get; set; }
+        public INavigationService NavigationService { get; private set; }
+        public IPageDialogService PageDialogService { get; private set; }
     }
 }

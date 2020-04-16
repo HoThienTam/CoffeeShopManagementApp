@@ -14,8 +14,11 @@ namespace Infrastructure.Data
         public DataContext(DbContextOptions options) : base(options)
         {
         }
-
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<Table> Tables { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Zone> Zones { get; set; }
 
         public override int SaveChanges()
         {

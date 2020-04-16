@@ -30,7 +30,7 @@ namespace Mobile
             else
             {
                 await NavigationService.NavigateAsync("NavigationPage/LoginPage");
-            }            
+            }
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -38,6 +38,8 @@ namespace Mobile
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
+            containerRegistry.RegisterForNavigation<CategoryPage, CategoryPageViewModel>();
+            containerRegistry.RegisterForNavigation<ItemPage, ItemPageViewModel>();
         }
     }
 }

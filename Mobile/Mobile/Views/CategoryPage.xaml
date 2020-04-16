@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input" 
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures"
+             xmlns:listView="clr-namespace:Telerik.XamarinForms.DataControls.ListView;assembly=Telerik.XamarinForms.DataControls" 
+             xmlns:dataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
+             mc:Ignorable="d"
+             xmlns:lcModels="clr-namespace:Mobile.Models"
+             NavigationPage.HasNavigationBar="False"
+             x:Class="Mobile.Views.CategoryPage">
+    <Grid Style="{StaticResource CommonWrapper}" Margin="{StaticResource CommonThickness}">
+        <Frame CornerRadius="5" BorderColor="{StaticResource MainColor}">
+            <Grid Style="{StaticResource CommonWrapper}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--Title-->
+                    <Label Text="Chỉnh sửa danh mục" VerticalOptions="Start" Style="{StaticResource CommonHeaderText}"/>
+                    <!--Back icon-->
+                    <mr:Grid TappedCommand="{Binding GoBackCommand}" >
+                        <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
+                    </mr:Grid>
+                    <!--Right text-->
+                    <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
+                        <Label Text="Lưu" VerticalOptions="Center" TextColor="#2ecc71"/>
+                    </mr:Grid>
+                </Grid>
+
+                <Grid Grid.Row="1" Style="{StaticResource CommonWrapper}">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+
+                        <StackLayout BindableLayout.ItemsSource="{Binding ListCategoryBindProp, Mode=OneWay}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <BoxView BackgroundColor="{StaticResource SubColor}" />
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Coffee}" Style="{StaticResource CommonIcon}"/>
+
+                                        <tlrInput:RadEntry
+                                            Grid.Column="1"
+                                            Style="{StaticResource CommonRightEntry}"
+                                            WatermarkText="Tên danh mục"
+                                            Text="Category Name"/>
+
+                                        <mr:Label Grid.Column="2"
+                                                  Margin="{StaticResource CommonRightThickness}"
+                                                  Text="{x:Static lcModels:FontAwesomeIcon.Trash}"
+                                                  TextColor="Red"
+                                                  Style="{StaticResource CommonIcon}" />
+
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </tlrPrimitives:RadBorder>
+
+                    <!-- Them moi -->
+                    <tlrPrimitives:RadBorder Grid.Row="1"
+                                Margin="{StaticResource CommonVerticalThickness}"
+                                Style="{StaticResource CommonBorder}">
+                        <StackLayout Orientation="Horizontal">
+                            <tlrInput:RadEntry
+                                        Style="{StaticResource CommonRightEntry}"
+                                        WatermarkText="Tên danh mục thêm mới"
+                                        Text="{Binding NewCategoryNameBindProp, Mode=TwoWay}" />
+
+                            <mr:Label
+                                    TappedCommand="{Binding AddNewCategoryCommand}"
+                                    Margin="{StaticResource CommonThickness}"
+                                    Text="{x:Static lcModels:FontAwesomeIcon.Plus}"
+                                    Style="{StaticResource CommonIcon}" />
+                        </StackLayout>
+                    </tlrPrimitives:RadBorder>
+                </Grid>
+            </Grid>
+
+        </Frame>
+
+        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
+    </Grid>
+</ContentPage>

@@ -8,7 +8,6 @@
              mc:Ignorable="d"
              NavigationPage.HasNavigationBar="False"
              xmlns:lcModels="clr-namespace:Mobile.Models"
-             Visual="Material"
              x:Class="Mobile.Views.LoginPage">
     
     <Grid>

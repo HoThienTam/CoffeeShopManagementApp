@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using FFImageLoading.Forms.Platform;
 using Prism;
 using Prism.Ioc;
 
@@ -17,6 +18,8 @@ namespace Mobile.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            CachedImageRenderer.Init(true);
+            CachedImageRenderer.InitImageViewHandler();
             LoadApplication(new App(new AndroidInitializer()));
         }
     }

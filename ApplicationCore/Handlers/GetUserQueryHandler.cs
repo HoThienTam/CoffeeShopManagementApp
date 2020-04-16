@@ -1,7 +1,8 @@
 ﻿using ApplicationCore.Queries;
 using AutoMapper;
-using Infrastructure.IRepositories;
+using Infrastructure.Data;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,15 +13,16 @@ namespace ApplicationCore.Handlers
 {
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, bool>
     {
-        private IUserRepository _repo;
-        public GetUserQueryHandler(IUserRepository repo)
+        private DataContext _context;
+
+        public GetUserQueryHandler(DataContext context)
         {
-            _repo = repo;
+            _context = context;
         }
 
         public async Task<bool> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await _repo.GetByIdAsync(request.Id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.Id);
 
             if (user == null)
             {

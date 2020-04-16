@@ -1,7 +1,5 @@
 using AutoMapper;
 using Infrastructure.Data;
-using Infrastructure.IRepositories;
-using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,7 +30,6 @@ namespace Api
             services.AddControllers();
             services.ConfigureAuthentication(Configuration);
             services.ConfigureMediatR();
-            services.AddScoped<IUserRepository, UserRepository>();
             services.AddAutoMapper(Assembly.Load("ApplicationCore"));
             services.AddSwaggerGen(c =>
             {

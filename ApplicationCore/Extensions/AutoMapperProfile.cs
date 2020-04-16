@@ -12,6 +12,7 @@ namespace ApplicationCore.Extensions
         public AutoMapperProfile()
         {
             CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<Category, CategoryDto>().ReverseMap();
         }
     }
 }
