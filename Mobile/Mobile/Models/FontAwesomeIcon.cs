@@ -92,6 +92,10 @@ namespace Mobile.Models
         public const string MinusCircle = "\uf056";
 
         /// <summary>
+        /// Icon Check
+        /// </summary>
+        public const string CheckCircle = "\uf058";
+        /// <summary>
         /// Icon Ballot Check
         /// </summary>
         public const string BallotCheck = "\uf733";
@@ -245,5 +249,10 @@ namespace Mobile.Models
         /// sign out
         /// </summary>
         public const string SignOut = "\uf2f5";
+
+        /// <summary>
+        /// Multiply
+        /// </summary>
+        public const string Times = "\uf00d";
     }
 }

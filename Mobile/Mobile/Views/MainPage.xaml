@@ -258,11 +258,19 @@
                                                     </ResourceDictionary>
                                                 </StackLayout.Resources>
                                                 <mr:StackLayout Orientation="Horizontal" TappedCommand="{Binding SelectViewCommand}" TappedCommandParameter="inplace">
-                                                    <Label WidthRequest="{StaticResource Width}" FontSize="Medium" Style="{StaticResource ContrastIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Coffee}" />
+                                                    <Label WidthRequest="{StaticResource Width}" 
+                                                           FontSize="Medium" 
+                                                           Style="{StaticResource CommonIcon}" 
+                                                           TextColor="{StaticResource ContrastColor}" 
+                                                           Text="{x:Static lcModels:FontAwesomeIcon.Coffee}" />
                                                     <Label TextColor="{StaticResource ContrastColor}" Text="Dùng tại bàn" />
                                                 </mr:StackLayout>
                                                 <mr:StackLayout Orientation="Horizontal" TappedCommand="{Binding SelectViewCommand}" TappedCommandParameter="togo">
-                                                    <Label WidthRequest="{StaticResource Width}" FontSize="Medium" Style="{StaticResource ContrastIcon}" Text="{x:Static lcModels:FontAwesomeIcon.CoffeeTogo}" />
+                                                    <Label WidthRequest="{StaticResource Width}" 
+                                                           FontSize="Medium" 
+                                                           Style="{StaticResource CommonIcon}" 
+                                                           TextColor="{StaticResource ContrastColor}" 
+                                                           Text="{x:Static lcModels:FontAwesomeIcon.CoffeeTogo}" />
                                                     <Label TextColor="{StaticResource ContrastColor}" Text="Mang đi" />
                                                 </mr:StackLayout>
                                             </StackLayout>
@@ -535,7 +543,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label Style="{StaticResource ContrastIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Receipt}" />
+                    <Label Style="{StaticResource CommonIcon}" TextColor="{StaticResource ContrastColor}" Text="{x:Static lcModels:FontAwesomeIcon.Receipt}" />
                     <Label Grid.Row="1" TextColor="{StaticResource ContrastColor}" HorizontalOptions="Center" Text="Hóa đơn" />
                 </mr:Grid>
 
@@ -550,7 +558,7 @@
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <Label Style="{StaticResource ContrastIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Receipt}"/>
+                                    <Label Style="{StaticResource CommonIcon}" TextColor="{StaticResource ContrastColor}" Text="{x:Static lcModels:FontAwesomeIcon.Receipt}"/>
                                     <Label Grid.Row="1" TextColor="{StaticResource ContrastColor}" Text="MenuName"  LineBreakMode="TailTruncation" />
                                 </mr:Grid>
                             </DataTemplate>
@@ -567,7 +575,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label Style="{StaticResource ContrastIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Cogs}" />
+                    <Label Style="{StaticResource CommonIcon}" TextColor="{StaticResource ContrastColor}" Text="{x:Static lcModels:FontAwesomeIcon.Cogs}" />
                     <Label Grid.Row="1" TextColor="{StaticResource ContrastColor}" Text="Thư viện" HorizontalOptions="Center" />
                 </mr:Grid>
             </Grid>

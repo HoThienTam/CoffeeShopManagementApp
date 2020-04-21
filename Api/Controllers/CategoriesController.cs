@@ -23,22 +23,41 @@ namespace Api.Controllers
             _mediator = mediator;
         }
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetCategories()
         {
             var categories = await _mediator.Send(new GetCategoriesQuery());
             return Ok(categories);
         }
-        [HttpPost]
-        public async Task<IActionResult> Post(CategoryDto category)
+        [HttpGet("{id}", Name = nameof(GetCategory))]
+        public async Task<IActionResult> GetCategory(Guid id)
         {
-            var ok = await _mediator.Send(new AddCategoryCommand(category));
-            if (ok)
+            var category = await _mediator.Send(new GetCategoryQuery(id));
+            return Ok(category);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateCategory(CategoryDto categoryDto)
+        {
+            var category = await _mediator.Send(new AddCategoryCommand(categoryDto));
+            if (category != null)
             {
-                return Ok();
+                return CreatedAtRoute(nameof(GetCategory), new { id = category.Id }, category);
             }
             else
             {
-                return BadRequest();
+                return BadRequest("Không thể tạo mới!");
+            }
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdateCategory(CategoryDto categoryDto)
+        {
+            var ok = await _mediator.Send(new UpdateCategoryCommand(categoryDto));
+            if (ok)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest("Không thể cập nhật danh mục!");
             }
         }
     }

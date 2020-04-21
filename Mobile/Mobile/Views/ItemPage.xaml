@@ -74,12 +74,12 @@
                             <tlrPrimitives:RadBorder Grid.Column="1"
                                         Style="{StaticResource CommonUpperBorder}">
                                 <StackLayout Orientation="Horizontal" Spacing="0">
-                                    <Label  Text="Tên mặt hàng"
-                                            Style="{StaticResource CommonLeftText}"/>
+                                    <Label  Text="Tên mặt hàng" HorizontalOptions="Start"/>
                                     <tlrInput:RadEntry
-                                            Style="{StaticResource CommonRightEntry}"
-                                            Text="{Binding ItemBindProp.Name, Mode=TwoWay}"
-                                            WatermarkText="Tên mặt hàng" />
+                                        Style="{StaticResource CommonEntry}"
+                                        HorizontalOptions="EndAndExpand"
+                                        Text="{Binding ItemBindProp.Name, Mode=TwoWay}"
+                                        WatermarkText="Tên mặt hàng" />
                                 </StackLayout>
                             </tlrPrimitives:RadBorder>
 
@@ -89,8 +89,7 @@
                                 <mr:StackLayout Spacing="0"
                                             TappedCommand="{Binding TapCategoryCommand}"
                                             Orientation="Horizontal">
-                                    <Label Style="{StaticResource CommonLeftText}"
-                                               Text="Danh mục"/>
+                                    <Label Text="Danh mục" HorizontalOptions="StartAndExpand"/>
 
                                     <tlrInput:RadEntry
                                             InputTransparent="True"
@@ -111,9 +110,7 @@
                         <!--  Loai gia  -->
                         <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
                             <StackLayout Orientation="Horizontal">
-                                <Label Style="{StaticResource CommonLeftText}"
-                                                Text="Giá niêm yết"
-                                                WidthRequest="200" />
+                                <Label HorizontalOptions="StartAndExpand" Text="Giá niêm yết" WidthRequest="200" />
                                 <tlrInput:RadNumericInput
                                         ControlTemplate="{StaticResource NumericInput}"
                                         StringFormat="{}{0:C}"

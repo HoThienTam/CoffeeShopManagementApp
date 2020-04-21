@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ApplicationCore.Commands
 {
-    public class AddCategoryCommand : IRequest<bool>
+    public class AddCategoryCommand : IRequest<CategoryDto>
     {
         public AddCategoryCommand(CategoryDto category)
         {

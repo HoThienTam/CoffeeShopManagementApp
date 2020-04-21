@@ -22,7 +22,7 @@ namespace ApplicationCore.Handlers
 
         public async Task<bool> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.Id);
+            var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == request.Id);
 
             if (user == null)
             {

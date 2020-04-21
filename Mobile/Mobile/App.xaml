@@ -53,6 +53,8 @@
         <Style TargetType="Label">
             <Setter Property="TextColor" Value="Black" />
             <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="Margin" Value="{StaticResource CommonHorizontalThickness}" />
         </Style>
 
         <Style TargetType="Button">
@@ -62,19 +64,16 @@
 
         <Style TargetType="tlrInput:RadEntry">
             <Setter Property="BorderStyle" Value="{StaticResource EntryBorderStyle}" />
+            <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            <Setter Property="VerticalOptions" Value="Center" />
+            <Setter Property="Margin" Value="{StaticResource CommonHorizontalThickness}" />
         </Style>
-
 
         <Style x:Key="CommonIcon" TargetType="Label">
             <Setter Property="FontSize" Value="Title" />
             <Setter Property="TextColor" Value="{StaticResource MainColor}" />
             <Setter Property="FontFamily" Value="{StaticResource FontAwesomeSolid}" />
-            <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="HorizontalOptions" Value="Center" />
-        </Style>
-
-        <Style x:Key="ContrastIcon" TargetType="Label" BasedOn="{StaticResource CommonIcon}">
-            <Setter Property="TextColor" Value="{StaticResource ContrastColor}" />
         </Style>
 
         <Style x:Key="CommonBorder" TargetType="tlrPrimitives:RadBorder">
@@ -113,7 +112,7 @@
             <Setter Property="BackgroundColor" Value="{StaticResource MainColor}" />
         </Style>
 
-        <Style x:Key="CommonHeaderText" TargetType="Label">
+        <Style x:Key="CommonHeader" TargetType="Label">
             <Setter Property="HorizontalOptions" Value="Center" />
             <Setter Property="VerticalOptions" Value="Center" />
             <Setter Property="FontSize" Value="Large" />
@@ -122,24 +121,6 @@
             <Setter Property="Margin" Value="{StaticResource CommonThickness}" />
         </Style>
 
-        <Style x:Key="CommonHeaderLeft" TargetType="Grid">
-            <Setter Property="Margin" Value="{StaticResource CommonThickness}" />
-            <Setter Property="HorizontalOptions" Value="StartAndExpand" />
-        </Style>
-        
-        <Style x:Key="CommonLeftText" TargetType="Label">
-            <Setter Property="HorizontalOptions" Value="Start" />
-            <Setter Property="VerticalOptions" Value="Center" />
-            <Setter Property="Margin" Value="{StaticResource CommonHorizontalThickness}" />
-        </Style>
-        
-        <Style x:Key="CommonRightEntry" TargetType="tlrInput:RadEntry">
-            <Setter Property="HorizontalOptions" Value="FillAndExpand" />
-            <Setter Property="HorizontalTextAlignment" Value="End" />
-            <Setter Property="VerticalOptions" Value="Center" />
-            <Setter Property="Margin" Value="{StaticResource CommonHorizontalThickness}" />
-        </Style>
-        
         <Style x:Key="LoadingIndicator"
                 TargetType="tlrPrimitives:RadBusyIndicator">
             <Setter Property="AnimationContentHeightRequest" Value="100" />

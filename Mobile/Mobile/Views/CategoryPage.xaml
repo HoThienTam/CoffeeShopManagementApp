@@ -6,14 +6,13 @@
              xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
              xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input" 
              xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures"
-             xmlns:listView="clr-namespace:Telerik.XamarinForms.DataControls.ListView;assembly=Telerik.XamarinForms.DataControls" 
-             xmlns:dataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
              mc:Ignorable="d"
              xmlns:lcModels="clr-namespace:Mobile.Models"
              NavigationPage.HasNavigationBar="False"
-             x:Class="Mobile.Views.CategoryPage">
+             x:Class="Mobile.Views.CategoryPage"
+             x:Name="categoryPage">
     <Grid Style="{StaticResource CommonWrapper}" Margin="{StaticResource CommonThickness}">
-        <Frame CornerRadius="5" BorderColor="{StaticResource MainColor}">
+        <Frame CornerRadius="5" Padding="20,0,20,20" BorderColor="{StaticResource MainColor}">
             <Grid Style="{StaticResource CommonWrapper}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -28,14 +27,14 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <!--Title-->
-                    <Label Text="Chỉnh sửa danh mục" VerticalOptions="Start" Style="{StaticResource CommonHeaderText}"/>
+                    <Label Text="Danh mục" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
                     <!--Back icon-->
                     <mr:Grid TappedCommand="{Binding GoBackCommand}" >
                         <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
                     </mr:Grid>
                     <!--Right text-->
-                    <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
-                        <Label Text="Lưu" VerticalOptions="Center" TextColor="#2ecc71"/>
+                    <mr:Grid TappedCommand="{Binding ShowPopUpCommand}" Grid.Column="2">
+                        <Label Text="{x:Static lcModels:FontAwesomeIcon.PlusCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
                     </mr:Grid>
                 </Grid>
 
@@ -47,54 +46,99 @@
                     </Grid.RowDefinitions>
 
                     <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                        <ScrollView>
+                            <StackLayout BindableLayout.ItemsSource="{Binding ListCategoryBindProp, Mode=OneWay}" Spacing="1">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate>
+                                        <mr:Frame Padding="0" BackgroundColor="{StaticResource MainColor}" TappedCommand="{Binding BindingContext.ModifyCategoryCommand, Source={x:Reference categoryPage}}" TappedCommandParameter="{Binding}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
 
-                        <StackLayout BindableLayout.ItemsSource="{Binding ListCategoryBindProp, Mode=OneWay}">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
+                                                <BoxView WidthRequest="80" HeightRequest="80" BackgroundColor="{StaticResource SubColor}" />
+                                                <Label Text="{x:Static lcModels:FontAwesomeIcon.Coffee}" Style="{StaticResource CommonIcon}"/>
 
-                                        <BoxView BackgroundColor="{StaticResource SubColor}" />
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Coffee}" Style="{StaticResource CommonIcon}"/>
+                                                <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="{StaticResource CommonHorizontalThickness}">
+                                                    <Label Text="{Binding Name}" FontSize="Large" TextColor="{StaticResource ContrastColor}"/>
+                                                    <Label Text="0 item" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
+                                                </StackLayout>
+                                            </Grid>
+                                        </mr:Frame>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
+                        </ScrollView>
 
-                                        <tlrInput:RadEntry
-                                            Grid.Column="1"
-                                            Style="{StaticResource CommonRightEntry}"
-                                            WatermarkText="Tên danh mục"
-                                            Text="Category Name"/>
+                        <tlrPrimitives:RadPopup.Popup>
+                            <tlrPrimitives:RadPopup
+                                Placement="Center"
+                                IsOpen="{Binding IsOpen}"
+                                IsModal="True"
+                                OutsideBackgroundColor="#80000000">
+                                <Frame WidthRequest="300" HeightRequest="350" CornerRadius="5" Padding="0">
+                                    <Grid Style="{StaticResource CommonWrapper}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
 
-                                        <mr:Label Grid.Column="2"
-                                                  Margin="{StaticResource CommonRightThickness}"
-                                                  Text="{x:Static lcModels:FontAwesomeIcon.Trash}"
-                                                  TextColor="Red"
-                                                  Style="{StaticResource CommonIcon}" />
+                                        <Grid Style="{StaticResource CommonWrapper}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
 
+                                            <!--Title-->
+                                            <Label Text="Danh mục" Style="{StaticResource CommonHeader}"/>
+                                            <!--Back icon-->
+                                            <mr:Grid TappedCommand="{Binding ShowPopUpCommand}" >
+                                                <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Times}" />
+                                            </mr:Grid>
+                                            <!--Right text-->
+                                            <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
+                                                <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                                            </mr:Grid>
+                                        </Grid>
+
+                                        <!--  Seperate header bottom line  -->
+                                        <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="{StaticResource SubColor}"/>
+                                        <ScrollView Grid.Row="2">
+
+                                            <StackLayout >
+
+                                                <tlrPrimitives:RadBorder Margin="{StaticResource CommonThickness}" Style="{StaticResource CommonBorder}">
+                                                    <tlrInput:RadEntry WatermarkText="Tên danh mục" HorizontalTextAlignment="Start" Text="{Binding CategoryBindProp.Name}"/>
+                                                </tlrPrimitives:RadBorder>
+                                                
+                                                <!--  Bieu tuong  -->
+                                                <Grid>
+                                                    <BoxView Style="{StaticResource CommonTitleRule}" Margin="{StaticResource CommonHorizontalThickness}"/>
+                                                    <Label Text="CHỌN BIỂU TƯỢNG" Style="{StaticResource CommonTitle}" FontSize="Small" />
+                                                </Grid>
+
+                                                <FlexLayout BindableLayout.ItemsSource="{Binding ListCategoryBindProp}" JustifyContent="Center" Wrap="Wrap">
+                                                    <BindableLayout.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <mr:Grid HeightRequest="50" Margin="{StaticResource CommonThickness}">
+                                                                <BoxView  BackgroundColor="{StaticResource SubColor}" />
+                                                                <Label Text="{x:Static lcModels:FontAwesomeIcon.Coffee}" Style="{StaticResource CommonIcon}"/>
+                                                            </mr:Grid>
+                                                        </DataTemplate>
+                                                    </BindableLayout.ItemTemplate>
+                                                </FlexLayout>
+
+                                            </StackLayout>
+                                            
+                                        </ScrollView>
                                     </Grid>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </StackLayout>
-                    </tlrPrimitives:RadBorder>
-
-                    <!-- Them moi -->
-                    <tlrPrimitives:RadBorder Grid.Row="1"
-                                Margin="{StaticResource CommonVerticalThickness}"
-                                Style="{StaticResource CommonBorder}">
-                        <StackLayout Orientation="Horizontal">
-                            <tlrInput:RadEntry
-                                        Style="{StaticResource CommonRightEntry}"
-                                        WatermarkText="Tên danh mục thêm mới"
-                                        Text="{Binding NewCategoryNameBindProp, Mode=TwoWay}" />
-
-                            <mr:Label
-                                    TappedCommand="{Binding AddNewCategoryCommand}"
-                                    Margin="{StaticResource CommonThickness}"
-                                    Text="{x:Static lcModels:FontAwesomeIcon.Plus}"
-                                    Style="{StaticResource CommonIcon}" />
-                        </StackLayout>
+                                </Frame>
+                            </tlrPrimitives:RadPopup>
+                        </tlrPrimitives:RadPopup.Popup>
                     </tlrPrimitives:RadBorder>
                 </Grid>
             </Grid>

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Handlers
 {
-    class AddCategoryCommandHandler : IRequestHandler<AddCategoryCommand, bool>
+    class AddCategoryCommandHandler : IRequestHandler<AddCategoryCommand, CategoryDto>
     {
         private DataContext _context;
         private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ namespace ApplicationCore.Handlers
             _mapper = mapper;
         }
 
-        public async Task<bool> Handle(AddCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<CategoryDto> Handle(AddCategoryCommand request, CancellationToken cancellationToken)
         {
             var category = _mapper.Map<Category>(request.Category);
 
@@ -31,12 +31,10 @@ namespace ApplicationCore.Handlers
 
             if (await _context.SaveChangesAsync() > 0)
             {
-                return true;
+                var categoryToReturn = _mapper.Map<CategoryDto>(category);
+                return categoryToReturn;
             }
-            else
-            {
-                return false;
-            }
+            return null;
         }
     }
 }
