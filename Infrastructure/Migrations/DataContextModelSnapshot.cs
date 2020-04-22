@@ -139,15 +139,12 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<string>("ZoneId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("ZoneId1")
+                    b.Property<Guid>("ZoneId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ZoneId1");
+                    b.HasIndex("ZoneId");
 
                     b.ToTable("Tables");
                 });
@@ -156,9 +153,6 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -197,8 +191,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.ToTable("Users");
                 });
@@ -240,7 +232,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Infrastructure.Models.Item", b =>
                 {
                     b.HasOne("Infrastructure.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("Items")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -250,14 +242,9 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Infrastructure.Models.Zone", "Zone")
                         .WithMany("Tables")
-                        .HasForeignKey("ZoneId1");
-                });
-
-            modelBuilder.Entity("Infrastructure.Models.User", b =>
-                {
-                    b.HasOne("Infrastructure.Models.Category", null)
-                        .WithMany("Users")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("ZoneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

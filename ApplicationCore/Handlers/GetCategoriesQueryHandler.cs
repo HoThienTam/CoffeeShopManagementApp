@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace ApplicationCore.Handlers
 
         public async Task<IEnumerable<CategoryDto>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
         {
-            var categories = _context.Categories.AsNoTracking();
+            var categories = _context.Categories.Where(c => c.IsDeleted == false).AsNoTracking();
             var cateDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories);
             return cateDtos;
         }

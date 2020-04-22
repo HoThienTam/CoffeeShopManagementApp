@@ -7,6 +7,17 @@ namespace Dtos
 {
     public class CategoryDto : BindableBase
     {
+        public CategoryDto()
+        {
+
+        }
+
+        public CategoryDto(CategoryDto categoryDto)
+        {
+            Id = categoryDto.Id;
+            Name = categoryDto.Name;
+            Icon = categoryDto.Icon;
+        }
         public Guid Id { get; set; }
 
         #region Name

@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200415092040_add_zone_table.cs" />
+    <Compile Remove="Migrations\20200415092040_add_zone_table.Designer.cs" />
+    <Compile Remove="Migrations\20200416153636_add_category_item.cs" />
+    <Compile Remove="Migrations\20200416153636_add_category_item.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.3">

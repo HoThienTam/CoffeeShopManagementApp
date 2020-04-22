@@ -60,5 +60,19 @@ namespace Api.Controllers
                 return BadRequest("Không thể cập nhật danh mục!");
             }
         }
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategory(Guid id)
+        {
+            var ok = await _mediator.Send(new DeleteCategoryCommand(id));
+            if (ok)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Không thể xóa danh mục!");
+            }
+        }
     }
 }

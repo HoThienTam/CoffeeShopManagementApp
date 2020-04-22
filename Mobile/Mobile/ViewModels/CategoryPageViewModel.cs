@@ -38,6 +38,15 @@ namespace Mobile.ViewModels
         }
         #endregion
 
+        #region TempCategory
+        private CategoryDto _TempCategory = null;
+        public CategoryDto TempCategory
+        {
+            get { return _TempCategory; }
+            set { SetProperty(ref _TempCategory, value); }
+        }
+        #endregion
+
         #region IsOpen
         private bool _IsOpen = false;
         public bool IsOpen
@@ -130,6 +139,8 @@ namespace Mobile.ViewModels
                     switch (response.StatusCode)
                     {
                         case HttpStatusCode.NoContent:
+                            TempCategory.Name = CategoryBindProp.Name;
+                            TempCategory.Icon = CategoryBindProp.Icon;
                             break;
                         case HttpStatusCode.Created:
                             var category = JsonConvert.DeserializeObject<CategoryDto>(await response.Content.ReadAsStringAsync());
@@ -180,8 +191,8 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                //var category = obj as CategoryDto;
-                CategoryBindProp = category;
+                TempCategory = category;
+                CategoryBindProp = new CategoryDto(category);
                 IsOpen = true;
             }
             catch (Exception e)
@@ -203,6 +214,51 @@ namespace Mobile.ViewModels
 
         #endregion
 
+        #region DeleteCategoryCommand
+
+        public DelegateCommand<object> DeleteCategoryCommand { get; private set; }
+        private async void OnDeleteCategory(object obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                using (var client = new HttpClient())
+                {
+                    HttpResponseMessage response = new HttpResponseMessage();
+                    response = await client.DeleteAsync(Properties.Resources.BaseUrl + "categories/" + CategoryBindProp.Id);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ListCategoryBindProp.Remove(TempCategory);
+                    }
+                }
+                IsOpen = false;
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitDeleteCategoryCommand()
+        {
+            DeleteCategoryCommand = new DelegateCommand<object>(OnDeleteCategory);
+            DeleteCategoryCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
 
         public async override void OnNavigatedTo(INavigationParameters parameters)
         {

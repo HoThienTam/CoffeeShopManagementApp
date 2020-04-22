@@ -132,6 +132,15 @@
                                                     </BindableLayout.ItemTemplate>
                                                 </FlexLayout>
 
+
+                                                <tlrInput:RadButton
+                                                    TextColor="White"
+                                                    BackgroundColor="#ef5350"
+                                                    Command="{Binding DeleteCategoryCommand, Mode=OneWay}"
+                                                    CommandParameter="{Binding}"
+                                                    HorizontalOptions="Center"
+                                                    Text="Xóa"/>
+                                                
                                             </StackLayout>
                                             
                                         </ScrollView>

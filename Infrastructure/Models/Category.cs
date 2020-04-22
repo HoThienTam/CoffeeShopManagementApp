@@ -8,6 +8,6 @@ namespace Infrastructure.Models
     {
         public string Name { get; set; }
         public string Icon { get; set; }
-        public ICollection<User> Users { get; set; }
+        public ICollection<Item> Items { get; set; }
     }
 }
