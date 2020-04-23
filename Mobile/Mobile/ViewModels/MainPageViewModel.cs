@@ -1,11 +1,14 @@
-﻿using Mobile.Models;
+﻿using Dtos;
+using Mobile.Models;
 using Mobile.Views;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Net.Http;
 
 namespace Mobile.ViewModels
 {
@@ -15,6 +18,7 @@ namespace Mobile.ViewModels
         {
             ListZoneBindProp = new ObservableCollection<string>();
             ListInvoiceBindProp = new ObservableCollection<string>();
+            ListCategoryBindProp = new ObservableCollection<CategoryDto>();
             for (int i = 0; i < 5; i++)
             {
                 ListZoneBindProp.Add($"Section {i}");
@@ -37,6 +41,15 @@ namespace Mobile.ViewModels
         {
             get { return _ListInvoiceBindProp; }
             set { SetProperty(ref _ListInvoiceBindProp, value); }
+        }
+        #endregion
+
+        #region ListCategoryBindProp
+        private ObservableCollection<CategoryDto> _ListCategoryBindProp = null;
+        public ObservableCollection<CategoryDto> ListCategoryBindProp
+        {
+            get { return _ListCategoryBindProp; }
+            set { SetProperty(ref _ListCategoryBindProp, value); }
         }
         #endregion
 
@@ -99,10 +112,10 @@ namespace Mobile.ViewModels
 
         #endregion
 
-        #region SelectPageCommand
+        #region SelectSettingCommand
 
-        public DelegateCommand<object> SelectPageCommand { get; private set; }
-        private async void OnSelectPage(object obj)
+        public DelegateCommand<string> SelectSettingCommand { get; private set; }
+        private async void OnSelectSetting(string settings)
         {
             if (IsBusy)
             {
@@ -114,10 +127,16 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                switch (obj as string)
+                var param = new NavigationParameters();
+                switch (settings)
                 {
                     case "Category":
-                        await NavigationService.NavigateAsync(nameof(CategoryPage));
+
+                        param.Add(nameof(ListCategoryBindProp), ListCategoryBindProp);
+                        await NavigationService.NavigateAsync(nameof(CategoryPage), param);
+                        break;
+                    case "Item":
+                        await NavigationService.NavigateAsync(nameof(ItemPage));
                         break;
                     default:
                         break;
@@ -134,13 +153,46 @@ namespace Mobile.ViewModels
 
         }
         [Initialize]
-        private void InitSelectPageCommand()
+        private void InitSelectSettingCommand()
         {
-            SelectPageCommand = new DelegateCommand<object>(OnSelectPage);
-            SelectPageCommand.ObservesCanExecute(() => IsNotBusy);
+            SelectSettingCommand = new DelegateCommand<string>(OnSelectSetting);
+            SelectSettingCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion
 
+
+        public async override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            switch (parameters.GetNavigationMode())
+            {
+                case NavigationMode.Back:
+                    break;
+                case NavigationMode.New:
+                    using (var client = new HttpClient())
+                    {
+                        var response = await client.GetAsync(Properties.Resources.BaseUrl + "categories/");
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var categories = JsonConvert.DeserializeObject<IEnumerable<CategoryDto>>(await response.Content.ReadAsStringAsync());
+                            foreach (var category in categories)
+                            {
+                                ListCategoryBindProp.Add(category);
+                            }
+                        }
+                        else
+                        {
+                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await response.Content.ReadAsStringAsync()}", "Đóng");
+                        }
+                    }
+                    break;
+                case NavigationMode.Forward:
+                    break;
+                case NavigationMode.Refresh:
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

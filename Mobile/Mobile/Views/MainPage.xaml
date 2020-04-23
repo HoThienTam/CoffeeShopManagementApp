@@ -402,7 +402,7 @@
                         <mr:StackLayout 
                             Spacing="0" Orientation="Vertical" 
                             VerticalOptions="Center" 
-                            TappedCommand="{Binding SelectPageCommand}" 
+                            TappedCommand="{Binding SelectSettingCommand}" 
                             TappedCommandParameter="Category">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
@@ -416,21 +416,21 @@
                             Spacing="0" Orientation="Vertical" 
                             VerticalOptions="Center" 
                             Grid.Column="1"
-                            TappedCommand="{Binding SelectPageCommand}" 
-                            TappedCommandParameter="">
+                            TappedCommand="{Binding SelectSettingCommand}" 
+                            TappedCommandParameter="Item">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
                                 <Label Style="{StaticResource CommonIcon}" 
                                    TextColor="{StaticResource ContrastColor}" 
                                    Text="{x:Static lcModels:FontAwesomeIcon.List}"/>
                             </Grid>
-                            <Label HorizontalOptions="Center" Text="Danh mục"/>
+                            <Label HorizontalOptions="Center" Text="Mặt hàng"/>
                         </mr:StackLayout>
                         <mr:StackLayout 
                             Spacing="0" Orientation="Vertical" 
                             VerticalOptions="Center" 
                             Grid.Column="2"
-                            TappedCommand="{Binding SelectPageCommand}" 
+                            TappedCommand="{Binding SelectSettingCommand}" 
                             TappedCommandParameter="">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
@@ -444,7 +444,7 @@
                             Spacing="0" Orientation="Vertical" 
                             VerticalOptions="Center" 
                             Grid.Column="3"
-                            TappedCommand="{Binding SelectPageCommand}" 
+                            TappedCommand="{Binding SelectSettingCommand}" 
                             TappedCommandParameter="">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
@@ -465,7 +465,7 @@
                         <mr:StackLayout 
                             Spacing="0" Orientation="Vertical" 
                             VerticalOptions="Center" 
-                            TappedCommand="{Binding SelectPageCommand}" 
+                            TappedCommand="{Binding SelectSettingCommand}" 
                             TappedCommandParameter="">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
@@ -479,7 +479,7 @@
                             Spacing="0" Orientation="Vertical" 
                             VerticalOptions="Center" 
                             Grid.Column="1"
-                            TappedCommand="{Binding SelectPageCommand}" 
+                            TappedCommand="{Binding SelectSettingCommand}" 
                             TappedCommandParameter="">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
@@ -493,7 +493,7 @@
                             Spacing="0" Orientation="Vertical" 
                             VerticalOptions="Center" 
                             Grid.Column="2"
-                            TappedCommand="{Binding SelectPageCommand}" 
+                            TappedCommand="{Binding SelectSettingCommand}" 
                             TappedCommandParameter="">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
@@ -507,7 +507,7 @@
                             Spacing="0" Orientation="Vertical" 
                             VerticalOptions="Center" 
                             Grid.Column="3"
-                            TappedCommand="{Binding SelectPageCommand}" 
+                            TappedCommand="{Binding SelectSettingCommand}" 
                             TappedCommandParameter="">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
@@ -549,7 +549,7 @@
 
                 <!--List thuc don-->
                 <ScrollView Grid.Column="2" Orientation="Horizontal">
-                    <StackLayout BindableLayout.ItemsSource="{Binding ListZoneBindProp, Mode=OneWay}" Orientation="Horizontal">
+                    <StackLayout BindableLayout.ItemsSource="{Binding ListCategoryBindProp, Mode=OneWay}" Orientation="Horizontal">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
                                 <!--Thuc don-->
@@ -559,7 +559,7 @@
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <Label Style="{StaticResource CommonIcon}" TextColor="{StaticResource ContrastColor}" Text="{x:Static lcModels:FontAwesomeIcon.Receipt}"/>
-                                    <Label Grid.Row="1" TextColor="{StaticResource ContrastColor}" Text="MenuName"  LineBreakMode="TailTruncation" />
+                                    <Label Grid.Row="1" HorizontalOptions="CenterAndExpand" TextColor="{StaticResource ContrastColor}" Text="{Binding Name}"  LineBreakMode="TailTruncation" />
                                 </mr:Grid>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>

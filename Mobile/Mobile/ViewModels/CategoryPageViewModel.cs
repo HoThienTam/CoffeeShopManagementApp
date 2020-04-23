@@ -1,6 +1,7 @@
 ﻿using Dtos;
 using Mobile.Models;
 using Newtonsoft.Json;
+using Prism.AppModel;
 using Prism.Commands;
 using Prism.Navigation;
 using System;
@@ -18,6 +19,21 @@ namespace Mobile.ViewModels
         public CategoryPageViewModel(InitParams initParams) : base(initParams)
         {
             ListCategoryBindProp = new ObservableCollection<CategoryDto>();
+            ListIconBindProp = new ObservableCollection<Icon>();
+            ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.Coffee, IsSelected = true });
+            ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.CoffeeTogo, IsSelected = false });
+            ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.Cocktail, IsSelected = false });
+            ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.FrenchFries, IsSelected = false });
+            ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.Beer, IsSelected = false });
+            ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.BreadSlice, IsSelected = false });
+            ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.Pie, IsSelected = false });
+            ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.Soup, IsSelected = false });
+            ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.Salad, IsSelected = false });
+            ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.WineGlass, IsSelected = false });
+            ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.IceCream, IsSelected = false });
+            ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.Pizza, IsSelected = false });
+            ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.Burrito, IsSelected = false });
+            ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.Sandwich, IsSelected = false });
         }
 
         #region ListCategoryBindProp
@@ -26,6 +42,15 @@ namespace Mobile.ViewModels
         {
             get { return _ListCategoryBindProp; }
             set { SetProperty(ref _ListCategoryBindProp, value); }
+        }
+        #endregion
+
+        #region ListIconBindProp
+        private ObservableCollection<Icon> _ListIconBindProp = null;
+        public ObservableCollection<Icon> ListIconBindProp
+        {
+            get { return _ListIconBindProp; }
+            set { SetProperty(ref _ListIconBindProp, value); }
         }
         #endregion
 
@@ -122,6 +147,7 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                CategoryBindProp.Icon = FontAwesomeIcon.Coffee;
                 var json = JsonConvert.SerializeObject(CategoryBindProp);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 // Thuc hien cong viec tai day
@@ -193,6 +219,9 @@ namespace Mobile.ViewModels
                 // Thuc hien cong viec tai day
                 TempCategory = category;
                 CategoryBindProp = new CategoryDto(category);
+                var icon = ListIconBindProp.FirstOrDefault(i => i.IsSelected = true);
+                icon.IsSelected = false;
+                ListIconBindProp.FirstOrDefault(i => i.Name == CategoryBindProp.Icon).IsSelected = true;
                 IsOpen = true;
             }
             catch (Exception e)
@@ -260,6 +289,45 @@ namespace Mobile.ViewModels
 
         #endregion
 
+        #region SelectIconCommand
+
+        public DelegateCommand<Icon> SelectIconCommand { get; private set; }
+        private async void OnSelectIcon(Icon icon)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                var selectedIcon = ListIconBindProp.FirstOrDefault(i => i.IsSelected = true);
+                selectedIcon.IsSelected = false;
+
+                icon.IsSelected = true;
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectIconCommand()
+        {
+            SelectIconCommand = new DelegateCommand<Icon>(OnSelectIcon);
+            SelectIconCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
         public async override void OnNavigatedTo(INavigationParameters parameters)
         {
             switch (parameters.GetNavigationMode())
@@ -267,24 +335,6 @@ namespace Mobile.ViewModels
                 case NavigationMode.Back:
                     break;
                 case NavigationMode.New:
-                    IsBusy = true;
-                    using (var client = new HttpClient())
-                    {
-                        var response = await client.GetAsync(Properties.Resources.BaseUrl + "categories/");
-                        if (response.IsSuccessStatusCode)
-                        {
-                            var categories = JsonConvert.DeserializeObject<IEnumerable<CategoryDto>>(await response.Content.ReadAsStringAsync());
-                            foreach (var category in categories)
-                            {
-                                ListCategoryBindProp.Add(category);
-                            }
-                        }
-                        else
-                        {
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await response.Content.ReadAsStringAsync()}", "Đóng");
-                        }
-                    }
-                    IsBusy = false;
                     break;
                 case NavigationMode.Forward:
                     break;

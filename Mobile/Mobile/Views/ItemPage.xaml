@@ -57,8 +57,7 @@
                             <!--  Hinh  -->
                             <mr:StackLayout
                                     Margin="{StaticResource CommonThickness}"
-                                    Grid.RowSpan="2"
-                                    TappedCommand="{Binding PickImageCommand}">
+                                    Grid.RowSpan="2">
                                 <ffImage:CachedImage
                                         Aspect="Fill"
                                         DownsampleToViewSize="true"
@@ -76,9 +75,8 @@
                                 <StackLayout Orientation="Horizontal" Spacing="0">
                                     <Label  Text="Tên mặt hàng" HorizontalOptions="Start"/>
                                     <tlrInput:RadEntry
-                                        Style="{StaticResource CommonEntry}"
-                                        HorizontalOptions="EndAndExpand"
-                                        Text="{Binding ItemBindProp.Name, Mode=TwoWay}"
+                                        HorizontalTextAlignment="End"
+                                        Text="Name"
                                         WatermarkText="Tên mặt hàng" />
                                 </StackLayout>
                             </tlrPrimitives:RadBorder>
@@ -86,16 +84,14 @@
                             <!--  Danh muc  -->
                             <tlrPrimitives:RadBorder Grid.Row="1" Grid.Column="1"
                                         Style="{StaticResource CommonLowerBorder}">
-                                <mr:StackLayout Spacing="0"
-                                            TappedCommand="{Binding TapCategoryCommand}"
-                                            Orientation="Horizontal">
+                                <mr:StackLayout Spacing="0" Orientation="Horizontal">
                                     <Label Text="Danh mục" HorizontalOptions="StartAndExpand"/>
 
                                     <tlrInput:RadEntry
                                             InputTransparent="True"
                                             IsTabStop="False"
-                                            Text="{Binding CategoryBindProp.CategoryName, Mode=TwoWay}"
-                                            Style="{StaticResource CommonRightEntry}"
+                                            Text="Name"
+                                            HorizontalTextAlignment="End"
                                             WatermarkText="Chọn danh mục" />
 
                                     <Label HorizontalOptions="End"
@@ -115,7 +111,7 @@
                                         ControlTemplate="{StaticResource NumericInput}"
                                         StringFormat="{}{0:C}"
                                         Maximum="1000000000" Minimum="0"                                  
-                                        Value="{Binding ItemBindProp.Value, Mode=TwoWay}" />
+                                        Value="0" />
                             </StackLayout>
                         </tlrPrimitives:RadBorder>
 

@@ -1,4 +1,5 @@
 ﻿using Mobile.Models;
+using Prism.AppModel;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Mobile.ViewModels
 {
-    public class ViewModelBase : BindableBase, INavigationAware
+    public class ViewModelBase : BindableBase, INavigationAware, IAutoInitialize
     {
         protected INavigationService NavigationService { get; private set; }
         protected IPageDialogService PageDialogService { get; private set; }
