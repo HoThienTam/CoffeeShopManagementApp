@@ -132,7 +132,7 @@
         </Style>
 
         <!--  Removed buttons and unused style, columns and spacing  -->
-        <ControlTemplate x:Key="NumericInput">
+        <ControlTemplate x:Key="CustomNumericInput">
             <Grid HeightRequest="45" MinimumHeightRequest="28">
                 <Grid.Resources>
                     <ResourceDictionary>
@@ -140,6 +140,7 @@
                             <Setter Property="HorizontalTextAlignment" Value="End" />
                             <Setter Property="VerticalTextAlignment" Value="Center" />
                             <Setter Property="Padding" Value="0,0,0,0" />
+                            <Setter Property="Margin" Value="{StaticResource CommonHorizontalThickness}"/>
                             <Setter Property="Keyboard" Value="Numeric" />
                             <Setter Property="BorderStyle" Value="{StaticResource EntryBorderStyle}"/>
                         </Style>

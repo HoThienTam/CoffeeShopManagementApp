@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApplicationCore.Extensions
+namespace SharedKernel
 {
     public class AutoMapperProfile : Profile
     {
@@ -15,6 +15,8 @@ namespace ApplicationCore.Extensions
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<Category, CategoryDto>();
             CreateMap<Category, CategoryDto>().ReverseMap();
+            CreateMap<Item, ItemDto>();
+            CreateMap<Item, ItemDto>().ReverseMap();
         }
     }
 }

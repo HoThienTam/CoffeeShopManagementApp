@@ -1,4 +1,6 @@
-﻿using Dtos;
+﻿using ApplicationCore.Commands;
+using ApplicationCore.Queries;
+using Dtos;
 using Infrastructure.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -22,27 +24,46 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetItems()
         {
-            return Ok();
+            var items = await _mediator.Send(new GetItemsQuery());
+            return Ok(items);
         }
         [HttpGet("{id}", Name = nameof(GetItem))]
         public async Task<IActionResult> GetItem(Guid id)
         {
-            return Ok();
+            var item = await _mediator.Send(new GetItemQuery(id));
+            return Ok(item);
         }
         [HttpPost]
         public async Task<IActionResult> CreateItem(ItemDto itemDto)
         {
-            return CreatedAtRoute(nameof(GetItem), new { id = itemDto.Id }, itemDto);
+            var itemToReturn = await _mediator.Send(new AddItemCommand(itemDto));
+            return CreatedAtRoute(nameof(GetItem), new { id = itemToReturn.Id }, itemToReturn);
         }
         [HttpPut]
         public async Task<IActionResult> UpdateItem(ItemDto itemDto)
         {
-            return NoContent();
+            var ok = await _mediator.Send(new UpdateItemCommand(itemDto));
+            if (ok)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest("Không thể cập nhật mặt hàng!");
+            }
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem(Guid id)
         {
-            return Ok();
+            var ok = await _mediator.Send(new DeleteItemCommand(id));
+            if (ok)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Không thể xóa mặt hàng!");
+            }
         }
     }
 }

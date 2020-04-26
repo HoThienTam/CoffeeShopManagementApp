@@ -1,17 +1,17 @@
-﻿using Dtos;
-using MediatR;
+﻿using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApplicationCore.Queries
+namespace ApplicationCore.Commands
 {
-    public class GetUserQuery : IRequest<UserDto>
+    public class DeleteItemCommand : IRequest<bool>
     {
-        public GetUserQuery(Guid id)
+        public DeleteItemCommand(Guid id)
         {
             Id = id;
         }
+
         public Guid Id { get; set; }
     }
 }

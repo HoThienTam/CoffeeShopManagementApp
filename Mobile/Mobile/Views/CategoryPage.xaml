@@ -51,7 +51,7 @@
 
                                     <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="{StaticResource CommonHorizontalThickness}">
                                         <Label Text="{Binding Name}" FontSize="Large" TextColor="{StaticResource ContrastColor}"/>
-                                        <Label Text="0 item" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
+                                        <Label Text="{Binding Items.Count, StringFormat='{} item'}" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
                                     </StackLayout>
                                 </Grid>
                             </mr:Frame>
@@ -149,7 +149,7 @@
                 </tlrPrimitives:RadPopup>
             </tlrPrimitives:RadPopup.Popup>
         </Frame>
-
+        
         <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
     </StackLayout>
 </ContentPage>

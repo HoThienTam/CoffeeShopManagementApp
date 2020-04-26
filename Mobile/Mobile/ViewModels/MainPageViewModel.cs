@@ -128,15 +128,14 @@ namespace Mobile.ViewModels
             {
                 // Thuc hien cong viec tai day
                 var param = new NavigationParameters();
+                param.Add(nameof(ListCategoryBindProp), ListCategoryBindProp);
                 switch (settings)
                 {
-                    case "Category":
-
-                        param.Add(nameof(ListCategoryBindProp), ListCategoryBindProp);
+                    case "Category":                      
                         await NavigationService.NavigateAsync(nameof(CategoryPage), param);
                         break;
                     case "Item":
-                        await NavigationService.NavigateAsync(nameof(ItemPage));
+                        await NavigationService.NavigateAsync(nameof(ItemPage), param);
                         break;
                     default:
                         break;

@@ -18,7 +18,6 @@ namespace Mobile.ViewModels
     {
         public CategoryPageViewModel(InitParams initParams) : base(initParams)
         {
-            ListCategoryBindProp = new ObservableCollection<CategoryDto>();
             ListIconBindProp = new ObservableCollection<Icon>();
             ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.Coffee, IsSelected = true });
             ListIconBindProp.Add(new Icon { Name = FontAwesomeIcon.CoffeeTogo, IsSelected = false });

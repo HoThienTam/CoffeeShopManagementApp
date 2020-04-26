@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Queries;
 using AutoMapper;
+using Dtos;
 using Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -11,24 +12,26 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Handlers
 {
-    public class GetUserQueryHandler : IRequestHandler<GetUserQuery, bool>
+    public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
     {
         private DataContext _context;
+        private readonly IMapper _mapper;
 
-        public GetUserQueryHandler(DataContext context)
+        public GetUserQueryHandler(DataContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<bool> Handle(GetUserQuery request, CancellationToken cancellationToken)
+        public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
         {
             var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == request.Id);
-
             if (user == null)
             {
-                return false;
+                return null;
             }
-            return true;
+            var userDto = _mapper.Map<UserDto>(user);
+            return userDto;
         }
     }
 }

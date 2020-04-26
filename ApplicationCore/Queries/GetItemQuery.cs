@@ -6,12 +6,13 @@ using System.Text;
 
 namespace ApplicationCore.Queries
 {
-    public class GetUserQuery : IRequest<UserDto>
+    public class GetItemQuery : IRequest<ItemDto>
     {
-        public GetUserQuery(Guid id)
+        public GetItemQuery(Guid id)
         {
             Id = id;
         }
+
         public Guid Id { get; set; }
     }
 }

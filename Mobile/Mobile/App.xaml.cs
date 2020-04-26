@@ -4,6 +4,7 @@ using Mobile.ViewModels;
 using Mobile.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Globalization;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Mobile
@@ -22,6 +23,9 @@ namespace Mobile
         protected override async void OnInitialized()
         {
             InitializeComponent();
+
+            CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("vi-VN");
+            CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("vi-VN");
 
             if (Application.Current.Properties.ContainsKey("token"))
             {

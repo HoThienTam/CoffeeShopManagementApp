@@ -390,7 +390,7 @@
             </Grid>
 
             <!-- Frame Settings-->
-            <Frame>
+            <Frame IsVisible="True">
                 <FlexLayout Wrap="Wrap">
                     <Grid>
                         <Grid.ColumnDefinitions>
