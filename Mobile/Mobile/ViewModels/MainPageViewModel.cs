@@ -16,14 +16,8 @@ namespace Mobile.ViewModels
     {
         public MainPageViewModel(InitParams initParams) : base(initParams)
         {
-            ListZoneBindProp = new ObservableCollection<string>();
-            ListInvoiceBindProp = new ObservableCollection<string>();
             ListCategoryBindProp = new ObservableCollection<CategoryDto>();
-            for (int i = 0; i < 5; i++)
-            {
-                ListZoneBindProp.Add($"Section {i}");
-                ListInvoiceBindProp.Add(i.ToString());
-            }
+            ListItemBindProp = new ObservableCollection<ItemDto>();
         }
 
         #region ListZoneBindProp
@@ -50,6 +44,15 @@ namespace Mobile.ViewModels
         {
             get { return _ListCategoryBindProp; }
             set { SetProperty(ref _ListCategoryBindProp, value); }
+        }
+        #endregion
+
+        #region ListItemBindProp
+        private ObservableCollection<ItemDto> _ListItemBindProp = null;
+        public ObservableCollection<ItemDto> ListItemBindProp
+        {
+            get { return _ListItemBindProp; }
+            set { SetProperty(ref _ListItemBindProp, value); }
         }
         #endregion
 

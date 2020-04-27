@@ -27,7 +27,7 @@
                     <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
                 </mr:Grid>
                 <!--Right text-->
-                <mr:Grid TappedCommand="{Binding ShowPopUpCommand}" Grid.Column="2">
+                <mr:Grid TappedCommand="{Binding ShowPopUpCommand}" Grid.Column="2" IsVisible="{Binding IsEditing}">
                     <Label Text="{x:Static lcModels:FontAwesomeIcon.PlusCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
                 </mr:Grid>
             </Grid>
@@ -38,7 +38,9 @@
                 <StackLayout BindableLayout.ItemsSource="{Binding ListCategoryBindProp, Mode=OneWay}" Spacing="1">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
-                            <mr:Frame Padding="0" BackgroundColor="{StaticResource MainColor}" TappedCommand="{Binding BindingContext.ModifyCategoryCommand, Source={x:Reference categoryPage}}" TappedCommandParameter="{Binding}">
+                            <mr:Frame Padding="0" BackgroundColor="{StaticResource MainColor}" 
+                                      TappedCommand="{Binding BindingContext.SelectCategoryCommand, Source={x:Reference categoryPage}}" 
+                                      TappedCommandParameter="{Binding}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />

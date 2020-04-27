@@ -140,7 +140,7 @@
 
                                         <tlrInput:RadEntry                                          
                                             InputTransparent="True"
-                                            Text="Category"
+                                            Text="{Binding CategoryBindProp.Name}"
                                             HorizontalTextAlignment="End"
                                             WatermarkText="Chọn danh mục" />
 

@@ -1,5 +1,6 @@
 ﻿using Dtos;
 using Mobile.Models;
+using Mobile.Views;
 using Newtonsoft.Json;
 using Prism.AppModel;
 using Prism.Commands;
@@ -77,6 +78,15 @@ namespace Mobile.ViewModels
         {
             get { return _IsOpen; }
             set { SetProperty(ref _IsOpen, value); }
+        }
+        #endregion
+
+        #region IsEditing
+        private bool _IsEditing = true;
+        public bool IsEditing
+        {
+            get { return _IsEditing; }
+            set { SetProperty(ref _IsEditing, value); }
         }
         #endregion
 
@@ -201,27 +211,35 @@ namespace Mobile.ViewModels
 
         #endregion
 
-        #region ModifyCategoryCommand
+        #region SelectCategoryCommand
 
-        public DelegateCommand<CategoryDto> ModifyCategoryCommand { get; private set; }
-        private async void OnModifyCategory(CategoryDto category)
+        public DelegateCommand<CategoryDto> SelectCategoryCommand { get; private set; }
+        private async void OnSelectCategory(CategoryDto category)
         {
             if (IsBusy)
             {
                 return;
             }
-
             IsBusy = true;
 
             try
             {
                 // Thuc hien cong viec tai day
-                TempCategory = category;
-                CategoryBindProp = new CategoryDto(category);
-                var icon = ListIconBindProp.FirstOrDefault(i => i.IsSelected = true);
-                icon.IsSelected = false;
-                ListIconBindProp.FirstOrDefault(i => i.Name == CategoryBindProp.Icon).IsSelected = true;
-                IsOpen = true;
+                if (IsEditing)
+                {
+                    TempCategory = category;
+                    CategoryBindProp = new CategoryDto(category);
+                    var icon = ListIconBindProp.FirstOrDefault(i => i.IsSelected = true);
+                    icon.IsSelected = false;
+                    ListIconBindProp.FirstOrDefault(i => i.Name == CategoryBindProp.Icon).IsSelected = true;
+                    IsOpen = true;
+                }
+                else
+                {
+                    CategoryBindProp.Name = category.Name;
+                    CategoryBindProp.Id = category.Id;
+                    await NavigationService.GoBackAsync();
+                }
             }
             catch (Exception e)
             {
@@ -236,8 +254,8 @@ namespace Mobile.ViewModels
         [Initialize]
         private void InitModifyCategoryCommand()
         {
-            ModifyCategoryCommand = new DelegateCommand<CategoryDto>(OnModifyCategory);
-            ModifyCategoryCommand.ObservesCanExecute(() => IsNotBusy);
+            SelectCategoryCommand = new DelegateCommand<CategoryDto>(OnSelectCategory);
+            SelectCategoryCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion
@@ -334,6 +352,10 @@ namespace Mobile.ViewModels
                 case NavigationMode.Back:
                     break;
                 case NavigationMode.New:
+                    if (parameters.ContainsKey("Page") && parameters["Page"] as string == nameof(ItemPage))
+                    {
+                        IsEditing = false;
+                    }
                     break;
                 case NavigationMode.Forward:
                     break;

@@ -13,6 +13,7 @@ namespace Dtos
         public double Price { get; set; }
         public int MinQuantity { get; set; }
         public int CurrentQuantity { get; set; }
+        public Guid CategoryId { get; set; }
         public CategoryDto Category { get; set; }
     }
 }

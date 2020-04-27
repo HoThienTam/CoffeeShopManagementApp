@@ -56,6 +56,15 @@ namespace Mobile.ViewModels
         }
         #endregion
 
+        #region CategoryBindProp
+        private CategoryDto _CategoryBindProp = null;
+        public CategoryDto CategoryBindProp
+        {
+            get { return _CategoryBindProp; }
+            set { SetProperty(ref _CategoryBindProp, value); }
+        }
+        #endregion
+
         #region ListItemBindProp
         private ObservableCollection<ItemDto> _ListItemBindProp = null;
         public ObservableCollection<ItemDto> ListItemBindProp
@@ -131,6 +140,7 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                ItemBindProp.CategoryId = CategoryBindProp.Id;
                 var json = JsonConvert.SerializeObject(ItemBindProp);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 // Thuc hien cong viec tai day
@@ -274,7 +284,10 @@ namespace Mobile.ViewModels
                 // Thuc hien cong viec tai day
                 IsOpen = false;
                 var param = new NavigationParameters();
+                CategoryBindProp = new CategoryDto();
                 param.Add(nameof(ListCategoryBindProp), ListCategoryBindProp);
+                param.Add(nameof(CategoryBindProp), CategoryBindProp);
+                param.Add("Page", nameof(ItemPage));
                 await NavigationService.NavigateAsync(nameof(CategoryPage), param);
             }
             catch (Exception e)
@@ -296,5 +309,22 @@ namespace Mobile.ViewModels
 
         #endregion
 
+        public override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            switch (parameters.GetNavigationMode())
+            {
+                case NavigationMode.Back:
+                    IsOpen = true;
+                    break;
+                case NavigationMode.New:
+                    break;
+                case NavigationMode.Forward:
+                    break;
+                case NavigationMode.Refresh:
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
