@@ -5,13 +5,11 @@ using System.Text;
 
 namespace Dtos
 {
-    public class CategoryDto : BindableBase
+    public class CategoryDto
     {
         public CategoryDto()
         {
-
         }
-
         public CategoryDto(CategoryDto categoryDto)
         {
             Id = categoryDto.Id;
@@ -20,23 +18,9 @@ namespace Dtos
         }
         public Guid Id { get; set; }
 
-        #region Name
-        private string _Name = null;
-        public string Name
-        {
-            get { return _Name; }
-            set { SetProperty(ref _Name, value); }
-        }
-        #endregion
+        public string Name { get; set; }
 
-        #region Icon
-        private string _Icon = null;
-        public string Icon
-        {
-            get { return _Icon; }
-            set { SetProperty(ref _Icon, value); }
-        }
-        #endregion
-
+        public string Icon { get; set; }
+        public ICollection<ItemDto> Items { get; set; }
     }
 }

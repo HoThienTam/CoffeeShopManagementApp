@@ -11,12 +11,11 @@ namespace SharedKernel
     {
         public AutoMapperProfile()
         {
-            CreateMap<User, UserDto>();
             CreateMap<User, UserDto>().ReverseMap();
-            CreateMap<Category, CategoryDto>();
             CreateMap<Category, CategoryDto>().ReverseMap();
-            CreateMap<Item, ItemDto>();
+            CreateMap<Category, CategoryForCreateDto>().ReverseMap();
             CreateMap<Item, ItemDto>().ReverseMap();
+            CreateMap<Item, ItemForCreateDto>().ReverseMap();
         }
     }
 }

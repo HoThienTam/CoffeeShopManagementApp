@@ -47,21 +47,21 @@ namespace Mobile.ViewModels
         }
         #endregion
 
-        #region IsOpen
-        private bool _IsOpen = false;
-        public bool IsOpen
-        {
-            get { return _IsOpen; }
-            set { SetProperty(ref _IsOpen, value); }
-        }
-        #endregion
-
         #region CategoryBindProp
         private CategoryDto _CategoryBindProp = null;
         public CategoryDto CategoryBindProp
         {
             get { return _CategoryBindProp; }
             set { SetProperty(ref _CategoryBindProp, value); }
+        }
+        #endregion
+
+        #region IsOpen
+        private bool _IsOpen = false;
+        public bool IsOpen
+        {
+            get { return _IsOpen; }
+            set { SetProperty(ref _IsOpen, value); }
         }
         #endregion
 
@@ -140,8 +140,9 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                ItemBindProp.CategoryId = CategoryBindProp.Id;
-                var json = JsonConvert.SerializeObject(ItemBindProp);
+                var itemForCreate = new ItemForCreateDto(ItemBindProp);
+                itemForCreate.CategoryId = CategoryBindProp.Id;
+                var json = JsonConvert.SerializeObject(itemForCreate);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 // Thuc hien cong viec tai day
                 using (var client = new HttpClient())
@@ -159,8 +160,6 @@ namespace Mobile.ViewModels
                     {
                         case HttpStatusCode.NoContent:
                             TempItem.Name = ItemBindProp.Name;
-                            TempItem.Image = ItemBindProp.Image;
-                            TempItem.Category = ItemBindProp.Category;
                             TempItem.Price = ItemBindProp.Price;
                             break;
                         case HttpStatusCode.Created:
@@ -197,10 +196,10 @@ namespace Mobile.ViewModels
 
         #endregion
 
-        #region ModifyItemCommand
+        #region SelectItemCommand
 
-        public DelegateCommand<ItemDto> ModifyItemCommand { get; private set; }
-        private async void OnModifyItem(ItemDto itemDto)
+        public DelegateCommand<ItemDto> SelectItemCommand { get; private set; }
+        private async void OnSelectItem(ItemDto itemDto)
         {
             if (IsBusy)
             {
@@ -212,6 +211,9 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                TempItem = itemDto;
+                ItemBindProp = new ItemDto(itemDto);
+                IsOpen = true;
             }
             catch (Exception e)
             {
@@ -224,10 +226,10 @@ namespace Mobile.ViewModels
 
         }
         [Initialize]
-        private void InitModifyItemCommand()
+        private void InitSelectItemCommand()
         {
-            ModifyItemCommand = new DelegateCommand<ItemDto>(OnModifyItem);
-            ModifyItemCommand.ObservesCanExecute(() => IsNotBusy);
+            SelectItemCommand = new DelegateCommand<ItemDto>(OnSelectItem);
+            SelectItemCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion
@@ -247,6 +249,17 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                using (var client = new HttpClient())
+                {
+                    HttpResponseMessage response = new HttpResponseMessage();
+                    response = await client.DeleteAsync(Properties.Resources.BaseUrl + "items/" + ItemBindProp.Id);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ListItemBindProp.Remove(TempItem);
+                    }
+                }
+                IsOpen = false;
             }
             catch (Exception e)
             {
@@ -284,7 +297,6 @@ namespace Mobile.ViewModels
                 // Thuc hien cong viec tai day
                 IsOpen = false;
                 var param = new NavigationParameters();
-                CategoryBindProp = new CategoryDto();
                 param.Add(nameof(ListCategoryBindProp), ListCategoryBindProp);
                 param.Add(nameof(CategoryBindProp), CategoryBindProp);
                 param.Add("Page", nameof(ItemPage));
@@ -315,6 +327,10 @@ namespace Mobile.ViewModels
             {
                 case NavigationMode.Back:
                     IsOpen = true;
+                    if (parameters.ContainsKey("Category"))
+                    {
+                        CategoryBindProp = parameters["Category"] as CategoryDto;
+                    }
                     break;
                 case NavigationMode.New:
                     break;

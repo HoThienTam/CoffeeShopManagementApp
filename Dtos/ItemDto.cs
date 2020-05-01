@@ -6,6 +6,21 @@ namespace Dtos
 {
     public class ItemDto
     {
+        public ItemDto()
+        {
+        }
+        public ItemDto(ItemDto itemDto)
+        {
+            Id = itemDto.Id;
+            Name = itemDto.Name;
+            Image = itemDto.Image;
+            Price = itemDto.Price;
+            IsManaged = itemDto.IsManaged;
+            MinQuantity = itemDto.MinQuantity;
+            CurrentQuantity = itemDto.CurrentQuantity;
+            CategoryId = itemDto.CategoryId;
+            Category = itemDto.Category;
+        }
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }

@@ -7,7 +7,8 @@
              mc:Ignorable="d"
              xmlns:lcModels="clr-namespace:Mobile.Models" xmlns:dataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls" xmlns:listView="clr-namespace:Telerik.XamarinForms.DataControls.ListView;assembly=Telerik.XamarinForms.DataControls"
              NavigationPage.HasNavigationBar="False"
-             x:Class="Mobile.Views.ItemPage">
+             x:Class="Mobile.Views.ItemPage"
+             x:Name="itemPage">
     <StackLayout BackgroundColor="Transparent">
         <Frame Padding="0">
             <!-- Navigation bar -->
@@ -35,7 +36,7 @@
                 <StackLayout BindableLayout.ItemsSource="{Binding ListItemBindProp, Mode=OneWay}" Spacing="1">
                     <BindableLayout.ItemTemplate>
                         <DataTemplate>
-                            <mr:Frame Padding="0" BackgroundColor="{StaticResource MainColor}" TappedCommand="{Binding BindingContext.ModifyCategoryCommand, Source={x:Reference categoryPage}}" TappedCommandParameter="{Binding}">
+                            <mr:Frame Padding="0" BackgroundColor="{StaticResource MainColor}" TappedCommand="{Binding BindingContext.SelectItemCommand,Source={x:Reference itemPage}}" TappedCommandParameter="{Binding}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
@@ -56,7 +57,7 @@
 
                                     <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="{StaticResource CommonHorizontalThickness}">
                                         <Label Text="{Binding Name}" FontSize="Large" TextColor="{StaticResource ContrastColor}"/>
-                                        <Label Text="0 item" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
+                                        <Label Text="{Binding Price, StringFormat='{}{0:C}'}" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
                                     </StackLayout>
                                 </Grid>
                             </mr:Frame>
@@ -67,9 +68,7 @@
 
           
         </Frame>
-
         <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
-
         <tlrPrimitives:RadPopup.Popup>
             <tlrPrimitives:RadPopup
                     Placement="Center"
@@ -135,7 +134,7 @@
                                 <!--  Danh muc  -->
                                 <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
                                     <mr:StackLayout Spacing="0" Orientation="Horizontal" TappedCommand="{Binding SelectCategoryCommand}">
-                                        
+
                                         <Label Text="Danh mục" HorizontalOptions="StartAndExpand"/>
 
                                         <tlrInput:RadEntry                                          
@@ -159,11 +158,16 @@
                                                 ControlTemplate="{StaticResource CustomNumericInput}"
                                                 HorizontalOptions="FillAndExpand"
                                                 Maximum="1000000000" Minimum="0" 
-                                                Value="{Binding ItemBindProp.Price, Mode=TwoWay}"
-                                                StringFormat="{}{0:C}"/>
+                                                Value="{Binding ItemBindProp.Price, Mode=TwoWay}"/>
                                     </StackLayout>
                                 </tlrPrimitives:RadBorder>
-
+                                <tlrInput:RadButton
+                                    TextColor="White"
+                                    BackgroundColor="#ef5350"
+                                    Command="{Binding DeleteItemCommand, Mode=OneWay}"
+                                    HorizontalOptions="Center"
+                                    Text="Xóa"/>
+                                                               
                             </StackLayout>
                         </ScrollView>
                     </Grid>

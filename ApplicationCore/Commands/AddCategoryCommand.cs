@@ -8,10 +8,10 @@ namespace ApplicationCore.Commands
 {
     public class AddCategoryCommand : IRequest<CategoryDto>
     {
-        public AddCategoryCommand(CategoryDto category)
+        public AddCategoryCommand(CategoryForCreateDto category)
         {
             Category = category;
         }
-        public CategoryDto Category { get; set; }
+        public CategoryForCreateDto Category { get; set; }
     }
 }

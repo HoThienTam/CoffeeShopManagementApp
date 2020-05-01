@@ -157,7 +157,8 @@ namespace Mobile.ViewModels
             {
                 // Thuc hien cong viec tai day
                 CategoryBindProp.Icon = FontAwesomeIcon.Coffee;
-                var json = JsonConvert.SerializeObject(CategoryBindProp);
+                var categoryToCreate = new CategoryForCreateDto(CategoryBindProp);
+                var json = JsonConvert.SerializeObject(categoryToCreate);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 // Thuc hien cong viec tai day
                 using (var client = new HttpClient())
@@ -231,14 +232,16 @@ namespace Mobile.ViewModels
                     CategoryBindProp = new CategoryDto(category);
                     var icon = ListIconBindProp.FirstOrDefault(i => i.IsSelected = true);
                     icon.IsSelected = false;
-                    ListIconBindProp.FirstOrDefault(i => i.Name == CategoryBindProp.Icon).IsSelected = true;
+                    ListIconBindProp.FirstOrDefault(i => i.Name == category.Icon).IsSelected = true;
                     IsOpen = true;
                 }
                 else
                 {
                     CategoryBindProp.Name = category.Name;
                     CategoryBindProp.Id = category.Id;
-                    await NavigationService.GoBackAsync();
+                    var param = new NavigationParameters();
+                    param.Add("Category", CategoryBindProp);
+                    await NavigationService.GoBackAsync(param);
                 }
             }
             catch (Exception e)
@@ -355,6 +358,7 @@ namespace Mobile.ViewModels
                     if (parameters.ContainsKey("Page") && parameters["Page"] as string == nameof(ItemPage))
                     {
                         IsEditing = false;
+                        CategoryBindProp = new CategoryDto();
                     }
                     break;
                 case NavigationMode.Forward:

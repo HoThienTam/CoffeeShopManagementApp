@@ -35,7 +35,7 @@ namespace Api.Controllers
             return Ok(category);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateCategory(CategoryDto categoryDto)
+        public async Task<IActionResult> CreateCategory(CategoryForCreateDto categoryDto)
         {
             var category = await _mediator.Send(new AddCategoryCommand(categoryDto));
             if (category != null)
@@ -48,7 +48,7 @@ namespace Api.Controllers
             }
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateCategory(CategoryDto categoryDto)
+        public async Task<IActionResult> UpdateCategory(CategoryForCreateDto categoryDto)
         {
             var ok = await _mediator.Send(new UpdateCategoryCommand(categoryDto));
             if (ok)

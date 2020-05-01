@@ -8,11 +8,11 @@ namespace ApplicationCore.Commands
 {
     public class UpdateItemCommand : IRequest<bool>
     {
-        public UpdateItemCommand(ItemDto itemDto)
+        public UpdateItemCommand(ItemForCreateDto itemDto)
         {
             ItemDto = itemDto;
         }
 
-        public ItemDto ItemDto { get; set; }
+        public ItemForCreateDto ItemDto { get; set; }
     }
 }

@@ -62,96 +62,96 @@
                 </StackLayout>
             </ScrollView>
 
-            <tlrPrimitives:RadPopup.Popup>
-                <tlrPrimitives:RadPopup
+        </Frame>
+        
+        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
+
+        <tlrPrimitives:RadPopup.Popup>
+            <tlrPrimitives:RadPopup
                                 Placement="Center"
                                 IsOpen="{Binding IsOpen}"
                                 IsModal="True"
                                 OutsideBackgroundColor="#80000000">
-                    <Frame WidthRequest="350" HeightRequest="400" CornerRadius="5" Padding="0">
+                <Frame WidthRequest="350" HeightRequest="400" CornerRadius="5" Padding="0">
+                    <Grid Style="{StaticResource CommonWrapper}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
                         <Grid Style="{StaticResource CommonWrapper}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                            <Grid Style="{StaticResource CommonWrapper}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
+                            <!--Title-->
+                            <Label Text="Danh mục" Style="{StaticResource CommonHeader}"/>
+                            <!--Back icon-->
+                            <mr:Grid TappedCommand="{Binding ShowPopUpCommand}" >
+                                <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Times}" />
+                            </mr:Grid>
+                            <!--Right text-->
+                            <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
+                                <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                            </mr:Grid>
+                        </Grid>
 
-                                <!--Title-->
-                                <Label Text="Danh mục" Style="{StaticResource CommonHeader}"/>
-                                <!--Back icon-->
-                                <mr:Grid TappedCommand="{Binding ShowPopUpCommand}" >
-                                    <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Times}" />
-                                </mr:Grid>
-                                <!--Right text-->
-                                <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
-                                    <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
-                                </mr:Grid>
-                            </Grid>
+                        <!--  Seperate header bottom line  -->
+                        <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="{StaticResource SubColor}"/>
+                        <ScrollView Grid.Row="2">
 
-                            <!--  Seperate header bottom line  -->
-                            <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="{StaticResource SubColor}"/>
-                            <ScrollView Grid.Row="2">
+                            <StackLayout >
 
-                                <StackLayout >
+                                <tlrPrimitives:RadBorder Margin="{StaticResource CommonThickness}" Style="{StaticResource CommonBorder}">
+                                    <tlrInput:RadEntry WatermarkText="Tên danh mục" HorizontalTextAlignment="Start" Text="{Binding CategoryBindProp.Name}"/>
+                                </tlrPrimitives:RadBorder>
 
-                                    <tlrPrimitives:RadBorder Margin="{StaticResource CommonThickness}" Style="{StaticResource CommonBorder}">
-                                        <tlrInput:RadEntry WatermarkText="Tên danh mục" HorizontalTextAlignment="Start" Text="{Binding CategoryBindProp.Name}"/>
-                                    </tlrPrimitives:RadBorder>
+                                <!--  Bieu tuong  -->
+                                <Grid>
+                                    <BoxView Style="{StaticResource CommonTitleRule}" Margin="{StaticResource CommonHorizontalThickness}"/>
+                                    <Label Text="CHỌN BIỂU TƯỢNG" Style="{StaticResource CommonTitle}" FontSize="Small" />
+                                </Grid>
 
-                                    <!--  Bieu tuong  -->
-                                    <Grid>
-                                        <BoxView Style="{StaticResource CommonTitleRule}" Margin="{StaticResource CommonHorizontalThickness}"/>
-                                        <Label Text="CHỌN BIỂU TƯỢNG" Style="{StaticResource CommonTitle}" FontSize="Small" />
-                                    </Grid>
-
-                                    <dataControls:RadListView      
+                                <dataControls:RadListView      
                                         Margin="{StaticResource CommonThickness}"
                                         ItemsSource="{Binding ListIconBindProp, Mode=OneWay}">
-                                        <dataControls:RadListView.LayoutDefinition>
-                                            <listView:ListViewGridLayout SpanCount="5" HorizontalItemSpacing="{StaticResource CommonThickness}" VerticalItemSpacing="{StaticResource CommonThickness}"/>
-                                        </dataControls:RadListView.LayoutDefinition>
-                                        <dataControls:RadListView.SelectedItemStyle>
-                                            <listView:ListViewItemStyle BackgroundColor="Transparent"/>
-                                        </dataControls:RadListView.SelectedItemStyle>
-                                        <dataControls:RadListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <mr:Grid TappedCommand="{Binding BindingContext.SelectIconCommand, Source={x:Reference categoryPage}}" TappedCommandParameter="{Binding}">
-                                                    <Label Text="{Binding Name}" Style="{StaticResource CommonIcon}">
-                                                        <Label.Triggers>
-                                                            <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
-                                                                <Setter Property="TextColor" Value="Red"/>
-                                                            </DataTrigger>
-                                                        </Label.Triggers>
-                                                    </Label>
-                                                </mr:Grid>
-                                            </DataTemplate>
-                                        </dataControls:RadListView.ItemTemplate>
-                                    </dataControls:RadListView>
+                                    <dataControls:RadListView.LayoutDefinition>
+                                        <listView:ListViewGridLayout SpanCount="5" HorizontalItemSpacing="{StaticResource CommonThickness}" VerticalItemSpacing="{StaticResource CommonThickness}"/>
+                                    </dataControls:RadListView.LayoutDefinition>
+                                    <dataControls:RadListView.SelectedItemStyle>
+                                        <listView:ListViewItemStyle BackgroundColor="Transparent"/>
+                                    </dataControls:RadListView.SelectedItemStyle>
+                                    <dataControls:RadListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <mr:Grid TappedCommand="{Binding BindingContext.SelectIconCommand, Source={x:Reference categoryPage}}" TappedCommandParameter="{Binding}">
+                                                <Label Text="{Binding Name}" Style="{StaticResource CommonIcon}">
+                                                    <Label.Triggers>
+                                                        <DataTrigger TargetType="Label" Binding="{Binding IsSelected}" Value="True">
+                                                            <Setter Property="TextColor" Value="Red"/>
+                                                        </DataTrigger>
+                                                    </Label.Triggers>
+                                                </Label>
+                                            </mr:Grid>
+                                        </DataTemplate>
+                                    </dataControls:RadListView.ItemTemplate>
+                                </dataControls:RadListView>
 
-                                    <tlrInput:RadButton
+                                <tlrInput:RadButton
                                                     TextColor="White"
                                                     BackgroundColor="#ef5350"
                                                     Command="{Binding DeleteCategoryCommand, Mode=OneWay}"
-                                                    CommandParameter="{Binding}"
                                                     HorizontalOptions="Center"
                                                     Text="Xóa"/>
 
-                                </StackLayout>
+                            </StackLayout>
 
-                            </ScrollView>
-                        </Grid>
-                    </Frame>
-                </tlrPrimitives:RadPopup>
-            </tlrPrimitives:RadPopup.Popup>
-        </Frame>
-        
-        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
+                        </ScrollView>
+                    </Grid>
+                </Frame>
+            </tlrPrimitives:RadPopup>
+        </tlrPrimitives:RadPopup.Popup>
     </StackLayout>
 </ContentPage>

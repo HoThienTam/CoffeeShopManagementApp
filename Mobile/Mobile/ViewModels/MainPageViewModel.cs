@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Telerik.XamarinForms.Input.Calendar;
 
 namespace Mobile.ViewModels
 {
@@ -131,13 +133,16 @@ namespace Mobile.ViewModels
             {
                 // Thuc hien cong viec tai day
                 var param = new NavigationParameters();
-                param.Add(nameof(ListCategoryBindProp), ListCategoryBindProp);
+
                 switch (settings)
                 {
-                    case "Category":                      
+                    case "Category":
+                        param.Add(nameof(ListCategoryBindProp), ListCategoryBindProp);
                         await NavigationService.NavigateAsync(nameof(CategoryPage), param);
                         break;
                     case "Item":
+                        param.Add(nameof(ListCategoryBindProp), ListCategoryBindProp);
+                        param.Add(nameof(ListItemBindProp), ListItemBindProp);
                         await NavigationService.NavigateAsync(nameof(ItemPage), param);
                         break;
                     default:
@@ -173,10 +178,11 @@ namespace Mobile.ViewModels
                 case NavigationMode.New:
                     using (var client = new HttpClient())
                     {
-                        var response = await client.GetAsync(Properties.Resources.BaseUrl + "categories/");
-                        if (response.IsSuccessStatusCode)
+                        var categoryTask = await client.GetAsync(Properties.Resources.BaseUrl + "categories/");
+                        var itemTask = await client.GetAsync(Properties.Resources.BaseUrl + "items/");
+                        if (categoryTask.IsSuccessStatusCode)
                         {
-                            var categories = JsonConvert.DeserializeObject<IEnumerable<CategoryDto>>(await response.Content.ReadAsStringAsync());
+                            var categories = JsonConvert.DeserializeObject<IEnumerable<CategoryDto>>(await categoryTask.Content.ReadAsStringAsync());
                             foreach (var category in categories)
                             {
                                 ListCategoryBindProp.Add(category);
@@ -184,7 +190,19 @@ namespace Mobile.ViewModels
                         }
                         else
                         {
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await response.Content.ReadAsStringAsync()}", "Đóng");
+                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await categoryTask.Content.ReadAsStringAsync()}", "Đóng");
+                        }
+                        if (itemTask.IsSuccessStatusCode)
+                        {
+                            var items = JsonConvert.DeserializeObject<IEnumerable<ItemDto>>(await itemTask.Content.ReadAsStringAsync());
+                            foreach (var item in items)
+                            {
+                                ListItemBindProp.Add(item);
+                            }
+                        }
+                        else
+                        {
+                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await itemTask.Content.ReadAsStringAsync()}", "Đóng");
                         }
                     }
                     break;

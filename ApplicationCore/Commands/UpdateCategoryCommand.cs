@@ -8,11 +8,11 @@ namespace ApplicationCore.Commands
 {
     public class UpdateCategoryCommand : IRequest<bool>
     {
-        public UpdateCategoryCommand(CategoryDto categoryDto)
+        public UpdateCategoryCommand(CategoryForCreateDto categoryDto)
         {
             CategoryDto = categoryDto;
         }
 
-        public CategoryDto CategoryDto { get; set; }
+        public CategoryForCreateDto CategoryDto { get; set; }
     }
 }
