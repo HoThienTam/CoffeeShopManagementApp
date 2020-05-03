@@ -27,7 +27,7 @@ namespace ApplicationCore.Handlers
 
         public async Task<IEnumerable<ItemDto>> Handle(GetItemsQuery request, CancellationToken cancellationToken)
         {
-            var items = _context.Items.Where(c => c.IsDeleted == false).AsNoTracking();
+            var items = _context.Items.Where(c => c.IsDeleted == false).Include(i => i.Category).AsNoTracking();
             var itemDtos = _mapper.Map<IEnumerable<ItemDto>>(items);
             return itemDtos;
         }

@@ -13,36 +13,13 @@ namespace Dtos
             Name = categoryDto.Name;
             Icon = categoryDto.Icon;
         }
-
         public CategoryForCreateDto()
         {
         }
+        public Guid Id { get; set; }
 
-        #region Id
-        private Guid _Id = Guid.Empty;
-        public Guid Id
-        {
-            get { return _Id; }
-            set { SetProperty(ref _Id, value); }
-        }
-        #endregion
+        public string Name { get; set; }
 
-        #region Name
-        private string _Name = null;
-        public string Name
-        {
-            get { return _Name; }
-            set { SetProperty(ref _Name, value); }
-        }
-        #endregion
-
-        #region Icon
-        private string _Icon = null;
-        public string Icon
-        {
-            get { return _Icon; }
-            set { SetProperty(ref _Icon, value); }
-        }
-        #endregion
+        public string Icon { get; set; }
     }
 }

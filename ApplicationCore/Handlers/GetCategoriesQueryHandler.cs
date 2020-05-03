@@ -26,7 +26,7 @@ namespace ApplicationCore.Handlers
 
         public async Task<IEnumerable<CategoryDto>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
         {
-            var categories = _context.Categories.Where(c => c.IsDeleted == false).AsNoTracking();
+            var categories = _context.Categories.Where(c => c.IsDeleted == false).Include(c => c.Items).AsNoTracking();
             var cateDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories);
             return cateDtos;
         }

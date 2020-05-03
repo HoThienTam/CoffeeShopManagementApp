@@ -161,6 +161,7 @@ namespace Mobile.ViewModels
                         case HttpStatusCode.NoContent:
                             TempItem.Name = ItemBindProp.Name;
                             TempItem.Price = ItemBindProp.Price;
+                            TempItem.Category = new CategoryForCreateDto(CategoryBindProp);
                             break;
                         case HttpStatusCode.Created:
                             var item = JsonConvert.DeserializeObject<ItemDto>(await response.Content.ReadAsStringAsync());
@@ -213,6 +214,7 @@ namespace Mobile.ViewModels
                 // Thuc hien cong viec tai day
                 TempItem = itemDto;
                 ItemBindProp = new ItemDto(itemDto);
+                CategoryBindProp = new CategoryDto(ItemBindProp.Category);
                 IsOpen = true;
             }
             catch (Exception e)

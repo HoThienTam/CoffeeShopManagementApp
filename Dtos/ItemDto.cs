@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Dtos
 {
-    public class ItemDto
+    public class ItemDto : BindableBase
     {
         public ItemDto()
         {
@@ -21,14 +22,57 @@ namespace Dtos
             CategoryId = itemDto.CategoryId;
             Category = itemDto.Category;
         }
-        public Guid Id { get; set; }
-        public string Name { get; set; }
+
+        #region Id
+        private Guid _Id = Guid.Empty;
+        public Guid Id
+        {
+            get { return _Id; }
+            set { SetProperty(ref _Id, value); }
+        }
+        #endregion
+
+        #region Name
+        private string _Name = null;
+        public string Name
+        {
+            get { return _Name; }
+            set { SetProperty(ref _Name, value); }
+        }
+        #endregion
+
+        #region Price
+        private double _Price = 0;
+        public double Price
+        {
+            get { return _Price; }
+            set { SetProperty(ref _Price, value); }
+        }
+        #endregion
+
         public string Image { get; set; }
         public bool IsManaged { get; set; }
-        public double Price { get; set; }
         public int MinQuantity { get; set; }
         public int CurrentQuantity { get; set; }
-        public Guid CategoryId { get; set; }
-        public CategoryDto Category { get; set; }
+
+        #region CategoryId
+        private Guid _CategoryId = Guid.Empty;
+
+        public Guid CategoryId
+        {
+            get { return _CategoryId; }
+            set { SetProperty(ref _CategoryId, value); }
+        }
+        #endregion
+
+        #region Category
+        private CategoryForCreateDto _Category;
+        public CategoryForCreateDto Category
+        {
+            get { return _Category; }
+            set { SetProperty(ref _Category, value); }
+        }
+        #endregion
+
     }
 }

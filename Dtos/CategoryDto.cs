@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Dtos
 {
-    public class CategoryDto
+    public class CategoryDto : BindableBase
     {
         public CategoryDto()
         {
@@ -16,11 +16,47 @@ namespace Dtos
             Name = categoryDto.Name;
             Icon = categoryDto.Icon;
         }
-        public Guid Id { get; set; }
+        public CategoryDto(CategoryForCreateDto categoryDto)
+        {
+            Id = categoryDto.Id;
+            Name = categoryDto.Name;
+            Icon = categoryDto.Icon;
+        }
 
-        public string Name { get; set; }
+        #region Id
+        private Guid _Id = Guid.Empty;
+        public Guid Id
+        {
+            get { return _Id; }
+            set { SetProperty(ref _Id, value); }
+        }
+        #endregion
 
-        public string Icon { get; set; }
-        public ICollection<ItemDto> Items { get; set; }
+        #region Name
+        private string _Name;
+        public string Name
+        {
+            get { return _Name; }
+            set { SetProperty(ref _Name, value); }
+        }
+        #endregion
+
+        #region Icon
+        private string _Icon;
+        public string Icon
+        {
+            get { return _Icon; }
+            set { SetProperty(ref _Icon, value); }
+        }
+        #endregion
+
+        #region Items
+        private ICollection<ItemDto> _Items;
+        public ICollection<ItemDto> Items
+        {
+            get { return _Items; }
+            set { SetProperty(ref _Items, value); }
+        }
+        #endregion
     }
 }

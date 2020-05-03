@@ -25,7 +25,7 @@ namespace ApplicationCore.Handlers
 
         public async Task<ItemDto> Handle(GetItemQuery request, CancellationToken cancellationToken)
         {
-            var itemFromDb = await _context.Items.AsNoTracking().FirstOrDefaultAsync(i => i.Id == request.Id);
+            var itemFromDb = await _context.Items.AsNoTracking().Include(i => i.Category).FirstOrDefaultAsync(i => i.Id == request.Id);
             if (itemFromDb == null)
             {
                 throw new Exception("Mặt hàng không tồn tại");

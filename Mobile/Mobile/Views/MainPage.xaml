@@ -152,7 +152,7 @@
             </Frame>
 
             <!-- Frame Item - Bill -->
-            <Grid IsVisible="False">
+            <Grid IsVisible="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="300" />
@@ -163,7 +163,7 @@
                             <x:Double x:Key="MenuItemSize">120</x:Double>
                         </Grid.Resources>
                         <!--List item-->
-                        <dataControls:RadListView ItemsSource="{Binding ListZoneBindProp, Mode=OneWay}">
+                        <dataControls:RadListView ItemsSource="{Binding ListCategoryBindProp, Mode=OneWay}">
 
                             <dataControls:RadListView.LayoutDefinition>
                                 <listView:ListViewGridLayout HorizontalItemSpacing="{StaticResource CommonThickness}" SpanCount="5" VerticalItemSpacing="{StaticResource CommonThickness}" />
@@ -390,7 +390,7 @@
             </Grid>
 
             <!-- Frame Settings-->
-            <Frame IsVisible="True">
+            <Frame IsVisible="False">
                 <FlexLayout Wrap="Wrap">
                     <Grid>
                         <Grid.ColumnDefinitions>
