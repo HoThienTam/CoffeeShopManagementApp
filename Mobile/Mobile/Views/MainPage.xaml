@@ -163,7 +163,7 @@
                             <x:Double x:Key="MenuItemSize">120</x:Double>
                         </Grid.Resources>
                         <!--List item-->
-                        <dataControls:RadListView ItemsSource="{Binding ListCategoryBindProp, Mode=OneWay}">
+                        <dataControls:RadListView ItemsSource="{Binding CurrentCategory.Items, Mode=OneWay}">
 
                             <dataControls:RadListView.LayoutDefinition>
                                 <listView:ListViewGridLayout HorizontalItemSpacing="{StaticResource CommonThickness}" SpanCount="5" VerticalItemSpacing="{StaticResource CommonThickness}" />
@@ -553,7 +553,10 @@
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
                                 <!--Thuc don-->
-                                <mr:Grid Padding="{StaticResource CommonThickness}" WidthRequest="{StaticResource CommonWidth}" >
+                                <mr:Grid Padding="{StaticResource CommonThickness}" 
+                                         WidthRequest="{StaticResource CommonWidth}" 
+                                         TappedCommand="{Binding BindingContext.SelectCategoryCommand, Source={x:Reference mainPage}}"
+                                         TappedCommandParameter="{Binding}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="Auto" />

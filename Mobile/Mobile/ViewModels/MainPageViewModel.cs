@@ -49,6 +49,15 @@ namespace Mobile.ViewModels
         }
         #endregion
 
+        #region CurrentCategory
+        private CategoryDto _CurrentCategory;
+        public CategoryDto CurrentCategory
+        {
+            get { return _CurrentCategory; }
+            set { SetProperty(ref _CurrentCategory, value); }
+        }
+        #endregion
+
         #region ListItemBindProp
         private ObservableCollection<ItemDto> _ListItemBindProp = null;
         public ObservableCollection<ItemDto> ListItemBindProp
@@ -164,6 +173,42 @@ namespace Mobile.ViewModels
         {
             SelectSettingCommand = new DelegateCommand<string>(OnSelectSetting);
             SelectSettingCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region SelectCategoryCommand
+
+        public DelegateCommand<CategoryDto> SelectCategoryCommand { get; private set; }
+        private async void OnSelectCategory(CategoryDto obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                CurrentCategory = obj;
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectCategoryCommand()
+        {
+            SelectCategoryCommand = new DelegateCommand<CategoryDto>(OnSelectCategory);
+            SelectCategoryCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion
