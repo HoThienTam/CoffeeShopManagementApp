@@ -152,7 +152,7 @@
             </Frame>
 
             <!-- Frame Item - Bill -->
-            <Grid IsVisible="True">
+            <Grid IsVisible="False">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="300" />
@@ -174,22 +174,25 @@
                                     <listView:ListViewTemplateCell>
                                         <listView:ListViewTemplateCell.View>
                                             <tlrPrimitives:RadBorder HeightRequest="120" Style="{StaticResource CommonBorder}">
-                                                <mr:Grid BackgroundColor="{StaticResource MainColor}" Style="{StaticResource CommonWrapper}">
+                                                <mr:Grid BackgroundColor="{StaticResource MainColor}" 
+                                                         Style="{StaticResource CommonWrapper}"
+                                                         TappedCommand="{Binding SelectItemCommand}"
+                                                         TappedCommandParameter="{Binding}">
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="*"/>
                                                         <RowDefinition Height="Auto"/>
                                                     </Grid.RowDefinitions>
                                                     <ffImage:CachedImage
-                                                    Aspect="Fill"
-                                                    HeightRequest="120"
-                                                    DownsampleToViewSize="true"
-                                                    WidthRequest="150"
-                                                    BackgroundColor="{StaticResource MainColor}"
-                                                    HorizontalOptions="Center"
-                                                    Source="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/275px-A_small_cup_of_coffee.JPG" 
-                                                    Margin="0"
-                                                    VerticalOptions="Center"/>
-                                                    <Label Grid.Row="1" Text="Cafe" TextColor="{StaticResource ContrastColor}" HorizontalOptions="Center" VerticalOptions="End" />
+                                                        Aspect="Fill"
+                                                        HeightRequest="120"
+                                                        DownsampleToViewSize="true"
+                                                        WidthRequest="150"
+                                                        BackgroundColor="{StaticResource MainColor}"
+                                                        HorizontalOptions="Center"
+                                                        Source="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/275px-A_small_cup_of_coffee.JPG" 
+                                                        Margin="0"
+                                                        VerticalOptions="Center"/>
+                                                    <Label Grid.Row="1" Text="{Binding Name}" TextColor="{StaticResource ContrastColor}" HorizontalOptions="Center" VerticalOptions="End" />
                                                 </mr:Grid>
                                             </tlrPrimitives:RadBorder>
                                         </listView:ListViewTemplateCell.View>
@@ -390,7 +393,7 @@
             </Grid>
 
             <!-- Frame Settings-->
-            <Frame IsVisible="False">
+            <Frame IsVisible="True">
                 <FlexLayout Wrap="Wrap">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -431,14 +434,14 @@
                             VerticalOptions="Center" 
                             Grid.Column="2"
                             TappedCommand="{Binding SelectSettingCommand}" 
-                            TappedCommandParameter="">
+                            TappedCommandParameter="Discount">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
                                 <Label Style="{StaticResource CommonIcon}" 
                                    TextColor="{StaticResource ContrastColor}" 
                                    Text="{x:Static lcModels:FontAwesomeIcon.List}"/>
                             </Grid>
-                            <Label HorizontalOptions="Center" Text="Danh mục"/>
+                            <Label HorizontalOptions="Center" Text="Giảm giá"/>
                         </mr:StackLayout>
                         <mr:StackLayout 
                             Spacing="0" Orientation="Vertical" 

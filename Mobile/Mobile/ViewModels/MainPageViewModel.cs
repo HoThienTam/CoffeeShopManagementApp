@@ -83,6 +83,15 @@ namespace Mobile.ViewModels
         public bool IsNotEditting { get { return !_IsEditing; } }
         #endregion
 
+        #region BillBindProp
+        private string _BillBindProp = null;
+        public string BillBindProp
+        {
+            get { return _BillBindProp; }
+            set { SetProperty(ref _BillBindProp, value); }
+        }
+        #endregion
+
         #region ChangeEditModeCommand
 
         public DelegateCommand<object> ChangeEditModeCommand { get; private set; }
@@ -154,6 +163,9 @@ namespace Mobile.ViewModels
                         param.Add(nameof(ListItemBindProp), ListItemBindProp);
                         await NavigationService.NavigateAsync(nameof(ItemPage), param);
                         break;
+                    case "Discount":
+                        await NavigationService.NavigateAsync(nameof(DiscountPage));
+                        break;
                     default:
                         break;
                 }
@@ -209,6 +221,41 @@ namespace Mobile.ViewModels
         {
             SelectCategoryCommand = new DelegateCommand<CategoryDto>(OnSelectCategory);
             SelectCategoryCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region SelectItemCommand
+
+        public DelegateCommand<ItemDto> SelectItemCommand { get; private set; }
+        private async void OnSelectItem(ItemDto obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectItemCommand()
+        {
+            SelectItemCommand = new DelegateCommand<ItemDto>(OnSelectItem);
+            SelectItemCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion

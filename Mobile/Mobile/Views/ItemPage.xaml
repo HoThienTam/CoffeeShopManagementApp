@@ -9,7 +9,7 @@
              NavigationPage.HasNavigationBar="False"
              x:Class="Mobile.Views.ItemPage"
              x:Name="itemPage">
-    <StackLayout BackgroundColor="Transparent">
+    <StackLayout>
         <Frame Padding="0">
             <!-- Navigation bar -->
             <Grid Style="{StaticResource CommonWrapper}">

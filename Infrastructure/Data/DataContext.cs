@@ -15,6 +15,7 @@ namespace Infrastructure.Data
         {
         }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Table> Tables { get; set; }
         public DbSet<User> Users { get; set; }

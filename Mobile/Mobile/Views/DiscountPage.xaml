@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input" xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives" xmlns:commands="clr-namespace:Telerik.XamarinForms.Primitives.CheckBox.Commands;assembly=Telerik.XamarinForms.Primitives" xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures"
+             mc:Ignorable="d"
+             xmlns:lcModels="clr-namespace:Mobile.Models"
+             x:Class="Mobile.Views.DiscountPage">
+
+
+    <StackLayout>
+        <Frame Padding="0">
+            <!-- Navigation bar -->
+            <Grid Style="{StaticResource CommonWrapper}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <!--Title-->
+                <Label Text="Danh sách giảm giá" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                <!--Back icon-->
+                <mr:Grid TappedCommand="{Binding GoBackCommand}" >
+                    <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
+                </mr:Grid>
+                <!--Right text-->
+                <mr:Grid TappedCommand="{Binding ShowPopUpCommand}" Grid.Column="2">
+                    <Label Text="{x:Static lcModels:FontAwesomeIcon.PlusCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                </mr:Grid>
+            </Grid>
+        </Frame>
+
+        <Frame Padding="0" Margin="{StaticResource CommonThickness}" BorderColor="{StaticResource MainColor}">
+            <ScrollView Grid.Row="2" Margin="{StaticResource CommonThickness}">
+                <StackLayout Spacing="{StaticResource CommonThickness}">
+                    <Grid Style="{StaticResource CommonWrapper}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--Ten giam gia-->
+                        <tlrPrimitives:RadBorder Grid.Column="1" Style="{StaticResource CommonBorder}">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Tên giảm giá" />
+                                <tlrInput:RadEntry
+                                        Text="{Binding DiscountBindProp.Name}"
+                                        WatermarkText="Tên giảm giá" />
+                            </StackLayout>
+                        </tlrPrimitives:RadBorder>
+
+                        <!--Loai giam gia-->
+                        <tlrPrimitives:RadBorder  Grid.Row="1" Grid.Column="1" Style="{StaticResource CommonBorder}">
+                            <StackLayout Orientation="Horizontal" Margin="{StaticResource CommonThickness}">
+                                <Label
+                                        VerticalOptions="Center"
+                                        HorizontalOptions="FillAndExpand"
+                                        Text="Giá trị tối đa"/>
+                                <tlrInput:RadNumericInput
+                                        ControlTemplate="{StaticResource CustomNumericInput}"
+                                        StringFormat="{}{0:C}"
+                                        Maximum="999999" Minimum="0"                                  
+                                        Value="0" />
+                            </StackLayout>
+                        </tlrPrimitives:RadBorder>
+
+                        <tlrPrimitives:RadBorder
+                                        Grid.RowSpan="2"
+                                        Style="{StaticResource CommonBorder}">
+                            <Grid WidthRequest="100">
+                                <BoxView BackgroundColor="{StaticResource MainColor}"/>
+                                <Label
+                                        Text="{x:Static lcModels:FontAwesomeIcon.Tags}"
+                                        Style="{StaticResource CommonIcon}"
+                                        TextColor="White"/>
+                            </Grid>
+                        </tlrPrimitives:RadBorder>
+                    </Grid>
+
+                    <!--  Section giam gia thuong  -->
+                    <StackLayout Spacing="0">
+                        <!--  Phan tram  -->
+                        <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+
+                            <StackLayout Margin="{StaticResource CommonHorizontalThickness}" Orientation="Horizontal" Spacing="{StaticResource CommonThickness}">
+
+                                <tlrPrimitives:RadCheckBox
+                                        VerticalOptions="Center">
+                                </tlrPrimitives:RadCheckBox>
+
+                                <Label
+                                        HorizontalOptions="FillAndExpand" Text="Phần trăm"
+                                        VerticalOptions="Center" />
+
+                                <tlrInput:RadNumericInput
+                                        ControlTemplate="{StaticResource CustomNumericInput}"
+                                        StringFormat="{}{0}%"
+                                        Maximum="100" Minimum="0"                                  
+                                        Value="0" />
+
+                            </StackLayout>
+
+                        </tlrPrimitives:RadBorder>
+
+                        <!--  So tien  -->
+                        <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                            <StackLayout  Margin="{StaticResource CommonHorizontalThickness}" Orientation="Horizontal" Spacing="{StaticResource CommonThickness}">
+                                <tlrPrimitives:RadCheckBox VerticalOptions="Center">
+                                    <tlrPrimitives:RadCheckBox.Commands>
+                                        <commands:CheckBoxUserCommand Command="{Binding IsCheckedChangedCommand}" Id="IsCheckedChanged" SuppressDefaultCommand="False"/>
+                                    </tlrPrimitives:RadCheckBox.Commands>
+                                </tlrPrimitives:RadCheckBox>
+                                <Label
+                                        HorizontalOptions="FillAndExpand" Text="Số tiền"
+                                        VerticalOptions="Center" />
+
+                                <tlrInput:RadNumericInput
+                                        ControlTemplate="{StaticResource CustomNumericInput}"
+                                        Minimum="0"                                        
+                                        StringFormat="{}{0:C}"
+                                        Maximum="1000000000"                               
+                                        Value="0"/>
+                            </StackLayout>
+                        </tlrPrimitives:RadBorder>
+                    </StackLayout>
+
+                </StackLayout>
+            </ScrollView>
+        </Frame>
+
+        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
+    </StackLayout>
+</ContentPage>
