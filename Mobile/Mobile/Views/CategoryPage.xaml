@@ -7,7 +7,9 @@
              xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input" 
              xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures"
              mc:Ignorable="d"
-             xmlns:lcModels="clr-namespace:Mobile.Models" xmlns:dataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls" xmlns:listView="clr-namespace:Telerik.XamarinForms.DataControls.ListView;assembly=Telerik.XamarinForms.DataControls"
+             xmlns:lcModels="clr-namespace:Mobile.Models" 
+             xmlns:dataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls" 
+             xmlns:listView="clr-namespace:Telerik.XamarinForms.DataControls.ListView;assembly=Telerik.XamarinForms.DataControls"
              NavigationPage.HasNavigationBar="False"
              x:Class="Mobile.Views.CategoryPage"
              x:Name="categoryPage">

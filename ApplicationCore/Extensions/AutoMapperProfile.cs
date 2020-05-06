@@ -16,6 +16,8 @@ namespace SharedKernel
             CreateMap<Category, CategoryForCreateDto>().ReverseMap();
             CreateMap<Item, ItemDto>().ReverseMap();
             CreateMap<Item, ItemForCreateDto>().ReverseMap();
+            CreateMap<Discount, DiscountDto>().ReverseMap();
+            CreateMap<Discount, DiscountForCreateDto>().ReverseMap();
         }
     }
 }

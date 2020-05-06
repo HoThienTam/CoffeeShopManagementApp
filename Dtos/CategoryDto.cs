@@ -10,6 +10,7 @@ namespace Dtos
         public CategoryDto()
         {
         }
+
         public CategoryDto(CategoryDto categoryDto)
         {
             Id = categoryDto.Id;
@@ -23,14 +24,7 @@ namespace Dtos
             Icon = categoryDto.Icon;
         }
 
-        #region Id
-        private Guid _Id = Guid.Empty;
-        public Guid Id
-        {
-            get { return _Id; }
-            set { SetProperty(ref _Id, value); }
-        }
-        #endregion
+        public Guid Id { get; set; }
 
         #region Name
         private string _Name;

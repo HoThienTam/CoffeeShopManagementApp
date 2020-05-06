@@ -1,4 +1,8 @@
-﻿using MediatR;
+﻿using ApplicationCore.Handlers;
+using ApplicationCore.Queries;
+using Dtos;
+using Infrastructure.Models;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
@@ -44,6 +48,7 @@ namespace Api
                 assemblies.Add(type.Assembly);
             }
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddTransient(typeof(IRequestHandler<GetAllQuery<DiscountDto,Discount>,IEnumerable<DiscountDto>>), typeof(GetAllQueryHandler<DiscountDto, Discount>));
             services.AddMediatR(assemblies.ToArray());
         }
     }

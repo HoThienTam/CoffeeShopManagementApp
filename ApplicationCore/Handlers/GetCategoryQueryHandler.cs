@@ -25,7 +25,7 @@ namespace ApplicationCore.Handlers
 
         public async Task<CategoryDto> Handle(GetCategoryQuery request, CancellationToken cancellationToken)
         {
-            var category = _context.Categories.AsNoTracking().Include(c => c.Items).FirstOrDefaultAsync(c => c.Id == request.Id);
+            var category = await _context.Categories.AsNoTracking().Include(c => c.Items).FirstOrDefaultAsync(c => c.Id == request.Id);
 
             if (category == null)
             {
