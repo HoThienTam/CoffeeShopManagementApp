@@ -58,7 +58,7 @@
 
                                     <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="{StaticResource CommonHorizontalThickness}">
                                         <Label Text="{Binding Name}" FontSize="Large" TextColor="{StaticResource ContrastColor}"/>
-                                        <Label Text="{Binding Price, StringFormat='{}{0:C}'}" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
+                                        <Label Text="{Binding Value, StringFormat='{}{0:C}'}" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
                                     </StackLayout>
                                 </Grid>
                             </mr:Frame>
@@ -128,11 +128,12 @@
 
                                             <tlrPrimitives:RadCheckBox VerticalOptions="Center"/>
 
-                                            <Label HorizontalOptions="FillAndExpand" Text="Phần trăm" VerticalOptions="Center" />
+                                            <Label Text="Phần trăm" VerticalOptions="Center" />
                                             <tlrInput:RadNumericInput
+                                                    HorizontalOptions="FillAndExpand"
                                                     ControlTemplate="{StaticResource CustomNumericInput}"
                                                     Maximum="100" Minimum="0"                                  
-                                                    Value="0" />
+                                                    Value="{Binding DiscountBindProp.Value, Mode=TwoWay}" />
 
                                         </StackLayout>
 
@@ -142,13 +143,13 @@
                                     <tlrPrimitives:RadBorder Style="{StaticResource CommonLowerBorder}">
                                         <StackLayout Orientation="Horizontal" Margin="{StaticResource CommonHorizontalThickness}">
                                             <Label
-                                                    VerticalOptions="Center"
-                                                    HorizontalOptions="FillAndExpand"
-                                                    Text="Giá trị tối đa"/>
+                                                VerticalOptions="Center"
+                                                Text="Giá trị tối đa"/>
                                             <tlrInput:RadNumericInput
-                                                    ControlTemplate="{StaticResource CustomNumericInput}"
-                                                    Maximum="999999" Minimum="0"                                  
-                                                    Value="0" />
+                                                HorizontalOptions="FillAndExpand"
+                                                ControlTemplate="{StaticResource CustomNumericInput}"
+                                                Maximum="1000000000" Minimum="0"                                  
+                                                Value="{Binding DiscountBindProp.MaxValue, Mode=TwoWay}" />
                                         </StackLayout>
                                     </tlrPrimitives:RadBorder>
                                 </StackLayout>
@@ -157,13 +158,14 @@
                                     <StackLayout  Margin="{StaticResource CommonHorizontalThickness}" Orientation="Horizontal" Spacing="{StaticResource CommonThickness}">
                                         <tlrPrimitives:RadCheckBox VerticalOptions="Center"/>
 
-                                        <Label HorizontalOptions="FillAndExpand" Text="Số tiền" VerticalOptions="Center" />
+                                        <Label Text="Số tiền" VerticalOptions="Center" />
 
                                         <tlrInput:RadNumericInput
-                                                ControlTemplate="{StaticResource CustomNumericInput}"
-                                                Minimum="0"                                        
-                                                Maximum="1000000000"                               
-                                                Value="0"/>
+                                            ControlTemplate="{StaticResource CustomNumericInput}"
+                                            HorizontalOptions="FillAndExpand" 
+                                            Minimum="0"                                        
+                                            Maximum="1000000000"                               
+                                            Value="{Binding DiscountBindProp.Value, Mode=TwoWay}"/>
                                     </StackLayout>
                                 </tlrPrimitives:RadBorder>
                                 

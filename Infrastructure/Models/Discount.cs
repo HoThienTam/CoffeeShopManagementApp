@@ -10,5 +10,7 @@ namespace Infrastructure.Models
         public double Value { get; set; }
         public double MaxValue { get; set; }
         public bool IsPercentage { get; set; }
+        public ICollection<ItemDiscount> ItemDiscounts { get; set; }
+        public ICollection<InvoiceDiscount> InvoiceDiscounts { get; set; }
     }
 }

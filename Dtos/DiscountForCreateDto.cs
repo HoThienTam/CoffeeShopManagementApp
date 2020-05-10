@@ -6,6 +6,17 @@ namespace Dtos
 {
     public class DiscountForCreateDto
     {
+        public DiscountForCreateDto(DiscountDto discountDto)
+        {
+            Id = discountDto.Id;
+            Name = discountDto.Name;
+            Value = discountDto.Value;
+            MaxValue = discountDto.MaxValue;
+            IsPercentage = discountDto.IsPercentage;
+        }
+        public DiscountForCreateDto()
+        {
+        }
         public Guid Id { get; set; }
         public string Name { get; set; }
         public double Value { get; set; }

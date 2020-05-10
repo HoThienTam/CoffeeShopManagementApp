@@ -7,6 +7,20 @@ namespace Dtos
 {
     public class DiscountDto : BindableBase
     {
+        public DiscountDto(DiscountDto discount)
+        {
+            Id = discount.Id;
+            Name = discount.Name;
+            Value = discount.Value;
+            MaxValue = discount.MaxValue;
+            IsPercentage = discount.IsPercentage;
+        }
+
+
+        public DiscountDto()
+        {
+        }
+
         public Guid Id { get; set; }
 
         #region Name

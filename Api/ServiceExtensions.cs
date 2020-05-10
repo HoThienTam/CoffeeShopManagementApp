@@ -1,10 +1,13 @@
 ﻿using ApplicationCore.Handlers;
 using ApplicationCore.Queries;
+using DryIoc;
 using Dtos;
+using ImTools;
 using Infrastructure.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -41,15 +44,13 @@ namespace Api
         }
         public static void ConfigureMediatR(this IServiceCollection services)
         {
-            List<Assembly> assemblies = new List<Assembly>();
-            Assembly mscorlib = Assembly.Load("ApplicationCore");
-            foreach (Type type in mscorlib.GetTypes().Where(a => a.FullName.EndsWith("Handler")).ToList())
-            {
-                assemblies.Add(type.Assembly);
-            }
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            services.AddTransient(typeof(IRequestHandler<GetAllQuery<DiscountDto,Discount>,IEnumerable<DiscountDto>>), typeof(GetAllQueryHandler<DiscountDto, Discount>));
-            services.AddMediatR(assemblies.ToArray());
+            services.AddTransient(typeof(IRequestHandler<GetAllQuery<CategoryDto, Category>, IEnumerable<CategoryDto>>), typeof(GetAllQueryHandler<CategoryDto, Category>));
+            services.AddTransient(typeof(IRequestHandler<GetByIdQuery<CategoryDto, Category>, CategoryDto>), typeof(GetByIdQueryHandler<CategoryDto, Category>));
+            services.AddTransient(typeof(IRequestHandler<GetAllQuery<DiscountDto, Discount>, IEnumerable<DiscountDto>>), typeof(GetAllQueryHandler<DiscountDto, Discount>));
+            services.AddTransient(typeof(IRequestHandler<GetByIdQuery<DiscountDto, Discount>, DiscountDto>), typeof(GetByIdQueryHandler<DiscountDto, Discount>));
+            services.AddTransient(typeof(IRequestHandler<GetAllQuery<ItemDto, Item>, IEnumerable<ItemDto>>), typeof(GetAllQueryHandler<ItemDto, Item>));
+            services.AddTransient(typeof(IRequestHandler<GetByIdQuery<ItemDto, Item>, ItemDto>), typeof(GetByIdQueryHandler<ItemDto, Item>));
+            services.AddMediatR(Assembly.Load("ApplicationCore"));
         }
     }
 }

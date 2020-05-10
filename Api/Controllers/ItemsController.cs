@@ -24,13 +24,13 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetItems()
         {
-            var items = await _mediator.Send(new GetItemsQuery());
+            var items = await _mediator.Send(new GetAllQuery<ItemDto, Item>(x => x.Category));
             return Ok(items);
         }
         [HttpGet("{id}", Name = nameof(GetItem))]
         public async Task<IActionResult> GetItem(Guid id)
         {
-            var item = await _mediator.Send(new GetItemQuery(id));
+            var item = await _mediator.Send(new GetByIdQuery<ItemDto, Item>(id, x => x.Category));
             return Ok(item);
         }
         [HttpPost]

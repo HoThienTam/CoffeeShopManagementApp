@@ -25,13 +25,13 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            var categories = await _mediator.Send(new GetCategoriesQuery());
+            var categories = await _mediator.Send(new GetAllQuery<CategoryDto, Category>(x => x.Items));
             return Ok(categories);
         }
         [HttpGet("{id}", Name = nameof(GetCategory))]
         public async Task<IActionResult> GetCategory(Guid id)
         {
-            var category = await _mediator.Send(new GetCategoryQuery(id));
+            var category = await _mediator.Send(new GetByIdQuery<CategoryDto, Category>(id, x => x.Items));
             return Ok(category);
         }
         [HttpPost]

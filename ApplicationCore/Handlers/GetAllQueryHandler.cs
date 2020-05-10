@@ -22,12 +22,13 @@ namespace ApplicationCore.Handlers
         public GetAllQueryHandler(DataContext context, IMapper mapper)
         {
             _context = context;
-            _mapper = mapper;
+            _mapper = mapper;   
         }
 
         public async Task<IEnumerable<T>> Handle(GetAllQuery<T, V> request, CancellationToken cancellationToken)
         {
-            var listObj = _context.Set<V>().Where(c => c.IsDeleted == false).AsNoTracking();
+            var queryAll = _context.Set<V>().Where(c => c.IsDeleted == false).AsNoTracking();
+            var listObj = request.Includes.Aggregate(queryAll, (current, includeProperty) => current.Include(includeProperty));
             var listObjDto = _mapper.Map<IEnumerable<T>>(listObj);
             return listObjDto;
         }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,11 +17,22 @@ namespace Infrastructure.Data
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Discount> Discounts { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<InvoiceDiscount> InvoiceDiscounts { get; set; }
+        public DbSet<InvoiceItem> InvoiceItems { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<ItemDiscount> ItemDiscounts { get; set; }
         public DbSet<Table> Tables { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Zone> Zones { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Invoice>()
+                        .HasOne(a => a.Table)
+                        .WithOne(a => a.Invoice)
+                        .HasForeignKey<Table>(c => c.InvoiceId);
+        }
         public override int SaveChanges()
         {
             DoThingsBeforeSaveChange();

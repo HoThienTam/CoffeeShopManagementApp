@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Infrastructure.Models
 {
-    public class Table : BaseModel
+    public class InvoiceItem : BaseModel
     {
-        public string Name { get; set; }
-        public Guid ZoneId { get; set; }
-        public Zone Zone { get; set; }
+        public long Quantity { get; set; }
+        public Guid ItemId { get; set; }
+        public Item Item { get; set; }
         public Guid InvoiceId { get; set; }
         public Invoice Invoice { get; set; }
     }

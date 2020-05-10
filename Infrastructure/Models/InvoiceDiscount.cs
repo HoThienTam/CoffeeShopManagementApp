@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Infrastructure.Models
 {
-    public class Table : BaseModel
+    public class InvoiceDiscount : BaseModel
     {
-        public string Name { get; set; }
-        public Guid ZoneId { get; set; }
-        public Zone Zone { get; set; }
+        public double Value { get; set; }
         public Guid InvoiceId { get; set; }
         public Invoice Invoice { get; set; }
+        public Guid DiscountId { get; set; }
+        public Discount Discount { get; set; }
     }
 }

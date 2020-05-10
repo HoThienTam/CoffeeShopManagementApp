@@ -20,6 +20,7 @@ namespace Mobile.ViewModels
         {
             ListCategoryBindProp = new ObservableCollection<CategoryDto>();
             ListItemBindProp = new ObservableCollection<ItemDto>();
+            ListDiscountBindProp = new ObservableCollection<DiscountDto>();
         }
 
         #region ListZoneBindProp
@@ -46,6 +47,15 @@ namespace Mobile.ViewModels
         {
             get { return _ListCategoryBindProp; }
             set { SetProperty(ref _ListCategoryBindProp, value); }
+        }
+        #endregion
+
+        #region ListDiscountBindProp
+        private ObservableCollection<DiscountDto> _ListDiscountBindProp = null;
+        public ObservableCollection<DiscountDto> ListDiscountBindProp
+        {
+            get { return _ListDiscountBindProp; }
+            set { SetProperty(ref _ListDiscountBindProp, value); }
         }
         #endregion
 
@@ -164,7 +174,8 @@ namespace Mobile.ViewModels
                         await NavigationService.NavigateAsync(nameof(ItemPage), param);
                         break;
                     case "Discount":
-                        await NavigationService.NavigateAsync(nameof(DiscountPage));
+                        param.Add(nameof(ListDiscountBindProp), ListDiscountBindProp);
+                        await NavigationService.NavigateAsync(nameof(DiscountPage), param);
                         break;
                     default:
                         break;
@@ -272,6 +283,7 @@ namespace Mobile.ViewModels
                     {
                         var categoryTask = await client.GetAsync(Properties.Resources.BaseUrl + "categories/");
                         var itemTask = await client.GetAsync(Properties.Resources.BaseUrl + "items/");
+                        var discountTask = await client.GetAsync(Properties.Resources.BaseUrl + "discounts/");
                         if (categoryTask.IsSuccessStatusCode)
                         {
                             var categories = JsonConvert.DeserializeObject<IEnumerable<CategoryDto>>(await categoryTask.Content.ReadAsStringAsync());
@@ -295,6 +307,18 @@ namespace Mobile.ViewModels
                         else
                         {
                             await PageDialogService.DisplayAlertAsync("Lỗi", $"{await itemTask.Content.ReadAsStringAsync()}", "Đóng");
+                        }
+                        if (discountTask.IsSuccessStatusCode)
+                        {
+                            var discounts = JsonConvert.DeserializeObject<IEnumerable<DiscountDto>>(await discountTask.Content.ReadAsStringAsync());
+                            foreach (var discount in discounts)
+                            {
+                                ListDiscountBindProp.Add(discount);
+                            }
+                        }
+                        else
+                        {
+                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await discountTask.Content.ReadAsStringAsync()}", "Đóng");
                         }
                     }
                     break;

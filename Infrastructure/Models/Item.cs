@@ -14,5 +14,7 @@ namespace Infrastructure.Models
         public int CurrentQuantity { get; set; }
         public Guid CategoryId { get; set; }
         public Category Category { get; set; }
+        public ICollection<ItemDiscount> ItemDiscounts { get; set; }
+        public ICollection<InvoiceItem> InvoiceItems { get; set; }
     }
 }
