@@ -56,6 +56,22 @@ namespace Mobile.ViewModels
         }
         #endregion
 
+        #region IsPercentage
+        private bool _IsPercentage = true;
+        public bool IsPercentage
+        {
+            get { return _IsPercentage; }
+            set 
+            {
+                if (SetProperty(ref _IsPercentage, value))
+                {
+                    RaisePropertyChanged(nameof(IsValue));
+                }
+            }
+        }
+        public bool IsValue { get { return !_IsPercentage; } }
+        #endregion
+
         #region TempDiscount
         private DiscountDto _TempDiscount = null;
         public DiscountDto TempDiscount
@@ -267,6 +283,52 @@ namespace Mobile.ViewModels
         {
             DeleteDiscountCommand = new DelegateCommand<object>(OnDeleteDiscount);
             DeleteDiscountCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region SelectDiscountTypeCommand
+
+        public DelegateCommand<string> SelectDiscountTypeCommand { get; private set; }
+        private async void OnSelectDiscountType(string obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                switch (obj)
+                {
+                    case "percent":
+                        IsPercentage = true;
+                        break;
+                    case "value":
+                        IsPercentage = false;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectDiscountTypeCommand()
+        {
+            SelectDiscountTypeCommand = new DelegateCommand<string>(OnSelectDiscountType);
+            SelectDiscountTypeCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion

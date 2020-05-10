@@ -124,9 +124,14 @@
                                 <StackLayout Spacing="0">
                                     <tlrPrimitives:RadBorder Style="{StaticResource CommonUpperBorder}">
 
-                                        <StackLayout Margin="{StaticResource CommonHorizontalThickness}" Orientation="Horizontal" Spacing="{StaticResource CommonThickness}">
+                                        <mr:StackLayout 
+                                            TappedCommand="{Binding SelectDiscountTypeCommand}"
+                                            TappedCommandParameter="percent"
+                                            Margin="{StaticResource CommonHorizontalThickness}" 
+                                            Orientation="Horizontal" 
+                                            Spacing="{StaticResource CommonThickness}">
 
-                                            <tlrPrimitives:RadCheckBox VerticalOptions="Center"/>
+                                            <tlrPrimitives:RadCheckBox VerticalOptions="Center" IsChecked="{Binding IsPercentage}" IsEnabled="False"/>
 
                                             <Label Text="Phần trăm" VerticalOptions="Center" />
                                             <tlrInput:RadNumericInput
@@ -135,12 +140,17 @@
                                                     Maximum="100" Minimum="0"                                  
                                                     Value="{Binding DiscountBindProp.Value, Mode=TwoWay}" />
 
-                                        </StackLayout>
+                                        </mr:StackLayout>
 
                                     </tlrPrimitives:RadBorder>
                                 
                                     <!-- Gia tri toi da-->
-                                    <tlrPrimitives:RadBorder Style="{StaticResource CommonLowerBorder}">
+                                    <tlrPrimitives:RadBorder IsVisible="{Binding IsPercentage}" Style="{StaticResource CommonLowerBorder}">
+                                        <tlrPrimitives:RadBorder.Triggers>
+                                            <DataTrigger TargetType="tlrPrimitives:RadBorder" Binding="{Binding IsPercentage}" Value="False">
+                                                <Setter Property="CornerRadius" Value="5,5,5,5"/>
+                                            </DataTrigger>
+                                        </tlrPrimitives:RadBorder.Triggers>
                                         <StackLayout Orientation="Horizontal" Margin="{StaticResource CommonHorizontalThickness}">
                                             <Label
                                                 VerticalOptions="Center"
@@ -155,8 +165,13 @@
                                 </StackLayout>
                                 <!--  So tien  -->
                                 <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                                    <StackLayout  Margin="{StaticResource CommonHorizontalThickness}" Orientation="Horizontal" Spacing="{StaticResource CommonThickness}">
-                                        <tlrPrimitives:RadCheckBox VerticalOptions="Center"/>
+                                    <mr:StackLayout  
+                                        TappedCommand="{Binding SelectDiscountTypeCommand}"
+                                        TappedCommandParameter="value"
+                                        Margin="{StaticResource CommonHorizontalThickness}" 
+                                        Orientation="Horizontal" 
+                                        Spacing="{StaticResource CommonThickness}">
+                                        <tlrPrimitives:RadCheckBox IsChecked="{Binding IsValue}" VerticalOptions="Center" IsEnabled="False"/>
 
                                         <Label Text="Số tiền" VerticalOptions="Center" />
 
@@ -166,7 +181,7 @@
                                             Minimum="0"                                        
                                             Maximum="1000000000"                               
                                             Value="{Binding DiscountBindProp.Value, Mode=TwoWay}"/>
-                                    </StackLayout>
+                                    </mr:StackLayout>
                                 </tlrPrimitives:RadBorder>
                                 
                             </StackLayout>
