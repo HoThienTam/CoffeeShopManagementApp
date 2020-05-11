@@ -8,6 +8,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Telerik.XamarinForms.Input.Calendar;
@@ -21,7 +22,10 @@ namespace Mobile.ViewModels
             ListCategoryBindProp = new ObservableCollection<CategoryDto>();
             ListItemBindProp = new ObservableCollection<ItemDto>();
             ListDiscountBindProp = new ObservableCollection<DiscountDto>();
+            InvoiceBindProp = new InvoiceForCreateDto();
         }
+
+        #region Bindprops
 
         #region ListZoneBindProp
         private ObservableCollection<string> _ListZoneBindProp = null;
@@ -29,6 +33,51 @@ namespace Mobile.ViewModels
         {
             get { return _ListZoneBindProp; }
             set { SetProperty(ref _ListZoneBindProp, value); }
+        }
+        #endregion
+
+        #region ListInvoiceFrameVisibleBindProp
+        private bool _ListInvoiceFrameVisibleBindProp = true;
+        public bool ListInvoiceFrameVisibleBindProp
+        {
+            get { return _ListInvoiceFrameVisibleBindProp; }
+            set { SetProperty(ref _ListInvoiceFrameVisibleBindProp, value); }
+        }
+        #endregion
+
+        #region ZoneFrameVisibleBindProp
+        private bool _ZoneFrameVisibleBindProp = false;
+        public bool ZoneFrameVisibleBindProp
+        {
+            get { return _ZoneFrameVisibleBindProp; }
+            set { SetProperty(ref _ZoneFrameVisibleBindProp, value); }
+        }
+        #endregion
+
+        #region InvoiceFrameVisibleBindProp
+        private bool _InvoiceFrameVisibleBindProp = true;
+        public bool InvoiceFrameVisibleBindProp
+        {
+            get { return _InvoiceFrameVisibleBindProp; }
+            set { SetProperty(ref _InvoiceFrameVisibleBindProp, value); }
+        }
+        #endregion
+
+        #region ItemFrameVisibleBindProp
+        private bool _ItemFrameVisibleBindProp = false;
+        public bool ItemFrameVisibleBindProp
+        {
+            get { return _ItemFrameVisibleBindProp; }
+            set { SetProperty(ref _ItemFrameVisibleBindProp, value); }
+        }
+        #endregion
+
+        #region SettingFrameVisibleBindProp
+        private bool _SettingFrameVisibleBindProp = false;
+        public bool SettingFrameVisibleBindProp
+        {
+            get { return _SettingFrameVisibleBindProp; }
+            set { SetProperty(ref _SettingFrameVisibleBindProp, value); }
         }
         #endregion
 
@@ -93,13 +142,14 @@ namespace Mobile.ViewModels
         public bool IsNotEditting { get { return !_IsEditing; } }
         #endregion
 
-        #region BillBindProp
-        private string _BillBindProp = null;
-        public string BillBindProp
+        #region InvoiceBindProp
+        private InvoiceForCreateDto _InvoiceBindProp = null;
+        public InvoiceForCreateDto InvoiceBindProp
         {
-            get { return _BillBindProp; }
-            set { SetProperty(ref _BillBindProp, value); }
+            get { return _InvoiceBindProp; }
+            set { SetProperty(ref _InvoiceBindProp, value); }
         }
+        #endregion
         #endregion
 
         #region ChangeEditModeCommand
@@ -216,6 +266,9 @@ namespace Mobile.ViewModels
             {
                 // Thuc hien cong viec tai day
                 CurrentCategory = obj;
+                InvoiceFrameVisibleBindProp = false;
+                ItemFrameVisibleBindProp = true;
+                SettingFrameVisibleBindProp = false;
             }
             catch (Exception e)
             {
@@ -239,7 +292,7 @@ namespace Mobile.ViewModels
         #region SelectItemCommand
 
         public DelegateCommand<ItemDto> SelectItemCommand { get; private set; }
-        private async void OnSelectItem(ItemDto obj)
+        private async void OnSelectItem(ItemDto item)
         {
             if (IsBusy)
             {
@@ -251,6 +304,12 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                if (InvoiceBindProp == null)
+                {
+                    InvoiceBindProp = new InvoiceForCreateDto();
+                }
+                InvoiceBindProp.Items.Add(item);
+                InvoiceBindProp.TotalPrice += item.Price;
             }
             catch (Exception e)
             {
@@ -267,6 +326,56 @@ namespace Mobile.ViewModels
         {
             SelectItemCommand = new DelegateCommand<ItemDto>(OnSelectItem);
             SelectItemCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region SelectFrameCommand
+
+        public DelegateCommand<string> SelectFrameCommand { get; private set; }
+        private async void OnSelectFrame(string obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                switch (obj)
+                {
+                    case "setting":
+                        InvoiceFrameVisibleBindProp = false;
+                        ItemFrameVisibleBindProp = false;
+                        SettingFrameVisibleBindProp = true;
+                        break;
+                    case "invoice":
+                        InvoiceFrameVisibleBindProp = true;
+                        ItemFrameVisibleBindProp = false;
+                        SettingFrameVisibleBindProp = false;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectFrameCommand()
+        {
+            SelectFrameCommand = new DelegateCommand<string>(OnSelectFrame);
+            SelectFrameCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion

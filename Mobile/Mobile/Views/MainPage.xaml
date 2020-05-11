@@ -19,7 +19,7 @@
             </Grid.RowDefinitions>
 
             <!--Frame hoa don - khu vuc-->
-            <Frame IsVisible="False">
+            <Frame IsVisible="{Binding InvoiceFrameVisibleBindProp}" Padding="0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -147,12 +147,11 @@
                             </DataTemplate>
                         </dataControls:RadListView.ItemTemplate>
                     </dataControls:RadListView>
-
                 </Grid>
             </Frame>
 
             <!-- Frame Item - Bill -->
-            <Grid IsVisible="False">
+            <Grid IsVisible="{Binding ItemFrameVisibleBindProp}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="300" />
@@ -176,7 +175,7 @@
                                             <tlrPrimitives:RadBorder HeightRequest="120" Style="{StaticResource CommonBorder}">
                                                 <mr:Grid BackgroundColor="{StaticResource MainColor}" 
                                                          Style="{StaticResource CommonWrapper}"
-                                                         TappedCommand="{Binding SelectItemCommand}"
+                                                         TappedCommand="{Binding BindingContext.SelectItemCommand, Source={x:Reference mainPage}}"
                                                          TappedCommandParameter="{Binding}">
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="*"/>
@@ -298,7 +297,7 @@
                         <!--Danh sach item tren bill-->
                         <ScrollView Grid.Row="2">
                             <StackLayout Spacing="0">
-                                <StackLayout BindableLayout.ItemsSource="{Binding ListZoneBindProp, Mode=OneWay}" Spacing="0">
+                                <StackLayout BindableLayout.ItemsSource="{Binding InvoiceBindProp.Items, Mode=OneWay}" Spacing="0">
                                     <BindableLayout.ItemTemplate>
                                         <DataTemplate>
                                             <mr:Grid Margin="{StaticResource CommonThickness}">
@@ -312,14 +311,14 @@
                                                     <RowDefinition Height="Auto" />
                                                 </Grid.RowDefinitions>
 
-                                                <Label Text="Name" />
+                                                <Label Text="{Binding Name}" />
                                                 <Label Grid.Column="1" Text="x2" />
-                                                <Label Grid.Column="2" Text="50000d" HorizontalOptions="EndAndExpand" />
+                                                <Label Grid.Column="2" Text="{Binding Price}" HorizontalOptions="EndAndExpand" />
 
                                                 <!--  Danh sach sub item  -->
                                                 <StackLayout
                                                     Grid.Row="1" Grid.ColumnSpan="3"
-                                                    BindableLayout.ItemsSource="{Binding BindingContext.ListZoneBindProp, Mode=OneWay, Source={x:Reference mainPage}}"
+                                                    BindableLayout.ItemsSource="{Binding Items}"
                                                     Spacing="0">
                                                     <BindableLayout.ItemTemplate>
                                                         <DataTemplate>
@@ -329,8 +328,8 @@
                                                                     <ColumnDefinition Width="*" />
                                                                 </Grid.ColumnDefinitions>
 
-                                                                <Label Text="name" />
-                                                                <Label Grid.Column="1" Text="50000d" />
+                                                                <Label Text="{Binding Name}" />
+                                                                <Label Grid.Column="1" Text="{Binding Price}" />
                                                             </mr:Grid>
                                                         </DataTemplate>
                                                     </BindableLayout.ItemTemplate>
@@ -374,7 +373,7 @@
                             <Label Text="Tổng (3 mặt hàng)"/>
                             <Label
                                 FontAttributes="Bold"
-                                Text="150000d"/>
+                                Text="{Binding InvoiceBindProp.TotalPrice}"/>
                         </StackLayout>
 
                         <!--Button luu, thanh toan-->
@@ -393,7 +392,7 @@
             </Grid>
 
             <!-- Frame Settings-->
-            <Frame IsVisible="True">
+            <Frame IsVisible="{Binding SettingFrameVisibleBindProp}">
                 <FlexLayout Wrap="Wrap">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -540,8 +539,9 @@
 
                 <!--Hoa don-->
                 <mr:Grid Padding="{StaticResource CommonThickness}" Grid.Column="1" 
-                         TappedCommand="{Binding SelectViewCommand, Mode=OneWay}"
-                         TappedCommandParameter="hoadon" WidthRequest="{StaticResource CommonWidth}">
+                         TappedCommand="{Binding SelectFrameCommand}" 
+                         TappedCommandParameter="invoice"
+                         WidthRequest="{StaticResource CommonWidth}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
@@ -559,7 +559,7 @@
                                 <mr:Grid Padding="{StaticResource CommonThickness}" 
                                          WidthRequest="{StaticResource CommonWidth}" 
                                          TappedCommand="{Binding BindingContext.SelectCategoryCommand, Source={x:Reference mainPage}}"
-                                         TappedCommandParameter="{Binding}">
+                                         TappedCommandParameter="{Binding }">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="Auto" />
@@ -576,7 +576,8 @@
                 <mr:Grid
                     Grid.Column="3" WidthRequest="{StaticResource CommonWidth}"
                     Padding="{StaticResource CommonThickness}"
-                    TappedCommand="{Binding ChangeEditModeCommand, Mode=OneWay}">
+                    TappedCommand="{Binding SelectFrameCommand}" 
+                    TappedCommandParameter="setting">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
