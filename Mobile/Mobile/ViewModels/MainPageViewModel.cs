@@ -22,19 +22,10 @@ namespace Mobile.ViewModels
             ListCategoryBindProp = new ObservableCollection<CategoryDto>();
             ListItemBindProp = new ObservableCollection<ItemDto>();
             ListDiscountBindProp = new ObservableCollection<DiscountDto>();
-            InvoiceBindProp = new InvoiceForCreateDto();
+            InvoiceBindProp = new InvoiceDto();
         }
 
         #region Bindprops
-
-        #region ListZoneBindProp
-        private ObservableCollection<string> _ListZoneBindProp = null;
-        public ObservableCollection<string> ListZoneBindProp
-        {
-            get { return _ListZoneBindProp; }
-            set { SetProperty(ref _ListZoneBindProp, value); }
-        }
-        #endregion
 
         #region ListInvoiceFrameVisibleBindProp
         private bool _ListInvoiceFrameVisibleBindProp = true;
@@ -63,12 +54,30 @@ namespace Mobile.ViewModels
         }
         #endregion
 
+        #region MenuFrameVisibleBindProp
+        private bool _MenuFrameVisibleBindProp = false;
+        public bool MenuFrameVisibleBindProp
+        {
+            get { return _MenuFrameVisibleBindProp; }
+            set { SetProperty(ref _MenuFrameVisibleBindProp, value); }
+        }
+        #endregion
+
         #region ItemFrameVisibleBindProp
-        private bool _ItemFrameVisibleBindProp = false;
+        private bool _ItemFrameVisibleBindProp = true;
         public bool ItemFrameVisibleBindProp
         {
             get { return _ItemFrameVisibleBindProp; }
             set { SetProperty(ref _ItemFrameVisibleBindProp, value); }
+        }
+        #endregion
+
+        #region DiscountFrameVisibleBindProp
+        private bool _DiscountFrameVisibleBindProp = false;
+        public bool DiscountFrameVisibleBindProp
+        {
+            get { return _DiscountFrameVisibleBindProp; }
+            set { SetProperty(ref _DiscountFrameVisibleBindProp, value); }
         }
         #endregion
 
@@ -78,6 +87,15 @@ namespace Mobile.ViewModels
         {
             get { return _SettingFrameVisibleBindProp; }
             set { SetProperty(ref _SettingFrameVisibleBindProp, value); }
+        }
+        #endregion
+
+        #region ListZoneBindProp
+        private ObservableCollection<string> _ListZoneBindProp = null;
+        public ObservableCollection<string> ListZoneBindProp
+        {
+            get { return _ListZoneBindProp; }
+            set { SetProperty(ref _ListZoneBindProp, value); }
         }
         #endregion
 
@@ -143,13 +161,14 @@ namespace Mobile.ViewModels
         #endregion
 
         #region InvoiceBindProp
-        private InvoiceForCreateDto _InvoiceBindProp = null;
-        public InvoiceForCreateDto InvoiceBindProp
+        private InvoiceDto _InvoiceBindProp = null;
+        public InvoiceDto InvoiceBindProp
         {
             get { return _InvoiceBindProp; }
             set { SetProperty(ref _InvoiceBindProp, value); }
         }
         #endregion
+
         #endregion
 
         #region ChangeEditModeCommand
@@ -267,7 +286,9 @@ namespace Mobile.ViewModels
                 // Thuc hien cong viec tai day
                 CurrentCategory = obj;
                 InvoiceFrameVisibleBindProp = false;
+                MenuFrameVisibleBindProp = true;
                 ItemFrameVisibleBindProp = true;
+                DiscountFrameVisibleBindProp = false;
                 SettingFrameVisibleBindProp = false;
             }
             catch (Exception e)
@@ -304,11 +325,8 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                if (InvoiceBindProp == null)
-                {
-                    InvoiceBindProp = new InvoiceForCreateDto();
-                }
-                InvoiceBindProp.Items.Add(item);
+                var itemForInvoice = new ItemForInvoiceDto(item);
+                InvoiceBindProp.Items.Add(itemForInvoice);
                 InvoiceBindProp.TotalPrice += item.Price;
             }
             catch (Exception e)
@@ -348,13 +366,20 @@ namespace Mobile.ViewModels
                 switch (obj)
                 {
                     case "setting":
+                        MenuFrameVisibleBindProp = false;
                         InvoiceFrameVisibleBindProp = false;
-                        ItemFrameVisibleBindProp = false;
                         SettingFrameVisibleBindProp = true;
                         break;
                     case "invoice":
+                        MenuFrameVisibleBindProp = false;
                         InvoiceFrameVisibleBindProp = true;
+                        SettingFrameVisibleBindProp = false;
+                        break;
+                    case "discount":
+                        MenuFrameVisibleBindProp = true;
+                        InvoiceFrameVisibleBindProp = false;
                         ItemFrameVisibleBindProp = false;
+                        DiscountFrameVisibleBindProp = true;
                         SettingFrameVisibleBindProp = false;
                         break;
                     default:
@@ -376,6 +401,77 @@ namespace Mobile.ViewModels
         {
             SelectFrameCommand = new DelegateCommand<string>(OnSelectFrame);
             SelectFrameCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region SaveInvoiceCommand
+
+        public DelegateCommand<object> SaveInvoiceCommand { get; private set; }
+        private async void OnSaveInvoice(object obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSaveInvoiceCommand()
+        {
+            SaveInvoiceCommand = new DelegateCommand<object>(OnSaveInvoice);
+            SaveInvoiceCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region SelectDiscountCommand
+
+        public DelegateCommand<DiscountDto> SelectDiscountCommand { get; private set; }
+        private async void OnSelectDiscount(DiscountDto obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                InvoiceBindProp.Discounts.Add(obj);
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectDiscountCommand()
+        {
+            SelectDiscountCommand = new DelegateCommand<DiscountDto>(OnSelectDiscount);
+            SelectDiscountCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion

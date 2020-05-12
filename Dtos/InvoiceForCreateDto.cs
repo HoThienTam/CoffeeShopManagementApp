@@ -20,7 +20,6 @@ namespace Dtos
         public double PaidAmount { get; set; }
         public double Tip { get; set; }
         public Guid TableId { get; set; }
-        public TableDto Table { get; set; }
         public ICollection<ItemDto> Items { get; set; }
         public ICollection<DiscountDto> Discounts { get; set; }
     }

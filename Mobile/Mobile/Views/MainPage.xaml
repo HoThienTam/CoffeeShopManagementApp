@@ -151,12 +151,13 @@
             </Frame>
 
             <!-- Frame Item - Bill -->
-            <Grid IsVisible="{Binding ItemFrameVisibleBindProp}">
+            <Grid IsVisible="{Binding MenuFrameVisibleBindProp}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="300" />
                 </Grid.ColumnDefinitions>
-                <Frame>
+                
+                <Frame IsVisible="{Binding ItemFrameVisibleBindProp}">
                     <Grid>
                         <Grid.Resources>
                             <x:Double x:Key="MenuItemSize">120</x:Double>
@@ -201,6 +202,48 @@
                         </dataControls:RadListView>
                     </Grid>
                 </Frame>
+
+                <Frame IsVisible="{Binding DiscountFrameVisibleBindProp}">
+                    <Grid>
+                        <Grid.Resources>
+                            <x:Double x:Key="MenuItemSize">120</x:Double>
+                        </Grid.Resources>
+                        <!--List item-->
+                        <dataControls:RadListView ItemsSource="{Binding ListDiscountBindProp, Mode=OneWay}">
+
+                            <dataControls:RadListView.LayoutDefinition>
+                                <listView:ListViewGridLayout HorizontalItemSpacing="{StaticResource CommonThickness}" SpanCount="5" VerticalItemSpacing="{StaticResource CommonThickness}" />
+                            </dataControls:RadListView.LayoutDefinition>
+
+                            <dataControls:RadListView.ItemTemplate>
+                                <DataTemplate>
+                                    <listView:ListViewTemplateCell>
+                                        <listView:ListViewTemplateCell.View>
+                                            <tlrPrimitives:RadBorder HeightRequest="120" Style="{StaticResource CommonBorder}">
+                                                <mr:Grid BackgroundColor="{StaticResource MainColor}" 
+                                                         Style="{StaticResource CommonWrapper}"
+                                                         TappedCommand="{Binding BindingContext.SelectDiscountCommand, Source={x:Reference mainPage}}"
+                                                         TappedCommandParameter="{Binding}">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <BoxView  
+                                                        HeightRequest="120"
+                                                        WidthRequest="150"
+                                                        BackgroundColor="{StaticResource MainColor}"/>
+                                                    <Label FontSize="50" Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Tags}" TextColor="{StaticResource ContrastColor}"/>
+                                                    <Label Grid.Row="1" Text="{Binding Name}" TextColor="{StaticResource ContrastColor}" HorizontalOptions="Center" VerticalOptions="End" />
+                                                </mr:Grid>
+                                            </tlrPrimitives:RadBorder>
+                                        </listView:ListViewTemplateCell.View>
+                                    </listView:ListViewTemplateCell>
+                                </DataTemplate>
+                            </dataControls:RadListView.ItemTemplate>
+                        </dataControls:RadListView>
+                    </Grid>
+                </Frame>
+                
                 <Frame Padding="{StaticResource CommonThickness}" 
                        Margin="{StaticResource CommonThickness}" 
                        CornerRadius="5" Grid.Column="1" IsVisible="True"
@@ -296,15 +339,15 @@
 
                         <!--Danh sach item tren bill-->
                         <ScrollView Grid.Row="2">
-                            <StackLayout Spacing="0">
+                            <StackLayout Spacing="0" Margin="{StaticResource CommonVerticalThickness}">
                                 <StackLayout BindableLayout.ItemsSource="{Binding InvoiceBindProp.Items, Mode=OneWay}" Spacing="0">
                                     <BindableLayout.ItemTemplate>
                                         <DataTemplate>
-                                            <mr:Grid Margin="{StaticResource CommonThickness}">
+                                            <mr:Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*" />
+                                                    <ColumnDefinition Width="4*" />
                                                     <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="3*" />
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto" />
@@ -312,8 +355,8 @@
                                                 </Grid.RowDefinitions>
 
                                                 <Label Text="{Binding Name}" />
-                                                <Label Grid.Column="1" Text="x2" />
-                                                <Label Grid.Column="2" Text="{Binding Price}" HorizontalOptions="EndAndExpand" />
+                                                <Label Grid.Column="1" Text="x2" Margin="0"/>
+                                                <Label Grid.Column="2" Text="{Binding Price, StringFormat='{}{0:C}'}" HorizontalOptions="EndAndExpand" />
 
                                                 <!--  Danh sach sub item  -->
                                                 <StackLayout
@@ -350,7 +393,7 @@
                                     <Label Style="{StaticResource CommonTitle}" Text="Giảm giá" FontSize="Small"/>
                                 </Grid>
 
-                                <StackLayout BindableLayout.ItemsSource="{Binding ListZoneBindProp, Mode=OneWay}" Margin="{StaticResource CommonThickness}">
+                                <StackLayout BindableLayout.ItemsSource="{Binding InvoiceBindProp.Discounts, Mode=OneWay}" Margin="{StaticResource CommonThickness}">
                                     <BindableLayout.ItemTemplate>
                                         <DataTemplate>
                                             <Grid Style="{StaticResource CommonWrapper}">
@@ -369,8 +412,8 @@
                         </ScrollView>
 
                         <!--Tong tien-->
-                        <StackLayout Margin="{StaticResource CommonThickness}" Grid.Row="3" HorizontalOptions="StartAndExpand" VerticalOptions="End">
-                            <Label Text="Tổng (3 mặt hàng)"/>
+                        <StackLayout Margin="{StaticResource CommonVerticalThickness}" Grid.Row="3" HorizontalOptions="StartAndExpand" VerticalOptions="End">
+                            <Label Text="{Binding InvoiceBindProp.Items.Count, StringFormat='Tổng ({0} mặt hàng)'}"/>
                             <Label
                                 FontAttributes="Bold"
                                 Text="{Binding InvoiceBindProp.TotalPrice}"/>
@@ -527,8 +570,8 @@
             <Grid BackgroundColor="{StaticResource MainColor}" Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.Resources>
@@ -538,7 +581,7 @@
                 </Grid.Resources>
 
                 <!--Hoa don-->
-                <mr:Grid Padding="{StaticResource CommonThickness}" Grid.Column="1" 
+                <mr:Grid Padding="{StaticResource CommonThickness}"
                          TappedCommand="{Binding SelectFrameCommand}" 
                          TappedCommandParameter="invoice"
                          WidthRequest="{StaticResource CommonWidth}">
@@ -551,7 +594,7 @@
                 </mr:Grid>
 
                 <!--List thuc don-->
-                <ScrollView Grid.Column="2" Orientation="Horizontal">
+                <ScrollView Grid.Column="1" Orientation="Horizontal">
                     <StackLayout BindableLayout.ItemsSource="{Binding ListCategoryBindProp, Mode=OneWay}" Orientation="Horizontal">
                         <BindableLayout.ItemTemplate>
                             <DataTemplate>
@@ -572,6 +615,20 @@
                     </StackLayout>
                 </ScrollView>
 
+                <!--Giam gia-->
+                <mr:Grid
+                    Grid.Column="2" WidthRequest="{StaticResource CommonWidth}"
+                    Padding="{StaticResource CommonThickness}"
+                    TappedCommand="{Binding SelectFrameCommand}" 
+                    TappedCommandParameter="discount">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label Style="{StaticResource CommonIcon}" TextColor="{StaticResource ContrastColor}" Text="{x:Static lcModels:FontAwesomeIcon.Tags}" />
+                    <Label Grid.Row="1" TextColor="{StaticResource ContrastColor}" Text="Giảm giá" HorizontalOptions="Center" />
+                </mr:Grid>
+                
                 <!--Thu Vien-->
                 <mr:Grid
                     Grid.Column="3" WidthRequest="{StaticResource CommonWidth}"
