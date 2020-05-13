@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ApplicationCore.Commands;
-using ApplicationCore.Queries;
+using ApplicationCore.CategoryService;
 using Dtos;
 using Infrastructure.Models;
 using MediatR;
@@ -25,13 +24,13 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCategories()
         {
-            var categories = await _mediator.Send(new GetAllQuery<CategoryDto, Category>(x => x.Items));
+            var categories = await _mediator.Send(new GetCategoriesQuery());
             return Ok(categories);
         }
         [HttpGet("{id}", Name = nameof(GetCategory))]
         public async Task<IActionResult> GetCategory(Guid id)
         {
-            var category = await _mediator.Send(new GetByIdQuery<CategoryDto, Category>(id, x => x.Items));
+            var category = await _mediator.Send(new GetCategoryQuery(id));
             return Ok(category);
         }
         [HttpPost]

@@ -10,7 +10,7 @@ namespace Dtos
     {
         public InvoiceDto()
         {
-            Items = new ObservableCollection<ItemDto>();
+            Items = new ObservableCollection<ItemForInvoiceDto>();
             Discounts = new ObservableCollection<DiscountDto>();
         }
        

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ApplicationCore.Commands;
-using ApplicationCore.Queries;
-using Dtos;
+using ApplicationCore.DiscountService;using Dtos;
 using Infrastructure.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -25,13 +23,13 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetDiscounts()
         {
-            var discounts = await _mediator.Send(new GetAllQuery<DiscountDto, Discount>());
+            var discounts = await _mediator.Send(new GetDiscountsQuery());
             return Ok(discounts);
         }
         [HttpGet("{id}", Name = nameof(GetDiscount))]
         public async Task<IActionResult> GetDiscount(Guid id)
         {
-            var discount = await _mediator.Send(new GetByIdQuery<DiscountDto, Discount>(id));
+            var discount = await _mediator.Send(new GetDiscountQuery(id));
             return Ok(discount);
         }
         [HttpPost]

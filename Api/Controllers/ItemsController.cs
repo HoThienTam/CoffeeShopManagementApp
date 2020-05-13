@@ -1,5 +1,4 @@
-﻿using ApplicationCore.Commands;
-using ApplicationCore.Queries;
+﻿using ApplicationCore.ItemService;
 using Dtos;
 using Infrastructure.Models;
 using MediatR;
@@ -24,13 +23,13 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetItems()
         {
-            var items = await _mediator.Send(new GetAllQuery<ItemDto, Item>(x => x.Category));
+            var items = await _mediator.Send(new GetItemsQuery());
             return Ok(items);
         }
         [HttpGet("{id}", Name = nameof(GetItem))]
         public async Task<IActionResult> GetItem(Guid id)
         {
-            var item = await _mediator.Send(new GetByIdQuery<ItemDto, Item>(id, x => x.Category));
+            var item = await _mediator.Send(new GetItemQuery(id));
             return Ok(item);
         }
         [HttpPost]

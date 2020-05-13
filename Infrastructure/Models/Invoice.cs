@@ -14,7 +14,7 @@ namespace Infrastructure.Models
         public double Tip { get; set; }
         public Guid TableId { get; set; }
         public Table Table { get; set; }
-        public ICollection<Item> Items { get; set; }
-        public ICollection<Discount> Discounts { get; set; }
+        public ICollection<InvoiceItem> InvoiceItems { get; set; }
+        public ICollection<InvoiceDiscount> InvoiceDiscounts { get; set; }
     }
 }

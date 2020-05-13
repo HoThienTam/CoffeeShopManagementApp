@@ -44,12 +44,6 @@ namespace Api
         }
         public static void ConfigureMediatR(this IServiceCollection services)
         {
-            services.AddTransient(typeof(IRequestHandler<GetAllQuery<CategoryDto, Category>, IEnumerable<CategoryDto>>), typeof(GetAllQueryHandler<CategoryDto, Category>));
-            services.AddTransient(typeof(IRequestHandler<GetByIdQuery<CategoryDto, Category>, CategoryDto>), typeof(GetByIdQueryHandler<CategoryDto, Category>));
-            services.AddTransient(typeof(IRequestHandler<GetAllQuery<DiscountDto, Discount>, IEnumerable<DiscountDto>>), typeof(GetAllQueryHandler<DiscountDto, Discount>));
-            services.AddTransient(typeof(IRequestHandler<GetByIdQuery<DiscountDto, Discount>, DiscountDto>), typeof(GetByIdQueryHandler<DiscountDto, Discount>));
-            services.AddTransient(typeof(IRequestHandler<GetAllQuery<ItemDto, Item>, IEnumerable<ItemDto>>), typeof(GetAllQueryHandler<ItemDto, Item>));
-            services.AddTransient(typeof(IRequestHandler<GetByIdQuery<ItemDto, Item>, ItemDto>), typeof(GetByIdQueryHandler<ItemDto, Item>));
             services.AddMediatR(Assembly.Load("ApplicationCore"));
         }
     }

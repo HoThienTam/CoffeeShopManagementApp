@@ -9,6 +9,8 @@
     <Compile Remove="Migrations\20200415092040_add_zone_table.Designer.cs" />
     <Compile Remove="Migrations\20200416153636_add_category_item.cs" />
     <Compile Remove="Migrations\20200416153636_add_category_item.Designer.cs" />
+    <Compile Remove="Migrations\20200510100428_final.cs" />
+    <Compile Remove="Migrations\20200510100428_final.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
