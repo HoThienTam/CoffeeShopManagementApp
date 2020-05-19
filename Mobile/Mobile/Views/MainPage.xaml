@@ -116,14 +116,14 @@
                                         </StackLayout>
 
                                         <!--Thoi gian-->
-                                        <StackLayout Padding="{StaticResource CommonHorizontalThickness}" Grid.Row="1" Orientation="Horizontal">
+                                        <StackLayout Grid.ColumnSpan="2" Padding="{StaticResource CommonHorizontalThickness}" Grid.Row="1" Orientation="Horizontal">
                                             <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.UsdCircle}" />
-                                            <Label Text="50000d" TextColor="Black"/>
+                                            <Label Text="{Binding TotalPrice, StringFormat='{}{0:C}'}" TextColor="Black"/>
                                         </StackLayout>
 
-                                        <StackLayout Padding="{StaticResource CommonHorizontalThickness}" Grid.Row="2" Orientation="Horizontal">
+                                        <StackLayout Grid.ColumnSpan="2" Padding="{StaticResource CommonHorizontalThickness}" Grid.Row="2" Orientation="Horizontal">
                                             <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Clock}" />
-                                            <Label Text="12:55:00" TextColor="Black"/>
+                                            <Label Text="{Binding CreateAt}" TextColor="Black"/>
                                         </StackLayout>
 
                                         <tlrInput:RadButton
@@ -393,7 +393,7 @@
                                     <Label Style="{StaticResource CommonTitle}" Text="Giảm giá" FontSize="Small"/>
                                 </Grid>
 
-                                <StackLayout BindableLayout.ItemsSource="{Binding InvoiceBindProp.Discounts, Mode=OneWay}" Margin="{StaticResource CommonThickness}">
+                                <StackLayout BindableLayout.ItemsSource="{Binding InvoiceBindProp.Discounts, Mode=OneWay}">
                                     <BindableLayout.ItemTemplate>
                                         <DataTemplate>
                                             <Grid Style="{StaticResource CommonWrapper}">
@@ -402,8 +402,8 @@
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
 
-                                                <Label Text="Name" />
-                                                <Label Grid.Column="1" Text="-50000d" HorizontalOptions="EndAndExpand"/>
+                                                <Label Text="{Binding Name}" />
+                                                <Label Grid.Column="1" Text="{Binding Value, StringFormat='{}-{0:C}'}" HorizontalOptions="EndAndExpand"/>
                                             </Grid>
                                         </DataTemplate>
                                     </BindableLayout.ItemTemplate>
@@ -416,7 +416,7 @@
                             <Label Text="{Binding InvoiceBindProp.Items.Count, StringFormat='Tổng ({0} mặt hàng)'}"/>
                             <Label
                                 FontAttributes="Bold"
-                                Text="{Binding InvoiceBindProp.TotalPrice}"/>
+                                Text="{Binding InvoiceBindProp.TotalPrice, StringFormat='{}{0:C}'}"/>
                         </StackLayout>
 
                         <!--Button luu, thanh toan-->

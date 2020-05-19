@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImTools;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,8 +9,12 @@ namespace Dtos
     {
         public InvoiceForCreateDto()
         {
-            Items = new List<ItemDto>();
-            Discounts = new List<DiscountDto>();
+        }
+        public InvoiceForCreateDto(InvoiceDto invoiceDto)
+        {
+            TotalPrice = invoiceDto.TotalPrice;
+            Items = invoiceDto.Items;
+            Discounts = invoiceDto.Discounts;
         }
 
         public Guid Id { get; set; }
@@ -20,7 +25,7 @@ namespace Dtos
         public double PaidAmount { get; set; }
         public double Tip { get; set; }
         public Guid TableId { get; set; }
-        public ICollection<ItemDto> Items { get; set; }
+        public ICollection<ItemForInvoiceDto> Items { get; set; }
         public ICollection<DiscountDto> Discounts { get; set; }
     }
 }

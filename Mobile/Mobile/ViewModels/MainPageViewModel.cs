@@ -9,7 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Telerik.XamarinForms.Input.Calendar;
 
@@ -22,7 +24,7 @@ namespace Mobile.ViewModels
             ListCategoryBindProp = new ObservableCollection<CategoryDto>();
             ListItemBindProp = new ObservableCollection<ItemDto>();
             ListDiscountBindProp = new ObservableCollection<DiscountDto>();
-            InvoiceBindProp = new InvoiceDto();
+            ListInvoiceBindProp = new ObservableCollection<InvoiceDto>();
         }
 
         #region Bindprops
@@ -100,8 +102,8 @@ namespace Mobile.ViewModels
         #endregion
 
         #region ListInvoiceBindProp
-        private ObservableCollection<string> _ListInvoiceBindProp = null;
-        public ObservableCollection<string> ListInvoiceBindProp
+        private ObservableCollection<InvoiceDto> _ListInvoiceBindProp = null;
+        public ObservableCollection<InvoiceDto> ListInvoiceBindProp
         {
             get { return _ListInvoiceBindProp; }
             set { SetProperty(ref _ListInvoiceBindProp, value); }
@@ -325,6 +327,10 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                if (InvoiceBindProp == null)
+                {
+                    InvoiceBindProp = new InvoiceDto();
+                }
                 var itemForInvoice = new ItemForInvoiceDto(item);
                 InvoiceBindProp.Items.Add(itemForInvoice);
                 InvoiceBindProp.TotalPrice += item.Price;
@@ -374,6 +380,10 @@ namespace Mobile.ViewModels
                         MenuFrameVisibleBindProp = false;
                         InvoiceFrameVisibleBindProp = true;
                         SettingFrameVisibleBindProp = false;
+                        if (InvoiceBindProp != null)
+                        {
+                            await PageDialogService.DisplayAlertAsync("Cảnh báo", "Hủy hóa đơn?", "Đồng ý", "Không");
+                        }
                         break;
                     case "discount":
                         MenuFrameVisibleBindProp = true;
@@ -420,6 +430,38 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                var invoiceToCreate = new InvoiceForCreateDto(InvoiceBindProp);
+                var json = JsonConvert.SerializeObject(invoiceToCreate);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                // Thuc hien cong viec tai day
+                using (var client = new HttpClient())
+                {
+                    HttpResponseMessage response = new HttpResponseMessage();
+                    if (InvoiceBindProp.Id == Guid.Empty)
+                    {
+                        response = await client.PostAsync(Properties.Resources.BaseUrl + "invoices/", content);
+                    }
+                    else
+                    {
+                        response = await client.PutAsync(Properties.Resources.BaseUrl + "invoices/", content);
+                    }
+                    switch (response.StatusCode)
+                    {
+                        case HttpStatusCode.NoContent:
+                            break;
+                        case HttpStatusCode.Created:
+                            var invoice = JsonConvert.DeserializeObject<InvoiceDto>(await response.Content.ReadAsStringAsync());
+                            ListInvoiceBindProp.Add(invoice);
+                            InvoiceBindProp = null;
+                            break;
+                        case HttpStatusCode.BadRequest:
+                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await response.Content.ReadAsStringAsync()}", "Đóng");
+                            break;
+                        default:
+                            await PageDialogService.DisplayAlertAsync("Lỗi", $"Lỗi hệ thống!", "Đóng");
+                            break;
+                    }
+                };
             }
             catch (Exception e)
             {
@@ -476,7 +518,6 @@ namespace Mobile.ViewModels
 
         #endregion
 
-
         public async override void OnNavigatedTo(INavigationParameters parameters)
         {
             switch (parameters.GetNavigationMode())
@@ -486,45 +527,77 @@ namespace Mobile.ViewModels
                 case NavigationMode.New:
                     using (var client = new HttpClient())
                     {
-                        var categoryTask = await client.GetAsync(Properties.Resources.BaseUrl + "categories/");
-                        var itemTask = await client.GetAsync(Properties.Resources.BaseUrl + "items/");
-                        var discountTask = await client.GetAsync(Properties.Resources.BaseUrl + "discounts/");
-                        if (categoryTask.IsSuccessStatusCode)
+                        var categoryTask = client.GetAsync(Properties.Resources.BaseUrl + "categories/");
+                        var itemTask = client.GetAsync(Properties.Resources.BaseUrl + "items/");
+                        var discountTask = client.GetAsync(Properties.Resources.BaseUrl + "discounts/");
+                        var invoiceTask = client.GetAsync(Properties.Resources.BaseUrl + "invoices/");
+
+                        var allTasks = new List<Task> { categoryTask, itemTask, discountTask, invoiceTask };
+                        while (allTasks.Any())
                         {
-                            var categories = JsonConvert.DeserializeObject<IEnumerable<CategoryDto>>(await categoryTask.Content.ReadAsStringAsync());
-                            foreach (var category in categories)
+                            Task finished = await Task.WhenAny(allTasks);
+                            if (finished == categoryTask)
                             {
-                                ListCategoryBindProp.Add(category);
+                                if (categoryTask.Result.IsSuccessStatusCode)
+                                {
+                                    var categories = JsonConvert.DeserializeObject<IEnumerable<CategoryDto>>(await categoryTask.Result.Content.ReadAsStringAsync());
+                                    foreach (var category in categories)
+                                    {
+                                        ListCategoryBindProp.Add(category);
+                                    }
+                                }
+                                else
+                                {
+                                    await PageDialogService.DisplayAlertAsync("Lỗi", $"{await categoryTask.Result.Content.ReadAsStringAsync()}", "Đóng");
+                                }
                             }
-                        }
-                        else
-                        {
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await categoryTask.Content.ReadAsStringAsync()}", "Đóng");
-                        }
-                        if (itemTask.IsSuccessStatusCode)
-                        {
-                            var items = JsonConvert.DeserializeObject<IEnumerable<ItemDto>>(await itemTask.Content.ReadAsStringAsync());
-                            foreach (var item in items)
+                            else if (finished == itemTask)
                             {
-                                ListItemBindProp.Add(item);
+                                if (itemTask.Result.IsSuccessStatusCode)
+                                {
+                                    var items = JsonConvert.DeserializeObject<IEnumerable<ItemDto>>(await itemTask.Result.Content.ReadAsStringAsync());
+                                    foreach (var item in items)
+                                    {
+                                        ListItemBindProp.Add(item);
+                                    }
+                                }
+                                else
+                                {
+                                    await PageDialogService.DisplayAlertAsync("Lỗi", $"{await itemTask.Result.Content.ReadAsStringAsync()}", "Đóng");
+                                }
                             }
-                        }
-                        else
-                        {
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await itemTask.Content.ReadAsStringAsync()}", "Đóng");
-                        }
-                        if (discountTask.IsSuccessStatusCode)
-                        {
-                            var discounts = JsonConvert.DeserializeObject<IEnumerable<DiscountDto>>(await discountTask.Content.ReadAsStringAsync());
-                            foreach (var discount in discounts)
+                            else if (finished == discountTask)
                             {
-                                ListDiscountBindProp.Add(discount);
+                                if (discountTask.Result.IsSuccessStatusCode)
+                                {
+                                    var discounts = JsonConvert.DeserializeObject<IEnumerable<DiscountDto>>(await discountTask.Result.Content.ReadAsStringAsync());
+                                    foreach (var discount in discounts)
+                                    {
+                                        ListDiscountBindProp.Add(discount);
+                                    }
+                                }
+                                else
+                                {
+                                    await PageDialogService.DisplayAlertAsync("Lỗi", $"{await discountTask.Result.Content.ReadAsStringAsync()}", "Đóng");
+                                }
                             }
-                        }
-                        else
-                        {
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await discountTask.Content.ReadAsStringAsync()}", "Đóng");
-                        }
+                            else if (finished == invoiceTask)
+                            {
+                                if (invoiceTask.Result.IsSuccessStatusCode)
+                                {
+                                    var invoices = JsonConvert.DeserializeObject<IEnumerable<InvoiceDto>>(await invoiceTask.Result.Content.ReadAsStringAsync());
+                                    foreach (var invoice in invoices)
+                                    {
+                                        ListInvoiceBindProp.Add(invoice);
+                                    }
+                                }
+                                else
+                                {
+                                    await PageDialogService.DisplayAlertAsync("Lỗi", $"{await invoiceTask.Result.Content.ReadAsStringAsync()}", "Đóng");
+                                }
+                            }
+                            allTasks.Remove(finished);
+                        }                      
                     }
                     break;
                 case NavigationMode.Forward:

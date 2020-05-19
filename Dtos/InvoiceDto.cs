@@ -15,33 +15,7 @@ namespace Dtos
         }
        
         public Guid Id { get; set; }
-
-        #region InvoiceNumber
-        private string _InvoiceNumber;
-        public string InvoiceNumber
-        {
-            get { return _InvoiceNumber; }
-            set { SetProperty(ref _InvoiceNumber, value); }
-        }
-        #endregion
-
-        #region Status
-        private int _Status;
-        public int Status
-        {
-            get { return _Status; }
-            set { SetProperty(ref _Status, value); }
-        }
-        #endregion
-
-        #region ClosedAt
-        private DateTime _ClosedAt;
-        public DateTime ClosedAt
-        {
-            get { return _ClosedAt; }
-            set { SetProperty(ref _ClosedAt, value); }
-        }
-        #endregion
+        public DateTime CreatedAt { get; set; }
 
         #region TotalPrice
         private double _TotalPrice;
@@ -49,24 +23,6 @@ namespace Dtos
         {
             get { return _TotalPrice; }
             set { SetProperty(ref _TotalPrice, value); }
-        }
-        #endregion
-
-        #region PaidAmount
-        private double _PaidAmount;
-        public double PaidAmount
-        {
-            get { return _PaidAmount; }
-            set { SetProperty(ref _PaidAmount, value); }
-        }
-        #endregion
-
-        #region Tip
-        private double _Tip;
-        public double Tip
-        {
-            get { return _Tip; }
-            set { SetProperty(ref _Tip, value); }
         }
         #endregion
 

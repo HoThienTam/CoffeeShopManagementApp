@@ -25,7 +25,7 @@ namespace ApplicationCore.DiscountService
 
         public async Task<IEnumerable<DiscountDto>> Handle(GetDiscountsQuery request, CancellationToken cancellationToken)
         {
-            var discounts = _context.Categories.Where(c => c.IsDeleted == false).OrderBy(c => c.CreatedAt).AsNoTracking();
+            var discounts = _context.Discounts.Where(c => c.IsDeleted == false).OrderBy(c => c.CreatedAt).AsNoTracking();
             var discountDtos = _mapper.Map<IEnumerable<DiscountDto>>(discounts);
             return discountDtos;
         }

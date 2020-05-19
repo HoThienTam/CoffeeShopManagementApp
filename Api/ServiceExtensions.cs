@@ -1,13 +1,6 @@
-﻿using ApplicationCore.Handlers;
-using ApplicationCore.Queries;
-using DryIoc;
-using Dtos;
-using ImTools;
-using Infrastructure.Models;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
