@@ -21,6 +21,8 @@ namespace SharedKernel
             CreateMap<Invoice, InvoiceForCreateDto>().ReverseMap();
             CreateMap<Discount, DiscountDto>().ReverseMap();
             CreateMap<Discount, DiscountForCreateDto>().ReverseMap();
+            CreateMap<Table, TableDto>().ReverseMap();
+            CreateMap<Zone, ZoneDto>().ReverseMap();
         }
     }
 }

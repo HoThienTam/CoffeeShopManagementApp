@@ -38,7 +38,7 @@ namespace Api.Controllers
             var discount = await _mediator.Send(new AddDiscountCommand(discountDto));
             if (discount != null)
             {
-                return CreatedAtRoute(nameof(GetDiscount), new { id = discountDto.Id }, discountDto);
+                return CreatedAtRoute(nameof(GetDiscount), new { id = discount.Id }, discount);
             }
             else
             {
