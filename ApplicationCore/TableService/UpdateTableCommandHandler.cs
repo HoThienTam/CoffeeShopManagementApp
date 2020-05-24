@@ -35,6 +35,4 @@ namespace ApplicationCore.TableService
             return false;
         }
     }
-    {
-    }
 }

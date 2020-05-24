@@ -490,14 +490,14 @@
                             VerticalOptions="Center" 
                             Grid.Column="3"
                             TappedCommand="{Binding SelectSettingCommand}" 
-                            TappedCommandParameter="">
+                            TappedCommandParameter="Zone">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
                                 <Label Style="{StaticResource CommonIcon}" 
                                    TextColor="{StaticResource ContrastColor}" 
                                    Text="{x:Static lcModels:FontAwesomeIcon.List}"/>
                             </Grid>
-                            <Label HorizontalOptions="Center" Text="Danh mục"/>
+                            <Label HorizontalOptions="Center" Text="Khu vực"/>
                         </mr:StackLayout>
                     </Grid>
                     <Grid>

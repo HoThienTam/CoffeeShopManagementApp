@@ -7,5 +7,6 @@ namespace Dtos
     public class ZoneDto
     {
         public Guid Id { get; set; }
+        public string Name { get; set; }
     }
 }

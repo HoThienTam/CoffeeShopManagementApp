@@ -23,7 +23,7 @@ namespace ApplicationCore.TableService
             _mapper = mapper;
         }
 
-        public Task<IEnumerable<TableDto>> Handle(GetTablesQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<TableDto>> Handle(GetTablesQuery request, CancellationToken cancellationToken)
         {
             var tables = _context.Tables.Where(c => c.IsDeleted == false).AsNoTracking();
             var tableDtos = _mapper.Map<IEnumerable<TableDto>>(tables);
