@@ -43,7 +43,7 @@ namespace Api.Controllers
             }
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateItem(ZoneDto zoneDto)
+        public async Task<IActionResult> UpdateZone(ZoneDto zoneDto)
         {
             var ok = await _mediator.Send(new UpdateZoneCommand(zoneDto));
             if (ok)

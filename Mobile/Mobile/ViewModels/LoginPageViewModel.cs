@@ -16,6 +16,7 @@ namespace Mobile.ViewModels
         public LoginPageViewModel(InitParams initParams) : base(initParams)
         {
         }
+
         #region UsernameBindProp
         private string _UsernameBindProp = null;
         public string UsernameBindProp

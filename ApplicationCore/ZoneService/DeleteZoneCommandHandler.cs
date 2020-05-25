@@ -29,10 +29,6 @@ namespace ApplicationCore.ZoneService
                 return false;
             }
             zoneFromDb.IsDeleted = true;
-            foreach (var table in zoneFromDb.Tables)
-            {
-                table.IsDeleted = true;
-            }
             if (await _context.SaveChangesAsync() > 0)
             {
                 return true;

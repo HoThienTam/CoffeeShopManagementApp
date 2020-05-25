@@ -9,7 +9,6 @@ namespace Infrastructure.Models
         public string Name { get; set; }
         public Guid ZoneId { get; set; }
         public Zone Zone { get; set; }
-        public Guid InvoiceId { get; set; }
-        public Invoice Invoice { get; set; }
+        public bool IsBeingUsed { get; set; }
     }
 }

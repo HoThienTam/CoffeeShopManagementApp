@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures"
+             xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             mc:Ignorable="d"
+             xmlns:lcModels="clr-namespace:Mobile.Models" 
+             xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input" 
+             xmlns:dataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
+             x:Class="Mobile.Views.TablePage"
+             NavigationPage.HasNavigationBar="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackLayout>
+
+            <Frame Padding="0">
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--Title-->
+                    <Label Text="Chỉnh sửa khu vực" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                    <!--Back icon-->
+                    <mr:Grid TappedCommand="{Binding GoBackCommand}" >
+                        <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
+                    </mr:Grid>
+                    <!--Right text-->
+                    <StackLayout Orientation="Horizontal"  Grid.Column="2">
+                        <mr:Grid TappedCommand="{Binding DeleteCommand}">
+                            <Label Text="{x:Static lcModels:FontAwesomeIcon.Trash}" TextColor="#ef5350" Style="{StaticResource CommonIcon}"/>
+                        </mr:Grid>
+                        <mr:Grid TappedCommand="{Binding SaveCommand}">
+                            <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                        </mr:Grid>
+                    </StackLayout>
+                </Grid>
+            </Frame>
+
+            <Frame VerticalOptions="FillAndExpand">
+                <StackLayout HorizontalOptions="FillAndExpand">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}" HorizontalOptions="FillAndExpand">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Tên khu vực" />
+                                <tlrInput:RadEntry
+                                    HorizontalTextAlignment="End"
+                                    Text="{Binding TempZone.Name}"
+                                    WatermarkText="Tên khu vực" />
+                            </StackLayout>
+                        </tlrPrimitives:RadBorder>
+
+                        <mr:Grid TappedCommand="{Binding AddNewTableCommand}">
+                            <Label Text="{x:Static lcModels:FontAwesomeIcon.PlusCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                        </mr:Grid>
+                    </StackLayout>
+
+                    <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}" VerticalOptions="FillAndExpand">
+                        <dataControls:RadListView
+                            Grid.Row="1"         
+                            Margin="{StaticResource CommonThickness}"
+                            ItemsSource="{Binding TempZone.Tables, Mode=OneWay}">
+                            <dataControls:RadListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Square}" Style="{StaticResource CommonIcon}" FontSize="Header"/>
+                                        <Label Text="{Binding Name}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </dataControls:RadListView.ItemTemplate>
+                        </dataControls:RadListView>
+                    </tlrPrimitives:RadBorder>
+                </StackLayout>
+            </Frame>
+
+        </StackLayout>
+        
+        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
+    </Grid>
+
+</ContentPage>

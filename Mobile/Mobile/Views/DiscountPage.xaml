@@ -9,6 +9,10 @@
              NavigationPage.HasNavigationBar="False"
              x:Name="discountPage">
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
     <StackLayout>
         <Frame Padding="0">
@@ -32,20 +36,20 @@
             </Grid>
         </Frame>
 
-        <Frame Padding="0" Margin="{StaticResource CommonThickness}" BorderColor="{StaticResource MainColor}">
-            <ScrollView>
-                <StackLayout BindableLayout.ItemsSource="{Binding ListDiscountBindProp, Mode=OneWay}" Spacing="1">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate>
-                            <mr:Frame Padding="0" BackgroundColor="{StaticResource MainColor}" TappedCommand="{Binding BindingContext.SelectDiscountCommand,Source={x:Reference discountPage}}" TappedCommandParameter="{Binding}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
+            <Frame Padding="0" Margin="{StaticResource CommonThickness}" BorderColor="{StaticResource MainColor}">
+                <ScrollView>
+                    <StackLayout BindableLayout.ItemsSource="{Binding ListDiscountBindProp, Mode=OneWay}" Spacing="1">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <mr:Frame Padding="0" BackgroundColor="{StaticResource MainColor}" TappedCommand="{Binding BindingContext.SelectDiscountCommand,Source={x:Reference discountPage}}" TappedCommandParameter="{Binding}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
 
-                                    <ffImage:CachedImage
+                                        <ffImage:CachedImage
                                                     Aspect="Fill"
                                                     HeightRequest="80"
                                                     DownsampleToViewSize="true"
@@ -56,139 +60,141 @@
                                                     Margin="0"
                                                     VerticalOptions="Center"/>
 
-                                    <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="{StaticResource CommonHorizontalThickness}">
-                                        <Label Text="{Binding Name}" FontSize="Large" TextColor="{StaticResource ContrastColor}"/>
-                                        <Label Text="{Binding Value, StringFormat='{}{0:C}'}" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
-                                    </StackLayout>
-                                </Grid>
-                            </mr:Frame>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </StackLayout>
-            </ScrollView>
-
-
-        </Frame>
-
-        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
-        <tlrPrimitives:RadPopup.Popup>
-            <tlrPrimitives:RadPopup
+                                        <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="{StaticResource CommonHorizontalThickness}">
+                                            <Label Text="{Binding Name}" FontSize="Large" TextColor="{StaticResource ContrastColor}"/>
+                                            <Label Text="{Binding Value, StringFormat='{}{0:C}'}" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
+                                        </StackLayout>
+                                    </Grid>
+                                </mr:Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </ScrollView>
+                
+            </Frame>
+        
+            <tlrPrimitives:RadPopup.Popup>
+                <tlrPrimitives:RadPopup
                     Placement="Center"
                     IsOpen="{Binding IsOpen}"
                     IsModal="True"
                     OutsideBackgroundColor="#80000000">
-                <Frame WidthRequest="500" HeightRequest="300" CornerRadius="5" Padding="0">
-                    <Grid Style="{StaticResource CommonWrapper}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-
+                    <Frame WidthRequest="500" HeightRequest="300" CornerRadius="5" Padding="0">
                         <Grid Style="{StaticResource CommonWrapper}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
 
-                            <!--Title-->
-                            <Label Text="Mặt hàng" Style="{StaticResource CommonHeader}"/>
-                            <!--Back icon-->
-                            <mr:Grid TappedCommand="{Binding ShowPopUpCommand}" >
-                                <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Times}" />
-                            </mr:Grid>
-                            <!--Right text-->
-                            <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
-                                <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
-                            </mr:Grid>
-                        </Grid>
+                            <Grid Style="{StaticResource CommonWrapper}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
 
-                        <BoxView Grid.Row="1" BackgroundColor="{StaticResource MainColor}" HeightRequest="1" />
+                                <!--Title-->
+                                <Label Text="Mặt hàng" Style="{StaticResource CommonHeader}"/>
+                                <!--Back icon-->
+                                <mr:Grid TappedCommand="{Binding ShowPopUpCommand}" >
+                                    <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Times}" />
+                                </mr:Grid>
+                                <!--Right text-->
+                                <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
+                                    <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                                </mr:Grid>
+                            </Grid>
 
-                        <ScrollView Grid.Row="2" Margin="{StaticResource CommonThickness}">
-                            <StackLayout Spacing="{StaticResource CommonThickness}">
+                            <BoxView Grid.Row="1" BackgroundColor="{StaticResource MainColor}" HeightRequest="1" />
 
-                                <!--Ten giam gia-->
-                                <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="Tên giảm giá" />
-                                        <tlrInput:RadEntry
+                            <ScrollView Grid.Row="2" Margin="{StaticResource CommonThickness}">
+                                <StackLayout Spacing="{StaticResource CommonThickness}">
+
+                                    <!--Ten giam gia-->
+                                    <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="Tên giảm giá" />
+                                            <tlrInput:RadEntry
                                             HorizontalTextAlignment="End"
                                             Text="{Binding DiscountBindProp.Name}"
                                             WatermarkText="Tên giảm giá" />
-                                    </StackLayout>
-                                </tlrPrimitives:RadBorder>
+                                        </StackLayout>
+                                    </tlrPrimitives:RadBorder>
 
-                                <!--  Phan tram  -->
-                                <StackLayout Spacing="0">
-                                    <tlrPrimitives:RadBorder Style="{StaticResource CommonUpperBorder}">
+                                    <!--  Phan tram  -->
+                                    <StackLayout Spacing="0">
+                                        <tlrPrimitives:RadBorder Style="{StaticResource CommonUpperBorder}">
 
-                                        <mr:StackLayout 
+                                            <mr:StackLayout 
                                             TappedCommand="{Binding SelectDiscountTypeCommand}"
                                             TappedCommandParameter="percent"
                                             Margin="{StaticResource CommonHorizontalThickness}" 
                                             Orientation="Horizontal" 
                                             Spacing="{StaticResource CommonThickness}">
 
-                                            <tlrPrimitives:RadCheckBox VerticalOptions="Center" IsChecked="{Binding IsPercentage}" IsEnabled="False"/>
+                                                <tlrPrimitives:RadCheckBox VerticalOptions="Center" IsChecked="{Binding IsPercentage}" IsEnabled="False"/>
 
-                                            <Label Text="Phần trăm" VerticalOptions="Center" />
-                                            <tlrInput:RadNumericInput
+                                                <Label Text="Phần trăm" VerticalOptions="Center" />
+                                                <tlrInput:RadNumericInput
                                                     HorizontalOptions="FillAndExpand"
                                                     ControlTemplate="{StaticResource CustomNumericInput}"
                                                     Maximum="100" Minimum="0"                                  
                                                     Value="{Binding DiscountBindProp.Value, Mode=TwoWay}" />
 
-                                        </mr:StackLayout>
+                                            </mr:StackLayout>
 
-                                    </tlrPrimitives:RadBorder>
-                                
-                                    <!-- Gia tri toi da-->
-                                    <tlrPrimitives:RadBorder IsVisible="{Binding IsPercentage}" Style="{StaticResource CommonLowerBorder}">
-                                        <tlrPrimitives:RadBorder.Triggers>
-                                            <DataTrigger TargetType="tlrPrimitives:RadBorder" Binding="{Binding IsPercentage}" Value="False">
-                                                <Setter Property="CornerRadius" Value="5,5,5,5"/>
-                                            </DataTrigger>
-                                        </tlrPrimitives:RadBorder.Triggers>
-                                        <StackLayout Orientation="Horizontal" Margin="{StaticResource CommonHorizontalThickness}">
-                                            <Label
+                                        </tlrPrimitives:RadBorder>
+
+                                        <!-- Gia tri toi da-->
+                                        <tlrPrimitives:RadBorder IsVisible="{Binding IsPercentage}" Style="{StaticResource CommonLowerBorder}">
+                                            <tlrPrimitives:RadBorder.Triggers>
+                                                <DataTrigger TargetType="tlrPrimitives:RadBorder" Binding="{Binding IsPercentage}" Value="False">
+                                                    <Setter Property="CornerRadius" Value="5,5,5,5"/>
+                                                </DataTrigger>
+                                            </tlrPrimitives:RadBorder.Triggers>
+                                            <StackLayout Orientation="Horizontal" Margin="{StaticResource CommonHorizontalThickness}">
+                                                <Label
                                                 VerticalOptions="Center"
                                                 Text="Giá trị tối đa"/>
-                                            <tlrInput:RadNumericInput
+                                                <tlrInput:RadNumericInput
                                                 HorizontalOptions="FillAndExpand"
                                                 ControlTemplate="{StaticResource CustomNumericInput}"
                                                 Maximum="1000000000" Minimum="0"                                  
                                                 Value="{Binding DiscountBindProp.MaxValue, Mode=TwoWay}" />
-                                        </StackLayout>
-                                    </tlrPrimitives:RadBorder>
-                                </StackLayout>
-                                <!--  So tien  -->
-                                <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                                    <mr:StackLayout  
+                                            </StackLayout>
+                                        </tlrPrimitives:RadBorder>
+                                    </StackLayout>
+                                    <!--  So tien  -->
+                                    <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                                        <mr:StackLayout  
                                         TappedCommand="{Binding SelectDiscountTypeCommand}"
                                         TappedCommandParameter="value"
                                         Margin="{StaticResource CommonHorizontalThickness}" 
                                         Orientation="Horizontal" 
                                         Spacing="{StaticResource CommonThickness}">
-                                        <tlrPrimitives:RadCheckBox IsChecked="{Binding IsValue}" VerticalOptions="Center" IsEnabled="False"/>
+                                            <tlrPrimitives:RadCheckBox IsChecked="{Binding IsValue}" VerticalOptions="Center" IsEnabled="False"/>
 
-                                        <Label Text="Số tiền" VerticalOptions="Center" />
+                                            <Label Text="Số tiền" VerticalOptions="Center" />
 
-                                        <tlrInput:RadNumericInput
+                                            <tlrInput:RadNumericInput
                                             ControlTemplate="{StaticResource CustomNumericInput}"
                                             HorizontalOptions="FillAndExpand" 
                                             Minimum="0"                                        
                                             Maximum="1000000000"                               
                                             Value="{Binding DiscountBindProp.Value, Mode=TwoWay}"/>
-                                    </mr:StackLayout>
-                                </tlrPrimitives:RadBorder>
-                                
-                            </StackLayout>
-                        </ScrollView>
-                    </Grid>
-                </Frame>
-            </tlrPrimitives:RadPopup>
-        </tlrPrimitives:RadPopup.Popup>
-    </StackLayout>
+                                        </mr:StackLayout>
+                                    </tlrPrimitives:RadBorder>
+
+                                </StackLayout>
+                            </ScrollView>
+                        </Grid>
+                    </Frame>
+                </tlrPrimitives:RadPopup>
+            </tlrPrimitives:RadPopup.Popup>
+        </StackLayout>
+        
+        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
+
+    </Grid>
 </ContentPage>

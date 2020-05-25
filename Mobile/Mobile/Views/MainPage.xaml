@@ -52,13 +52,16 @@
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate>
                                         <!--Khu vuc-->
-                                        <mr:Grid Padding="{StaticResource CommonHorizontalThickness}">
+                                        <mr:Grid 
+                                            Padding="{StaticResource CommonHorizontalThickness}"
+                                            TappedCommand="{Binding BindingContext.SelectZoneCommand, Source={x:Reference mainPage}}"
+                                            TappedCommandParameter="{Binding}">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
 
-                                            <Label VerticalOptions="Center" TextColor="{StaticResource ContrastColor}" FontSize="Large" Text="Khu vuc"/>
+                                            <Label VerticalOptions="Center" TextColor="{StaticResource ContrastColor}" FontSize="Large" Text="{Binding Name}"/>
                                         </mr:Grid>
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
@@ -88,6 +91,7 @@
 
                     <!--Danh sach hoa don-->
                     <dataControls:RadListView
+                        IsVisible="{Binding ListInvoiceFrameVisibleBindProp}"
                         Grid.Row="1"         
                         Margin="{StaticResource CommonThickness}"
                         ItemsSource="{Binding ListInvoiceBindProp, Mode=OneWay}">
@@ -144,6 +148,25 @@
                                             Text="Xóa" />
                                     </mr:Grid>
                                 </tlrPrimitives:RadBorder>
+                            </DataTemplate>
+                        </dataControls:RadListView.ItemTemplate>
+                    </dataControls:RadListView>
+
+                    <!--Danh sach hoa don-->
+                    <dataControls:RadListView
+                        Grid.Row="1"         
+                        IsVisible="{Binding ZoneFrameVisibleBindProp}"
+                        Margin="{StaticResource CommonThickness}"
+                        ItemsSource="{Binding CurrentZone.Tables, Mode=OneWay}">
+                        <dataControls:RadListView.LayoutDefinition>
+                            <listView:ListViewGridLayout SpanCount="4" HorizontalItemSpacing="{StaticResource CommonThickness}" VerticalItemSpacing="{StaticResource CommonThickness}"/>
+                        </dataControls:RadListView.LayoutDefinition>
+                        <dataControls:RadListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Label Text="{x:Static lcModels:FontAwesomeIcon.Square}" Style="{StaticResource CommonIcon}" FontSize="Header"/>
+                                    <Label Text="{Binding Name}"/>
+                                </Grid>
                             </DataTemplate>
                         </dataControls:RadListView.ItemTemplate>
                     </dataControls:RadListView>

@@ -138,6 +138,15 @@ namespace Mobile.ViewModels
         }
         #endregion
 
+        #region CurrentZone
+        private ZoneDto _CurrentZone;
+        public ZoneDto CurrentZone
+        {
+            get { return _CurrentZone; }
+            set { SetProperty(ref _CurrentZone, value); }
+        }
+        #endregion
+
         #region ListItemBindProp
         private ObservableCollection<ItemDto> _ListItemBindProp = null;
         public ObservableCollection<ItemDto> ListItemBindProp
@@ -313,6 +322,44 @@ namespace Mobile.ViewModels
         {
             SelectCategoryCommand = new DelegateCommand<CategoryDto>(OnSelectCategory);
             SelectCategoryCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region SelectZoneCommand
+
+        public DelegateCommand<ZoneDto> SelectZoneCommand { get; private set; }
+        private async void OnSelectZone(ZoneDto obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                CurrentZone = obj;
+                ZoneFrameVisibleBindProp = true;
+                ListInvoiceFrameVisibleBindProp = false;
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectZoneCommand()
+        {
+            SelectZoneCommand = new DelegateCommand<ZoneDto>(OnSelectZone);
+            SelectZoneCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion

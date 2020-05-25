@@ -2,48 +2,55 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures"
              mc:Ignorable="d"
              x:Class="Mobile.Views.ZonePage"
              NavigationPage.HasNavigationBar="False"
              x:Name="zonePage"
-             xmlns:lcModels="clr-namespace:Mobile.Models">
-    <StackLayout>
-        <Frame Padding="0">
-            <!-- Navigation bar -->
-            <Grid Style="{StaticResource CommonWrapper}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <!--Title-->
-                <Label Text="Danh sách khu vực" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
-                <!--Back icon-->
-                <mr:Grid TappedCommand="{Binding GoBackCommand}" >
-                    <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
-                </mr:Grid>
-                <!--Right text-->
-                <mr:Grid TappedCommand="{Binding ShowPopUpCommand}" Grid.Column="2">
-                    <Label Text="{x:Static lcModels:FontAwesomeIcon.PlusCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
-                </mr:Grid>
-            </Grid>
-        </Frame>
+             xmlns:lcModels="clr-namespace:Mobile.Models" 
+             xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Frame Padding="0" Margin="{StaticResource CommonThickness}" BorderColor="{StaticResource MainColor}">
-            <ScrollView>
-                <StackLayout BindableLayout.ItemsSource="{Binding ListZoneBindProp, Mode=OneWay}" Spacing="1">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate>
-                            <mr:Frame Padding="0" BackgroundColor="{StaticResource MainColor}" TappedCommand="{Binding BindingContext.SelectZoneCommand, Source={x:Reference zonePage}}" TappedCommandParameter="{Binding}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
+        <StackLayout>
+            <Frame Padding="0">
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--Title-->
+                    <Label Text="Danh sách khu vực" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                    <!--Back icon-->
+                    <mr:Grid TappedCommand="{Binding GoBackCommand}" >
+                        <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
+                    </mr:Grid>
+                    <!--Right text-->
+                    <mr:Grid TappedCommand="{Binding AddNewZoneCommand}" Grid.Column="2">
+                        <Label Text="{x:Static lcModels:FontAwesomeIcon.PlusCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                    </mr:Grid>
+                </Grid>
+            </Frame>
+            
+            <Frame Padding="0" Margin="{StaticResource CommonThickness}" BorderColor="{StaticResource MainColor}">
+                <ScrollView>
+                    <StackLayout BindableLayout.ItemsSource="{Binding ListZoneBindProp, Mode=OneWay}" Spacing="1">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <mr:Frame Padding="0" BackgroundColor="{StaticResource MainColor}" TappedCommand="{Binding BindingContext.SelectZoneCommand, Source={x:Reference zonePage}}" TappedCommandParameter="{Binding}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
 
-                                    <BoxView 
+                                        <BoxView 
                                         HeightRequest="80"
                                         WidthRequest="100"
                                         BackgroundColor="{StaticResource SubColor}"
@@ -51,16 +58,21 @@
                                         Margin="0"
                                         VerticalOptions="Center"/>
 
-                                    <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="{StaticResource CommonHorizontalThickness}">
-                                        <Label Text="{Binding Name}" FontSize="Large" TextColor="{StaticResource ContrastColor}"/>
-                                        <Label Text="{Binding Value, StringFormat='{}{0:C}'}" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
-                                    </StackLayout>
-                                </Grid>
-                            </mr:Frame>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </StackLayout>
-            </ScrollView>
-        </Frame>
-    </StackLayout>
+                                        <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="{StaticResource CommonHorizontalThickness}">
+                                            <Label Text="{Binding Name}" FontSize="Large" TextColor="{StaticResource ContrastColor}"/>
+                                            <Label Text="{Binding Value, StringFormat='{}{0:C}'}" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
+                                        </StackLayout>
+                                    </Grid>
+                                </mr:Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </ScrollView>
+            </Frame>
+        </StackLayout>
+
+        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
+
+    </Grid>
+        
 </ContentPage>

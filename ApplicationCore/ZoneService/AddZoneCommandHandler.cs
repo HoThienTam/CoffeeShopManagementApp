@@ -26,7 +26,12 @@ namespace ApplicationCore.ZoneService
         {
             var zone = _mapper.Map<Zone>(request.ZoneDto);
 
-            await _context.Zones.AddAsync(zone);
+            _context.Zones.Add(zone);
+
+            foreach (var table in zone.Tables)
+            {
+                await _context.Tables.AddAsync(table);
+            }
 
             if (await _context.SaveChangesAsync() > 0)
             {

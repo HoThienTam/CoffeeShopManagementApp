@@ -50,6 +50,9 @@
         <tlrInput:BorderStyle x:Key="EntryBorderStyle" BorderThickness="0"/>
 
         <!--  Common item -->
+        <Style TargetType="Frame">
+            <Setter Property="MinimumHeightRequest" Value="80"/>
+        </Style>
         <Style TargetType="Label">
             <Setter Property="TextColor" Value="Black" />
             <Setter Property="FontSize" Value="Medium" />

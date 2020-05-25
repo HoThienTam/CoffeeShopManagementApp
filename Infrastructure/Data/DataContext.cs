@@ -28,10 +28,7 @@ namespace Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Invoice>()
-                        .HasOne(a => a.Table)
-                        .WithOne(a => a.Invoice)
-                        .HasForeignKey<Table>(c => c.InvoiceId);
+
         }
         public override int SaveChanges()
         {
