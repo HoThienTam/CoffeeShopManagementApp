@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using Xamarin.Forms;
 
 namespace Mobile.ViewModels
 {
@@ -109,7 +110,7 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                TempZone.Tables.Add(new TableDto { Name = "A" });
+                TempZone.Tables.Add(new TableDto { Name = (TempZone.Tables.Count + 1).ToString() });
             }
             catch (Exception e)
             {
@@ -129,7 +130,6 @@ namespace Mobile.ViewModels
         }
 
         #endregion
-
 
         #region DeleteCommand
 
@@ -173,6 +173,46 @@ namespace Mobile.ViewModels
         {
             DeleteCommand = new DelegateCommand<object>(OnDelete);
             DeleteCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region DeleteTableCommand
+
+        public DelegateCommand<TableDto> DeleteTableCommand { get; private set; }
+        private async void OnDeleteTable(TableDto obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                var ok = await DisplayDeleteAlertAsync();
+                if (ok)
+                {
+                    TempZone.Tables.Remove(obj);
+                }
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitDeleteTableCommand()
+        {
+            DeleteTableCommand = new DelegateCommand<TableDto>(OnDeleteTable);
+            DeleteTableCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion

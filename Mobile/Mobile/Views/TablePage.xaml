@@ -8,8 +8,9 @@
              mc:Ignorable="d"
              xmlns:lcModels="clr-namespace:Mobile.Models" 
              xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input" 
-             xmlns:dataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls"
+             xmlns:dataControls="clr-namespace:Telerik.XamarinForms.DataControls;assembly=Telerik.XamarinForms.DataControls" xmlns:listView="clr-namespace:Telerik.XamarinForms.DataControls.ListView;assembly=Telerik.XamarinForms.DataControls"
              x:Class="Mobile.Views.TablePage"
+             x:Name="tablePage"
              NavigationPage.HasNavigationBar="False">
     <Grid>
         <Grid.RowDefinitions>
@@ -33,7 +34,7 @@
                     </mr:Grid>
                     <!--Right text-->
                     <StackLayout Orientation="Horizontal"  Grid.Column="2">
-                        <mr:Grid TappedCommand="{Binding DeleteCommand}">
+                        <mr:Grid TappedCommand="{Binding DeleteZoneCommand}">
                             <Label Text="{x:Static lcModels:FontAwesomeIcon.Trash}" TextColor="#ef5350" Style="{StaticResource CommonIcon}"/>
                         </mr:Grid>
                         <mr:Grid TappedCommand="{Binding SaveCommand}">
@@ -66,12 +67,18 @@
                             Grid.Row="1"         
                             Margin="{StaticResource CommonThickness}"
                             ItemsSource="{Binding TempZone.Tables, Mode=OneWay}">
+                            <dataControls:RadListView.LayoutDefinition>
+                                <listView:ListViewGridLayout SpanCount="5" HorizontalItemSpacing="{StaticResource CommonThickness}" VerticalItemSpacing="{StaticResource CommonThickness}"/>
+                            </dataControls:RadListView.LayoutDefinition>
+                            <dataControls:RadListView.SelectedItemStyle>
+                                <listView:ListViewItemStyle BackgroundColor="Transparent"/>
+                            </dataControls:RadListView.SelectedItemStyle>
                             <dataControls:RadListView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid>
+                                    <mr:Grid LongPressingCommand="{Binding BindingContext.DeleteTableCommand, Source={x:Reference tablePage}}" LongPressingCommandParameter="{Binding}">
                                         <Label Text="{x:Static lcModels:FontAwesomeIcon.Square}" Style="{StaticResource CommonIcon}" FontSize="Header"/>
-                                        <Label Text="{Binding Name}"/>
-                                    </Grid>
+                                        <tlrInput:RadEntry Text="{Binding Name}" HorizontalTextAlignment="Center" TextColor="{StaticResource ContrastColor}" FontSize="Large"/>
+                                    </mr:Grid>
                                 </DataTemplate>
                             </dataControls:RadListView.ItemTemplate>
                         </dataControls:RadListView>
@@ -82,6 +89,7 @@
         </StackLayout>
         
         <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
+        
     </Grid>
 
 </ContentPage>

@@ -152,20 +152,20 @@
                         </dataControls:RadListView.ItemTemplate>
                     </dataControls:RadListView>
 
-                    <!--Danh sach hoa don-->
+                    <!--Danh sach ban-->
                     <dataControls:RadListView
                         Grid.Row="1"         
                         IsVisible="{Binding ZoneFrameVisibleBindProp}"
                         Margin="{StaticResource CommonThickness}"
                         ItemsSource="{Binding CurrentZone.Tables, Mode=OneWay}">
                         <dataControls:RadListView.LayoutDefinition>
-                            <listView:ListViewGridLayout SpanCount="4" HorizontalItemSpacing="{StaticResource CommonThickness}" VerticalItemSpacing="{StaticResource CommonThickness}"/>
+                            <listView:ListViewGridLayout SpanCount="5" HorizontalItemSpacing="{StaticResource CommonThickness}" VerticalItemSpacing="{StaticResource CommonThickness}"/>
                         </dataControls:RadListView.LayoutDefinition>
                         <dataControls:RadListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
                                     <Label Text="{x:Static lcModels:FontAwesomeIcon.Square}" Style="{StaticResource CommonIcon}" FontSize="Header"/>
-                                    <Label Text="{Binding Name}"/>
+                                    <Label Text="{Binding Name}" HorizontalOptions="Center" FontSize="Large" TextColor="{StaticResource ContrastColor}"/>
                                 </Grid>
                             </DataTemplate>
                         </dataControls:RadListView.ItemTemplate>

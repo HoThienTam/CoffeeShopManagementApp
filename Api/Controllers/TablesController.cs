@@ -33,7 +33,7 @@ namespace Api.Controllers
             return Ok(table);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateDiscount(TableDto tableDto)
+        public async Task<IActionResult> CreateTable(TableDto tableDto)
         {
             var table = await _mediator.Send(new AddTableCommand(tableDto));
             if (table != null)
@@ -46,7 +46,7 @@ namespace Api.Controllers
             }
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateDiscount(TableDto tableDto)
+        public async Task<IActionResult> UpdateTable(TableDto tableDto)
         {
             var ok = await _mediator.Send(new UpdateTableCommand(tableDto));
             if (ok)
@@ -60,7 +60,7 @@ namespace Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDiscount(Guid id)
+        public async Task<IActionResult> DeleteTable(Guid id)
         {
             var ok = await _mediator.Send(new DeleteTableCommand(id));
             if (ok)

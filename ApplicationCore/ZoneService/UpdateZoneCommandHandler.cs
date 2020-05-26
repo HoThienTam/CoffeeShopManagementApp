@@ -23,7 +23,7 @@ namespace ApplicationCore.ZoneService
 
         public async Task<bool> Handle(UpdateZoneCommand request, CancellationToken cancellationToken)
         {
-            var zoneFromDb = await _context.Zones.FirstOrDefaultAsync(i => i.Id == request.ZoneDto.Id);
+            var zoneFromDb = await _context.Zones.Include(t => t.Tables).FirstOrDefaultAsync(i => i.Id == request.ZoneDto.Id);
 
             _mapper.Map(request.ZoneDto, zoneFromDb);
 

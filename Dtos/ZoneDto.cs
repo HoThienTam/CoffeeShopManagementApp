@@ -1,7 +1,9 @@
-﻿using Prism.Mvvm;
+﻿using ImTools;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 
 namespace Dtos
@@ -15,7 +17,7 @@ namespace Dtos
         {
             Id = zone.Id;
             Name = zone.Name;
-            Tables = new ObservableCollection<TableDto>(zone.Tables);
+            Tables = new ObservableCollection<TableDto>(zone.Tables.Select(t => new TableDto { Id = t.Id, Name = t.Name }).ToList());
         }
 
         public Guid Id { get; set; }

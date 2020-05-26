@@ -60,7 +60,7 @@
 
                                         <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="{StaticResource CommonHorizontalThickness}">
                                             <Label Text="{Binding Name}" FontSize="Large" TextColor="{StaticResource ContrastColor}"/>
-                                            <Label Text="{Binding Value, StringFormat='{}{0:C}'}" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
+                                            <Label Text="{Binding Tables.Count, StringFormat='{0} bàn'}" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
                                         </StackLayout>
                                     </Grid>
                                 </mr:Frame>
