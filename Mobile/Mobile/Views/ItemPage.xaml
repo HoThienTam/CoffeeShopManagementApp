@@ -9,42 +9,119 @@
              NavigationPage.HasNavigationBar="False"
              x:Class="Mobile.Views.ItemPage"
              x:Name="itemPage">
-    <StackLayout>
-        <Frame Padding="0">
-            <!-- Navigation bar -->
-            <Grid Style="{StaticResource CommonWrapper}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <!--Title-->
-                <Label Text="Danh sách mặt hàng" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
-                <!--Back icon-->
-                <mr:Grid TappedCommand="{Binding GoBackCommand}" >
-                    <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
-                </mr:Grid>
-                <!--Right text-->
-                <mr:Grid TappedCommand="{Binding ShowPopUpCommand}" Grid.Column="2">
-                    <Label Text="{x:Static lcModels:FontAwesomeIcon.PlusCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
-                </mr:Grid>
-            </Grid>
-        </Frame>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Frame Padding="0" Margin="{StaticResource CommonThickness}" BorderColor="{StaticResource MainColor}">
-            <ScrollView>
-                <StackLayout BindableLayout.ItemsSource="{Binding ListItemBindProp, Mode=OneWay}" Spacing="1">
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate>
-                            <mr:Frame Padding="0" BackgroundColor="{StaticResource MainColor}" TappedCommand="{Binding BindingContext.SelectItemCommand,Source={x:Reference itemPage}}" TappedCommandParameter="{Binding}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
+        <StackLayout>
+            <Frame Padding="0">
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--Title-->
+                    <Label Text="{Binding CategoryBindProp.Name}" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                    <!--Back icon-->
+                    <mr:Grid TappedCommand="{Binding GoBackCommand}" >
+                        <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
+                    </mr:Grid>
+                    <!--Right text-->
+                    <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
+                        <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                    </mr:Grid>
+                </Grid>
+            </Frame>
 
-                                    <ffImage:CachedImage
+            <Frame VerticalOptions="FillAndExpand">
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}" HorizontalOptions="FillAndExpand">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Tên danh mục" />
+                                <tlrInput:RadEntry
+                                    HorizontalTextAlignment="End"
+                                    Text="{Binding TempCategory.Name}"
+                                    WatermarkText="Tên khu vực" />
+                            </StackLayout>
+                        </tlrPrimitives:RadBorder>
+
+                        <mr:Grid TappedCommand="{Binding ChangeIconCommand}">
+                            <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}" WidthRequest="60">
+                                <Label Text="{Binding TempCategory.Icon}" Style="{StaticResource CommonIcon}"/>
+                            </tlrPrimitives:RadBorder>
+                            <tlrPrimitives:RadPopup.Popup>
+                                <tlrPrimitives:RadPopup
+                                Placement="Top"
+                                VerticalOffset="5"
+                                IsOpen="{Binding IsOpen}"
+                                IsModal="False">
+                                    <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}" WidthRequest="200" BackgroundColor="White">
+                                        <!--<FlexLayout>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Beer}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Coffee}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.CoffeeTogo}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Cocktail}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Burrito}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.BurgerSoda}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.FrenchFries}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.BreadSlice}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Salad}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Soup}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Pie}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.WineGlass}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Pizza}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.IceCream}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Sandwich}" Style="{StaticResource CommonIcon}"/>
+                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.MugTea}" Style="{StaticResource CommonIcon}"/>
+                                    </FlexLayout>-->
+                                        <dataControls:RadListView ItemsSource="{Binding ListIconBindProp, Mode=OneWay}">
+
+                                            <dataControls:RadListView.LayoutDefinition>
+                                                <listView:ListViewGridLayout HorizontalItemSpacing="{StaticResource CommonThickness}" SpanCount="3" VerticalItemSpacing="{StaticResource CommonThickness}" />
+                                            </dataControls:RadListView.LayoutDefinition>
+
+                                            <dataControls:RadListView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <listView:ListViewTemplateCell>
+                                                        <listView:ListViewTemplateCell.View>
+                                                            <mr:Grid 
+                                                                Style="{StaticResource CommonWrapper}"
+                                                                TappedCommand="{Binding BindingContext.SelectIconCommand, Source={x:Reference itemPage}}"
+                                                                TappedCommandParameter="{Binding}">
+                                                                <Label Style="{StaticResource CommonIcon}" Text="{Binding}"/>
+                                                            </mr:Grid>
+                                                        </listView:ListViewTemplateCell.View>
+                                                    </listView:ListViewTemplateCell>
+                                                </DataTemplate>
+                                            </dataControls:RadListView.ItemTemplate>
+                                        </dataControls:RadListView>
+                                    </tlrPrimitives:RadBorder>
+                                </tlrPrimitives:RadPopup>
+                            </tlrPrimitives:RadPopup.Popup>
+                        </mr:Grid>
+
+                        <mr:Grid TappedCommand="{Binding AddNewItemCommand}">
+                            <Label Text="{x:Static lcModels:FontAwesomeIcon.PlusCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                        </mr:Grid>
+                    </StackLayout>
+
+                    <ScrollView>
+                        <StackLayout BindableLayout.ItemsSource="{Binding TempCategory.Items, Mode=OneWay}" Spacing="1">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <mr:Frame Padding="0" BackgroundColor="{StaticResource MainColor}" TappedCommand="{Binding BindingContext.SelectItemCommand,Source={x:Reference itemPage}}" TappedCommandParameter="{Binding}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <ffImage:CachedImage
                                                     Aspect="Fill"
                                                     HeightRequest="80"
                                                     DownsampleToViewSize="true"
@@ -55,126 +132,22 @@
                                                     Margin="0"
                                                     VerticalOptions="Center"/>
 
-                                    <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="{StaticResource CommonHorizontalThickness}">
-                                        <Label Text="{Binding Name}" FontSize="Large" TextColor="{StaticResource ContrastColor}"/>
-                                        <Label Text="{Binding Price, StringFormat='{}{0:C}'}" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
-                                    </StackLayout>
-                                </Grid>
-                            </mr:Frame>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
+                                            <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="{StaticResource CommonHorizontalThickness}">
+                                                <Label Text="{Binding Name}" FontSize="Large" TextColor="{StaticResource ContrastColor}"/>
+                                                <Label Text="{Binding Price, StringFormat='{}{0:C}'}" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
+                                            </StackLayout>
+                                        </Grid>
+                                    </mr:Frame>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </ScrollView>
                 </StackLayout>
-            </ScrollView>
+            </Frame>
 
-          
-        </Frame>
+        </StackLayout>
+        
         <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
-        <tlrPrimitives:RadPopup.Popup>
-            <tlrPrimitives:RadPopup
-                    Placement="Center"
-                    IsOpen="{Binding IsOpen}"
-                    IsModal="True"
-                    OutsideBackgroundColor="#80000000">
-                <Frame WidthRequest="500" HeightRequest="400" CornerRadius="5" Padding="0">
-                    <Grid Style="{StaticResource CommonWrapper}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
 
-                        <Grid Style="{StaticResource CommonWrapper}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <!--Title-->
-                            <Label Text="Mặt hàng" Style="{StaticResource CommonHeader}"/>
-                            <!--Back icon-->
-                            <mr:Grid TappedCommand="{Binding ShowPopUpCommand}" >
-                                <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Times}" />
-                            </mr:Grid>
-                            <!--Right text-->
-                            <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
-                                <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
-                            </mr:Grid>
-                        </Grid>
-
-                        <BoxView Grid.Row="1" BackgroundColor="{StaticResource MainColor}" HeightRequest="1" />
-
-                        <ScrollView Grid.Row="2" Margin="{StaticResource CommonThickness}">
-                            <StackLayout Spacing="{StaticResource CommonThickness}">
-
-                                <!--  Hinh  -->
-                                <ffImage:CachedImage
-                                            Aspect="Fill"
-                                            DownsampleToViewSize="true"
-                                            HeightRequest="120"
-                                            BackgroundColor="{StaticResource MainColor}"
-                                            HorizontalOptions="Center"
-                                            Source="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/275px-A_small_cup_of_coffee.JPG"
-                                            VerticalOptions="Center"
-                                            WidthRequest="150" />
-
-                                <!--  ten mat hang  -->
-                                <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                                    <StackLayout Orientation="Horizontal" Spacing="0">
-                                        <Label  Text="Tên mặt hàng" HorizontalOptions="Start"/>
-                                        <tlrInput:RadEntry
-                                            HorizontalTextAlignment="End"
-                                            IsTabStop="False"
-                                            Text="{Binding ItemBindProp.Name, Mode=TwoWay}"
-                                            WatermarkText="Tên mặt hàng" />
-                                    </StackLayout>
-
-                                </tlrPrimitives:RadBorder>
-
-                                <!--  Danh muc  -->
-                                <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                                    <mr:StackLayout Spacing="0" Orientation="Horizontal" TappedCommand="{Binding SelectCategoryCommand}">
-
-                                        <Label Text="Danh mục" HorizontalOptions="StartAndExpand"/>
-
-                                        <tlrInput:RadEntry                                          
-                                            InputTransparent="True"
-                                            Text="{Binding CategoryBindProp.Name}"
-                                            HorizontalTextAlignment="End"
-                                            WatermarkText="Chọn danh mục" />
-
-                                        <Label HorizontalOptions="End"
-                                               Margin="{StaticResource CommonThickness}"
-                                               Style="{StaticResource CommonIcon}"
-                                               Text="{x:Static lcModels:FontAwesomeIcon.AngleRight}" />
-                                    </mr:StackLayout>
-                                </tlrPrimitives:RadBorder>
-
-                                <!--  Loai gia  -->
-                                <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label HorizontalOptions="StartAndExpand" Text="Giá niêm yết" />
-                                        <tlrInput:RadNumericInput
-                                                ControlTemplate="{StaticResource CustomNumericInput}"
-                                                HorizontalOptions="FillAndExpand"
-                                                Maximum="1000000000" Minimum="0" 
-                                                Value="{Binding ItemBindProp.Price, Mode=TwoWay}"/>
-                                    </StackLayout>
-                                </tlrPrimitives:RadBorder>
-                                <tlrInput:RadButton
-                                    TextColor="White"
-                                    BackgroundColor="#ef5350"
-                                    Command="{Binding DeleteItemCommand, Mode=OneWay}"
-                                    HorizontalOptions="Center"
-                                    Text="Xóa"/>
-                                                               
-                            </StackLayout>
-                        </ScrollView>
-                    </Grid>
-                </Frame>
-            </tlrPrimitives:RadPopup>
-        </tlrPrimitives:RadPopup.Popup>
-               
-    </StackLayout>
-    
+    </Grid>
 </ContentPage>

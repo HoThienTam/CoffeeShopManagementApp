@@ -1,6 +1,8 @@
 ﻿using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 
 namespace Dtos
@@ -16,12 +18,7 @@ namespace Dtos
             Id = categoryDto.Id;
             Name = categoryDto.Name;
             Icon = categoryDto.Icon;
-        }
-        public CategoryDto(CategoryForCreateDto categoryDto)
-        {
-            Id = categoryDto.Id;
-            Name = categoryDto.Name;
-            Icon = categoryDto.Icon;
+            Items = new ObservableCollection<ItemDto>(categoryDto.Items.Select(t => new ItemDto { Id = t.Id, Name = t.Name, Image = t.Image }).ToList());
         }
 
         public Guid Id { get; set; }

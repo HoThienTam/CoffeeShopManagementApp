@@ -33,13 +33,13 @@ namespace Api.Controllers
             return Ok(item);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateItem(ItemForCreateDto itemDto)
+        public async Task<IActionResult> CreateItem(ItemDto itemDto)
         {
             var itemToReturn = await _mediator.Send(new AddItemCommand(itemDto));
             return CreatedAtRoute(nameof(GetItem), new { id = itemToReturn.Id }, itemToReturn);
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateItem(ItemForCreateDto itemDto)
+        public async Task<IActionResult> UpdateItem(ItemDto itemDto)
         {
             var ok = await _mediator.Send(new UpdateItemCommand(itemDto));
             if (ok)

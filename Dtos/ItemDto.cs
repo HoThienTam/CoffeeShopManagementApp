@@ -19,8 +19,6 @@ namespace Dtos
             IsManaged = itemDto.IsManaged;
             MinQuantity = itemDto.MinQuantity;
             CurrentQuantity = itemDto.CurrentQuantity;
-            CategoryId = itemDto.CategoryId;
-            Category = itemDto.Category;
         }
 
         #region Id
@@ -54,25 +52,5 @@ namespace Dtos
         public bool IsManaged { get; set; }
         public int MinQuantity { get; set; }
         public int CurrentQuantity { get; set; }
-
-        #region CategoryId
-        private Guid _CategoryId = Guid.Empty;
-
-        public Guid CategoryId
-        {
-            get { return _CategoryId; }
-            set { SetProperty(ref _CategoryId, value); }
-        }
-        #endregion
-
-        #region Category
-        private CategoryForCreateDto _Category;
-        public CategoryForCreateDto Category
-        {
-            get { return _Category; }
-            set { SetProperty(ref _Category, value); }
-        }
-        #endregion
-
     }
 }

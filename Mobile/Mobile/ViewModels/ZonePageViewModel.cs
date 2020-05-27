@@ -52,18 +52,10 @@ namespace Mobile.ViewModels
                 {
                     HttpResponseMessage response = new HttpResponseMessage();
                     response = await client.PostAsync(Properties.Resources.BaseUrl + "zones/", content);
-                    switch (response.StatusCode)
+                    if (response.IsSuccessStatusCode)
                     {
-                        case HttpStatusCode.Created:
-                            var zone = JsonConvert.DeserializeObject<ZoneDto>(await response.Content.ReadAsStringAsync());
-                            ListZoneBindProp.Add(zone);
-                            break;
-                        case HttpStatusCode.BadRequest:
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await response.Content.ReadAsStringAsync()}", "Đóng");
-                            break;
-                        default:
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"Lỗi hệ thống!", "Đóng");
-                            break;
+                        var zone = JsonConvert.DeserializeObject<ZoneDto>(await response.Content.ReadAsStringAsync());
+                        ListZoneBindProp.Add(zone);
                     }
                 };
             }

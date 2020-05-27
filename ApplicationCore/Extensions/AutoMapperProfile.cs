@@ -13,9 +13,7 @@ namespace SharedKernel
         {
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<Category, CategoryDto>().ReverseMap();
-            CreateMap<Category, CategoryForCreateDto>().ReverseMap();
             CreateMap<Item, ItemDto>().ReverseMap();
-            CreateMap<Item, ItemForCreateDto>().ReverseMap();
             CreateMap<Item, ItemForInvoiceDto>().ReverseMap();
             CreateMap<Invoice, InvoiceDto>().ReverseMap();
             CreateMap<Invoice, InvoiceForCreateDto>().ReverseMap();

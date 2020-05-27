@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             mc:Ignorable="d"
+             xmlns:lcModels="clr-namespace:Mobile.Models"
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures" xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input" xmlns:ffImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="Mobile.Views.NewItemPage"
+             NavigationPage.HasNavigationBar="False">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackLayout>
+            <Frame Padding="0">
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--Title-->
+                    <Label Text="{Binding Title}" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                    <!--Back icon-->
+                    <mr:Grid TappedCommand="{Binding GoBackCommand}" >
+                        <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
+                    </mr:Grid>
+                    <!--Right text-->
+                    <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
+                        <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                    </mr:Grid>
+                </Grid>
+            </Frame>
+            <Frame VerticalOptions="FillAndExpand">
+                <StackLayout>
+                    <ffImage:CachedImage
+                        Aspect="Fill"
+                        HeightRequest="120"
+                        DownsampleToViewSize="true"
+                        WidthRequest="150"
+                        BackgroundColor="{StaticResource MainColor}"
+                        HorizontalOptions="Center"
+                        Source="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/275px-A_small_cup_of_coffee.JPG" 
+                        Margin="0"
+                        VerticalOptions="Center"/>
+                    <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Tên mặt hàng" />
+                            <tlrInput:RadEntry
+                                    HorizontalTextAlignment="End"
+                                    Text="{Binding TempCategory.Name}"
+                                    WatermarkText="Tên mặt hàng" />
+                        </StackLayout>
+                    </tlrPrimitives:RadBorder>
+                    <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Giá" />
+                            <tlrInput:RadNumericInput 
+                                ControlTemplate="{StaticResource CustomNumericInput}"
+                                HorizontalOptions="EndAndExpand"
+                                Value="0" />
+                        </StackLayout>
+                    </tlrPrimitives:RadBorder>
+                    <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Số lượng ban đầu" />
+                            <tlrInput:RadNumericInput 
+                                ControlTemplate="{StaticResource CustomNumericInput}"
+                                HorizontalOptions="EndAndExpand"
+                                Value="0" />
+                        </StackLayout>
+                    </tlrPrimitives:RadBorder>
+                    <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Số lượng tối thiểu " />
+                            <tlrInput:RadNumericInput 
+                                ControlTemplate="{StaticResource CustomNumericInput}"
+                                HorizontalOptions="EndAndExpand"
+                                Value="0" />
+                        </StackLayout>
+                    </tlrPrimitives:RadBorder>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+
+        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
+    </Grid>
+</ContentPage>

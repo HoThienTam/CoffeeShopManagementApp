@@ -130,7 +130,7 @@
             <Setter Property="AnimationContentWidthRequest" Value="100" />
             <Setter Property="AnimationType" Value="Animation4" />
             <Setter Property="IsBusy" Value="True" />
-            <Setter Property="AnimationContentColor" Value="{StaticResource MainColor}" />
+            <Setter Property="AnimationContentColor" Value="#e67e22" />
             <Setter Property="IsVisible" Value="{Binding IsBusy, Mode=OneWay}" />
         </Style>
 

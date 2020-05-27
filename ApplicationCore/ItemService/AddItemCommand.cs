@@ -8,11 +8,11 @@ namespace ApplicationCore.ItemService
 {
     public class AddItemCommand : IRequest<ItemDto>
     {
-        public AddItemCommand(ItemForCreateDto itemDto)
+        public AddItemCommand(ItemDto itemDto)
         {
             ItemDto = itemDto;
         }
 
-        public ItemForCreateDto ItemDto { get; set; }
+        public ItemDto ItemDto { get; set; }
     }
 }

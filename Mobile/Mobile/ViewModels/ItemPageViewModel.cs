@@ -7,6 +7,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.SymbolStore;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -18,32 +19,27 @@ namespace Mobile.ViewModels
     {
         public ItemPageViewModel(InitParams initParams) : base(initParams)
         {
+            ListIconBindProp = new List<string>();
+            ListIconBindProp.Add(FontAwesomeIcon.Coffee);
+            ListIconBindProp.Add(FontAwesomeIcon.CoffeeTogo);
+            ListIconBindProp.Add(FontAwesomeIcon.Cocktail);
+            ListIconBindProp.Add(FontAwesomeIcon.FrenchFries);
+            ListIconBindProp.Add(FontAwesomeIcon.Beer);
+            ListIconBindProp.Add(FontAwesomeIcon.BreadSlice);
+            ListIconBindProp.Add(FontAwesomeIcon.Pie);
+            ListIconBindProp.Add(FontAwesomeIcon.Soup);
+            ListIconBindProp.Add(FontAwesomeIcon.Salad);
+            ListIconBindProp.Add(FontAwesomeIcon.IceCream);
+            ListIconBindProp.Add(FontAwesomeIcon.Pizza);
+            ListIconBindProp.Add(FontAwesomeIcon.Sandwich);
         }
 
-        #region ItemBindProp
-        private ItemDto _ItemBindProp = null;
-        public ItemDto ItemBindProp
+        #region ListIconBindProp
+        private List<string> _ListIconBindProp;
+        public List<string> ListIconBindProp
         {
-            get { return _ItemBindProp; }
-            set { SetProperty(ref _ItemBindProp, value); }
-        }
-        #endregion
-
-        #region TempItem
-        private ItemDto _TempItem = null;
-        public ItemDto TempItem
-        {
-            get { return _TempItem; }
-            set { SetProperty(ref _TempItem, value); }
-        }
-        #endregion
-
-        #region ListCategoryBindProp
-        private ObservableCollection<CategoryDto> _ListCategoryBindProp = null;
-        public ObservableCollection<CategoryDto> ListCategoryBindProp
-        {
-            get { return _ListCategoryBindProp; }
-            set { SetProperty(ref _ListCategoryBindProp, value); }
+            get { return _ListIconBindProp; }
+            set { SetProperty(ref _ListIconBindProp, value); }
         }
         #endregion
 
@@ -56,12 +52,12 @@ namespace Mobile.ViewModels
         }
         #endregion
 
-        #region IsOpen
-        private bool _IsOpen = false;
-        public bool IsOpen
+        #region TempCategory
+        private CategoryDto _TempCategory;
+        public CategoryDto TempCategory
         {
-            get { return _IsOpen; }
-            set { SetProperty(ref _IsOpen, value); }
+            get { return _TempCategory; }
+            set { SetProperty(ref _TempCategory, value); }
         }
         #endregion
 
@@ -74,48 +70,13 @@ namespace Mobile.ViewModels
         }
         #endregion
 
-        #region ShowPopUpCommand
-
-        public DelegateCommand<object> ShowPopUpCommand { get; private set; }
-        private async void OnShowPopUp(object obj)
+        #region IsOpen
+        private bool _IsOpen = false;
+        public bool IsOpen
         {
-            if (IsBusy)
-            {
-                return;
-            }
-
-            IsBusy = true;
-
-            try
-            {
-                // Thuc hien cong viec tai day
-                if (IsOpen)
-                {
-                    IsOpen = false;
-                }
-                else
-                {
-                    IsOpen = true;
-                    ItemBindProp = new ItemDto();
-                }
-            }
-            catch (Exception e)
-            {
-                await ShowErrorAsync(e);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-
+            get { return _IsOpen; }
+            set { SetProperty(ref _IsOpen, value); }
         }
-        [Initialize]
-        private void InitShowPopUpCommand()
-        {
-            ShowPopUpCommand = new DelegateCommand<object>(OnShowPopUp);
-            ShowPopUpCommand.ObservesCanExecute(() => IsNotBusy);
-        }
-
         #endregion
 
         #region SaveCommand
@@ -127,7 +88,7 @@ namespace Mobile.ViewModels
             {
                 return false;
             }
-            if (string.IsNullOrWhiteSpace(ItemBindProp.Name))
+            if (string.IsNullOrWhiteSpace(CategoryBindProp.Name))
             {
                 return false;
             }
@@ -140,43 +101,20 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                var itemForCreate = new ItemForCreateDto(ItemBindProp);
-                itemForCreate.CategoryId = CategoryBindProp.Id;
-                var json = JsonConvert.SerializeObject(itemForCreate);
+                var json = JsonConvert.SerializeObject(TempCategory);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 // Thuc hien cong viec tai day
                 using (var client = new HttpClient())
                 {
                     HttpResponseMessage response = new HttpResponseMessage();
-                    if (ItemBindProp.Id == Guid.Empty)
+                    response = await client.PutAsync(Properties.Resources.BaseUrl + "categories/", content);
+                    if (response.IsSuccessStatusCode)
                     {
-                        response = await client.PostAsync(Properties.Resources.BaseUrl + "items/", content);
-                    }
-                    else
-                    {
-                        response = await client.PutAsync(Properties.Resources.BaseUrl + "items/", content);
-                    }
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.NoContent:
-                            TempItem.Name = ItemBindProp.Name;
-                            TempItem.Price = ItemBindProp.Price;
-                            TempItem.Category = new CategoryForCreateDto(CategoryBindProp);
-                            break;
-                        case HttpStatusCode.Created:
-                            var item = JsonConvert.DeserializeObject<ItemDto>(await response.Content.ReadAsStringAsync());
-                            ListItemBindProp.Add(item);
-                            ItemBindProp = new ItemDto();
-                            break;
-                        case HttpStatusCode.BadRequest:
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await response.Content.ReadAsStringAsync()}", "Đóng");
-                            break;
-                        default:
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"Lỗi hệ thống!", "Đóng");
-                            break;
+                        CategoryBindProp.Name = TempCategory.Name;
+                        CategoryBindProp.Icon = TempCategory.Icon;
+                        await NavigationService.GoBackAsync();
                     }
                 };
-                IsOpen = false;
             }
             catch (Exception e)
             {
@@ -200,7 +138,7 @@ namespace Mobile.ViewModels
         #region SelectItemCommand
 
         public DelegateCommand<ItemDto> SelectItemCommand { get; private set; }
-        private async void OnSelectItem(ItemDto itemDto)
+        private async void OnSelectItem(ItemDto obj)
         {
             if (IsBusy)
             {
@@ -212,10 +150,9 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                TempItem = itemDto;
-                ItemBindProp = new ItemDto(itemDto);
-                CategoryBindProp = new CategoryDto(ItemBindProp.Category);
-                IsOpen = true;
+                var param = new NavigationParameters();
+                param.Add("ItemBindProp", obj);
+                await NavigationService.NavigateAsync(nameof(NewItemPage), param);
             }
             catch (Exception e)
             {
@@ -236,10 +173,10 @@ namespace Mobile.ViewModels
 
         #endregion
 
-        #region DeleteItemCommand
+        #region AddNewItemCommand
 
-        public DelegateCommand<ItemDto> DeleteItemCommand { get; private set; }
-        private async void OnDeleteItem(ItemDto itemDto)
+        public DelegateCommand<object> AddNewItemCommand { get; private set; }
+        private async void OnAddNewItem(object obj)
         {
             if (IsBusy)
             {
@@ -251,17 +188,7 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                using (var client = new HttpClient())
-                {
-                    HttpResponseMessage response = new HttpResponseMessage();
-                    response = await client.DeleteAsync(Properties.Resources.BaseUrl + "items/" + ItemBindProp.Id);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        ListItemBindProp.Remove(TempItem);
-                    }
-                }
-                IsOpen = false;
+                await NavigationService.NavigateAsync(nameof(NewItemPage));
             }
             catch (Exception e)
             {
@@ -274,18 +201,18 @@ namespace Mobile.ViewModels
 
         }
         [Initialize]
-        private void InitDeleteItemCommand()
+        private void InitAddNewItemCommand()
         {
-            DeleteItemCommand = new DelegateCommand<ItemDto>(OnDeleteItem);
-            DeleteItemCommand.ObservesCanExecute(() => IsNotBusy);
+            AddNewItemCommand = new DelegateCommand<object>(OnAddNewItem);
+            AddNewItemCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion
 
-        #region SelectCategoryCommand
+        #region ChangeIconCommand
 
-        public DelegateCommand<object> SelectCategoryCommand { get; private set; }
-        private async void OnSelectCategory(object obj)
+        public DelegateCommand<object> ChangeIconCommand { get; private set; }
+        private async void OnChangeIcon(object obj)
         {
             if (IsBusy)
             {
@@ -297,12 +224,7 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                IsOpen = false;
-                var param = new NavigationParameters();
-                param.Add(nameof(ListCategoryBindProp), ListCategoryBindProp);
-                param.Add(nameof(CategoryBindProp), CategoryBindProp);
-                param.Add("Page", nameof(ItemPage));
-                await NavigationService.NavigateAsync(nameof(CategoryPage), param);
+                IsOpen = true;
             }
             catch (Exception e)
             {
@@ -315,10 +237,46 @@ namespace Mobile.ViewModels
 
         }
         [Initialize]
-        private void InitSelectCategoryCommand()
+        private void InitChangeIconCommand()
         {
-            SelectCategoryCommand = new DelegateCommand<object>(OnSelectCategory);
-            SelectCategoryCommand.ObservesCanExecute(() => IsNotBusy);
+            ChangeIconCommand = new DelegateCommand<object>(OnChangeIcon);
+            ChangeIconCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region SelectIconCommand
+
+        public DelegateCommand<string> SelectIconCommand { get; private set; }
+        private async void OnSelectIcon(string obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                TempCategory.Icon = obj;
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectIconCommand()
+        {
+            SelectIconCommand = new DelegateCommand<string>(OnSelectIcon);
+            SelectIconCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion
@@ -328,13 +286,9 @@ namespace Mobile.ViewModels
             switch (parameters.GetNavigationMode())
             {
                 case NavigationMode.Back:
-                    IsOpen = true;
-                    if (parameters.ContainsKey("Category"))
-                    {
-                        CategoryBindProp = parameters["Category"] as CategoryDto;
-                    }
                     break;
                 case NavigationMode.New:
+                    TempCategory = new CategoryDto(CategoryBindProp);
                     break;
                 case NavigationMode.Forward:
                     break;
