@@ -61,15 +61,6 @@ namespace Mobile.ViewModels
         }
         #endregion
 
-        #region ListItemBindProp
-        private ObservableCollection<ItemDto> _ListItemBindProp = null;
-        public ObservableCollection<ItemDto> ListItemBindProp
-        {
-            get { return _ListItemBindProp; }
-            set { SetProperty(ref _ListItemBindProp, value); }
-        }
-        #endregion
-
         #region IsOpen
         private bool _IsOpen = false;
         public bool IsOpen
@@ -112,6 +103,7 @@ namespace Mobile.ViewModels
                     {
                         CategoryBindProp.Name = TempCategory.Name;
                         CategoryBindProp.Icon = TempCategory.Icon;
+                        CategoryBindProp.Items = TempCategory.Items;
                         await NavigationService.GoBackAsync();
                     }
                 };
@@ -151,6 +143,7 @@ namespace Mobile.ViewModels
             {
                 // Thuc hien cong viec tai day
                 var param = new NavigationParameters();
+                param.Add(nameof(CategoryBindProp), CategoryBindProp);
                 param.Add("ItemBindProp", obj);
                 await NavigationService.NavigateAsync(nameof(NewItemPage), param);
             }
@@ -188,7 +181,9 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                await NavigationService.NavigateAsync(nameof(NewItemPage));
+                var param = new NavigationParameters();
+                param.Add(nameof(CategoryBindProp), CategoryBindProp);
+                await NavigationService.NavigateAsync(nameof(NewItemPage), param);
             }
             catch (Exception e)
             {
@@ -281,11 +276,75 @@ namespace Mobile.ViewModels
 
         #endregion
 
+
+        #region DeleteCommand
+
+        public DelegateCommand<object> DeleteCommand { get; private set; }
+        private async void OnDelete(object obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                var ok = await DisplayDeleteAlertAsync();
+                if (ok)
+                {
+                    using (var client = new HttpClient())
+                    {
+                        HttpResponseMessage response = new HttpResponseMessage();
+
+                        response = await client.DeleteAsync(Properties.Resources.BaseUrl + "categories/" + TempCategory.Id);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var param = new NavigationParameters();
+                            param.Add(nameof(CategoryBindProp), CategoryBindProp);
+                            await NavigationService.GoBackAsync(param);
+                        }
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitDeleteCommand()
+        {
+            DeleteCommand = new DelegateCommand<object>(OnDelete);
+            DeleteCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             switch (parameters.GetNavigationMode())
             {
                 case NavigationMode.Back:
+                    if (parameters.ContainsKey("ItemBindProp"))
+                    {
+                        var item = parameters["ItemBindProp"] as ItemDto;
+                        TempCategory.Items.Add(item);
+                        CategoryBindProp.Items.Add(item);
+                    }
+                    if (parameters.ContainsKey("Deleted"))
+                    {
+                        var item = parameters["Deleted"] as ItemDto;
+                        TempCategory.Items.Remove(item);
+                        CategoryBindProp.Items.Remove(item);
+                    }
                     break;
                 case NavigationMode.New:
                     TempCategory = new CategoryDto(CategoryBindProp);

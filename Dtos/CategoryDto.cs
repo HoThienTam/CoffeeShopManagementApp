@@ -18,7 +18,15 @@ namespace Dtos
             Id = categoryDto.Id;
             Name = categoryDto.Name;
             Icon = categoryDto.Icon;
-            Items = new ObservableCollection<ItemDto>(categoryDto.Items.Select(t => new ItemDto { Id = t.Id, Name = t.Name, Image = t.Image }).ToList());
+            Items = new ObservableCollection<ItemDto>(categoryDto.Items.Select(t => new ItemDto 
+            { 
+                Id = t.Id,
+                Name = t.Name,
+                Image = t.Image,
+                Price = t.Price, 
+                IsManaged = t.IsManaged,
+                MinQuantity = t.MinQuantity 
+            }).ToList());
         }
 
         public Guid Id { get; set; }
@@ -42,8 +50,8 @@ namespace Dtos
         #endregion
 
         #region Items
-        private ICollection<ItemDto> _Items;
-        public ICollection<ItemDto> Items
+        private ObservableCollection<ItemDto> _Items;
+        public ObservableCollection<ItemDto> Items
         {
             get { return _Items; }
             set { SetProperty(ref _Items, value); }

@@ -22,7 +22,6 @@ namespace Mobile.ViewModels
         public MainPageViewModel(InitParams initParams) : base(initParams)
         {
             ListCategoryBindProp = new ObservableCollection<CategoryDto>();
-            ListItemBindProp = new ObservableCollection<ItemDto>();
             ListDiscountBindProp = new ObservableCollection<DiscountDto>();
             ListInvoiceBindProp = new ObservableCollection<InvoiceDto>();
             ListZoneBindProp = new ObservableCollection<ZoneDto>();
@@ -147,15 +146,6 @@ namespace Mobile.ViewModels
         }
         #endregion
 
-        #region ListItemBindProp
-        private ObservableCollection<ItemDto> _ListItemBindProp = null;
-        public ObservableCollection<ItemDto> ListItemBindProp
-        {
-            get { return _ListItemBindProp; }
-            set { SetProperty(ref _ListItemBindProp, value); }
-        }
-        #endregion
-
         #region IsEditing
         private bool _IsEditing = false;
         public bool IsEditing
@@ -248,11 +238,6 @@ namespace Mobile.ViewModels
                     case "Category":
                         param.Add(nameof(ListCategoryBindProp), ListCategoryBindProp);
                         await NavigationService.NavigateAsync(nameof(CategoryPage), param);
-                        break;
-                    case "Item":
-                        param.Add(nameof(ListCategoryBindProp), ListCategoryBindProp);
-                        param.Add(nameof(ListItemBindProp), ListItemBindProp);
-                        await NavigationService.NavigateAsync(nameof(ItemPage), param);
                         break;
                     case "Discount":
                         param.Add(nameof(ListDiscountBindProp), ListDiscountBindProp);
@@ -580,12 +565,11 @@ namespace Mobile.ViewModels
                     using (var client = new HttpClient())
                     {
                         var categoryTask = client.GetAsync(Properties.Resources.BaseUrl + "categories/");
-                        var itemTask = client.GetAsync(Properties.Resources.BaseUrl + "items/");
                         var discountTask = client.GetAsync(Properties.Resources.BaseUrl + "discounts/");
                         var invoiceTask = client.GetAsync(Properties.Resources.BaseUrl + "invoices/");
                         var zoneTask = client.GetAsync(Properties.Resources.BaseUrl + "zones/");
 
-                        var allTasks = new List<Task> { categoryTask, itemTask, discountTask, invoiceTask, zoneTask };
+                        var allTasks = new List<Task> { categoryTask, discountTask, invoiceTask, zoneTask };
                         while (allTasks.Any())
                         {
                             Task finished = await Task.WhenAny(allTasks);
@@ -602,21 +586,6 @@ namespace Mobile.ViewModels
                                 else
                                 {
                                     await PageDialogService.DisplayAlertAsync("Lỗi", $"{await categoryTask.Result.Content.ReadAsStringAsync()}", "Đóng");
-                                }
-                            }
-                            else if (finished == itemTask)
-                            {
-                                if (itemTask.Result.IsSuccessStatusCode)
-                                {
-                                    var items = JsonConvert.DeserializeObject<IEnumerable<ItemDto>>(await itemTask.Result.Content.ReadAsStringAsync());
-                                    foreach (var item in items)
-                                    {
-                                        ListItemBindProp.Add(item);
-                                    }
-                                }
-                                else
-                                {
-                                    await PageDialogService.DisplayAlertAsync("Lỗi", $"{await itemTask.Result.Content.ReadAsStringAsync()}", "Đóng");
                                 }
                             }
                             else if (finished == discountTask)

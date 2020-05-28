@@ -30,9 +30,14 @@
                         <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
                     </mr:Grid>
                     <!--Right text-->
-                    <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
-                        <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
-                    </mr:Grid>
+                    <StackLayout Orientation="Horizontal" Grid.Column="2">
+                        <mr:Grid TappedCommand="{Binding DeleteCommand}" IsVisible="{Binding IsEditing}">
+                            <Label Text="{x:Static lcModels:FontAwesomeIcon.Trash}" TextColor="#ef5350" Style="{StaticResource CommonIcon}"/>
+                        </mr:Grid>
+                        <mr:Grid TappedCommand="{Binding SaveCommand}" >
+                            <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                        </mr:Grid>
+                    </StackLayout>
                 </Grid>
             </Frame>
 
@@ -45,7 +50,7 @@
                                 <tlrInput:RadEntry
                                     HorizontalTextAlignment="End"
                                     Text="{Binding TempCategory.Name}"
-                                    WatermarkText="Tên khu vực" />
+                                    WatermarkText="Tên danh mục" />
                             </StackLayout>
                         </tlrPrimitives:RadBorder>
 

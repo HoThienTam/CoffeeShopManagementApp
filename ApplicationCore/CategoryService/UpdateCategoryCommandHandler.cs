@@ -23,7 +23,7 @@ namespace ApplicationCore.CategoryService
 
         public async Task<bool> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
         {
-            var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryDto.Id);
+            var category = await _context.Categories.Include(c => c.Items).FirstOrDefaultAsync(c => c.Id == request.CategoryDto.Id);
 
             _mapper.Map(request.CategoryDto, category);
 

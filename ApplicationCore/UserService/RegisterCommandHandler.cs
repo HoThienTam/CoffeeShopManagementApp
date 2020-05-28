@@ -20,6 +20,7 @@ namespace ApplicationCore.UserService
 
         public RegisterCommandHandler(DataContext context, IMapper mapper)
         {
+            _context = context;
             _mapper = mapper;
         }
 

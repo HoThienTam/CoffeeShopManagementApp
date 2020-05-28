@@ -30,14 +30,25 @@
                         <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
                     </mr:Grid>
                     <!--Right text-->
-                    <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
-                        <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
-                    </mr:Grid>
+                    <StackLayout Orientation="Horizontal" Grid.Column="2">
+                        <mr:Grid TappedCommand="{Binding DeleteCommand}" IsVisible="{Binding IsEditing}">
+                            <Label Text="{x:Static lcModels:FontAwesomeIcon.Trash}" TextColor="#ef5350" Style="{StaticResource CommonIcon}"/>
+                        </mr:Grid>
+                        <mr:Grid TappedCommand="{Binding SaveCommand}" >
+                            <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                        </mr:Grid>
+                    </StackLayout>
                 </Grid>
             </Frame>
             <Frame VerticalOptions="FillAndExpand">
-                <StackLayout>
-                    <ffImage:CachedImage
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackLayout Grid.Column="1">
+                        <ffImage:CachedImage
                         Aspect="Fill"
                         HeightRequest="120"
                         DownsampleToViewSize="true"
@@ -47,43 +58,63 @@
                         Source="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/275px-A_small_cup_of_coffee.JPG" 
                         Margin="0"
                         VerticalOptions="Center"/>
-                    <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="Tên mặt hàng" />
-                            <tlrInput:RadEntry
+                        <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Tên mặt hàng" />
+                                <tlrInput:RadEntry
                                     HorizontalTextAlignment="End"
-                                    Text="{Binding TempCategory.Name}"
+                                    Text="{Binding TempItem.Name}"
                                     WatermarkText="Tên mặt hàng" />
-                        </StackLayout>
-                    </tlrPrimitives:RadBorder>
-                    <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="Giá" />
-                            <tlrInput:RadNumericInput 
+                            </StackLayout>
+                        </tlrPrimitives:RadBorder>
+                        <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Giá" />
+                                <tlrInput:RadNumericInput 
                                 ControlTemplate="{StaticResource CustomNumericInput}"
-                                HorizontalOptions="EndAndExpand"
-                                Value="0" />
-                        </StackLayout>
-                    </tlrPrimitives:RadBorder>
-                    <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="Số lượng ban đầu" />
-                            <tlrInput:RadNumericInput 
+                                HorizontalOptions="FillAndExpand"
+                                Value="{Binding TempItem.Price, Mode=TwoWay}" />
+                            </StackLayout>
+                        </tlrPrimitives:RadBorder>
+                        <StackLayout Spacing="0">
+                            <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                                <tlrPrimitives:RadBorder.Triggers>
+                                    <DataTrigger TargetType="tlrPrimitives:RadBorder" Binding="{Binding TempItem.IsManaged}" Value="True">
+                                        <Setter Property="CornerRadius" Value="5,5,0,0"/>
+                                    </DataTrigger>
+                                </tlrPrimitives:RadBorder.Triggers>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="Theo dõi mặt hàng" />
+                                    <tlrInput:RadEntry
+                                        HorizontalTextAlignment="End"
+                                        InputTransparent="True"/>
+                                    <Switch HorizontalOptions="End" 
+                                            ThumbColor="{StaticResource MainColor}"
+                                            OnColor="{StaticResource SubColor}"
+                                            IsToggled="{Binding TempItem.IsManaged, Mode=TwoWay}"/>
+                                </StackLayout>
+                            </tlrPrimitives:RadBorder>
+                            <tlrPrimitives:RadBorder BorderColor="{StaticResource MainColor}" BorderThickness="1,0,1,1" IsVisible="{Binding TempItem.IsManaged}">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="Số lượng ban đầu" />
+                                    <tlrInput:RadNumericInput 
                                 ControlTemplate="{StaticResource CustomNumericInput}"
-                                HorizontalOptions="EndAndExpand"
-                                Value="0" />
-                        </StackLayout>
-                    </tlrPrimitives:RadBorder>
-                    <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="Số lượng tối thiểu " />
-                            <tlrInput:RadNumericInput 
+                                HorizontalOptions="FillAndExpand"
+                                Value="{Binding TempItem.CurrentQuantity, Mode=TwoWay}" />
+                                </StackLayout>
+                            </tlrPrimitives:RadBorder>
+                            <tlrPrimitives:RadBorder Style="{StaticResource CommonLowerBorder}" IsVisible="{Binding TempItem.IsManaged}">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="Số lượng tối thiểu " />
+                                    <tlrInput:RadNumericInput 
                                 ControlTemplate="{StaticResource CustomNumericInput}"
-                                HorizontalOptions="EndAndExpand"
-                                Value="0" />
+                                HorizontalOptions="FillAndExpand"
+                                Value="{Binding TempItem.MinQuantity, Mode=TwoWay}" />
+                                </StackLayout>
+                            </tlrPrimitives:RadBorder>
                         </StackLayout>
-                    </tlrPrimitives:RadBorder>
-                </StackLayout>
+                    </StackLayout>
+                </Grid>
             </Frame>
         </StackLayout>
 

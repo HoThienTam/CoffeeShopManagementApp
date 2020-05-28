@@ -21,14 +21,7 @@ namespace Dtos
             CurrentQuantity = itemDto.CurrentQuantity;
         }
 
-        #region Id
-        private Guid _Id = Guid.Empty;
-        public Guid Id
-        {
-            get { return _Id; }
-            set { SetProperty(ref _Id, value); }
-        }
-        #endregion
+        public Guid Id { get; set; }
 
         #region Name
         private string _Name = null;
@@ -49,7 +42,17 @@ namespace Dtos
         #endregion
 
         public string Image { get; set; }
-        public bool IsManaged { get; set; }
+
+        #region IsManaged
+        private bool _IsManaged;
+        public bool IsManaged
+        {
+            get { return _IsManaged; }
+            set { SetProperty(ref _IsManaged, value); }
+        }
+        #endregion
+
+        public Guid CategoryId { get; set; }
         public int MinQuantity { get; set; }
         public int CurrentQuantity { get; set; }
     }
