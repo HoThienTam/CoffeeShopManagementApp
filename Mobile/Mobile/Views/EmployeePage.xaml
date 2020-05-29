@@ -2,14 +2,77 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
              mc:Ignorable="d"
+             xmlns:lcModels="clr-namespace:Mobile.Models"
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures" 
+             NavigationPage.HasNavigationBar="False"
              x:Class="Mobile.Views.EmployeePage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+    <Grid BackgroundColor="{StaticResource MainColor}" ColumnSpacing="1" RowSpacing="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackLayout Spacing="1">
+            <Frame Padding="0">
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <mr:Grid TappedCommand="{Binding GoBackCommand}" >
+                        <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
+                    </mr:Grid>
+                    <!--Title-->
+                    <Label Text="Nhân viên" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                </Grid>
+            </Frame>
+            <Frame VerticalOptions="FillAndExpand">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Button 
+                        Command="{Binding AddNewEmployeeCommand}"
+                        Grid.Row="1" 
+                        Text="Thêm nhân viên mới"/>
+                </Grid>
+            </Frame>
         </StackLayout>
-    </ContentPage.Content>
+        <StackLayout Grid.Column="1" Spacing="1">
+            <Frame Padding="0">
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--Title-->
+                    <Label Text="{Binding EmployeeBindProp.Name}" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+
+                    <!--Right text-->
+                    <StackLayout Orientation="Horizontal" Grid.Column="2">
+                        <mr:Grid TappedCommand="{Binding DeleteCommand}">
+                            <Label Text="{x:Static lcModels:FontAwesomeIcon.Trash}" TextColor="#ef5350" Style="{StaticResource CommonIcon}"/>
+                        </mr:Grid>
+                        <mr:Grid TappedCommand="{Binding SaveCommand}" >
+                            <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                        </mr:Grid>
+                    </StackLayout>
+                </Grid>
+            </Frame>
+            <Frame VerticalOptions="FillAndExpand">
+                
+            </Frame>
+        </StackLayout>
+        <tlrPrimitives:RadBusyIndicator Grid.ColumnSpan="2" Style="{StaticResource LoadingIndicator}" />
+    </Grid>
 </ContentPage>

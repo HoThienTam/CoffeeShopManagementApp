@@ -247,6 +247,9 @@ namespace Mobile.ViewModels
                         param.Add(nameof(ListZoneBindProp), ListZoneBindProp);
                         await NavigationService.NavigateAsync(nameof(ZonePage), param);
                         break;
+                    case "Employee":
+                        await NavigationService.NavigateAsync(nameof(EmployeePage));
+                        break;
                     default:
                         break;
                 }

@@ -22,6 +22,18 @@ namespace Api.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _mediator.Send(new GetUsersQuery());
+            return Ok(users);
+        }
+        [HttpGet("{id}", Name = nameof(GetUser))]
+        public async Task<IActionResult> GetUser(Guid id)
+        {
+            var user = await _mediator.Send(new GetUserQuery(id));
+            return Ok(user);
+        }
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto user)
         {
@@ -36,6 +48,31 @@ namespace Api.Controllers
 
             return Ok(user);
         }
-
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(UserDto userDto)
+        {
+            var ok = await _mediator.Send(new UpdateUserCommand(userDto));
+            if (ok)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest("Không thể cập nhật nhân viên!");
+            }
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(Guid id)
+        {
+            var ok = await _mediator.Send(new DeleteUserCommand(id));
+            if (ok)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest("Không thể xóa nhân viên!");
+            }
+        }
     }
 }
