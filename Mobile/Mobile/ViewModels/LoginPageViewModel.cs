@@ -50,10 +50,10 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                var user = new LoginDto 
-                { 
-                    Password = PasswordBindProp, 
-                    Username = UsernameBindProp 
+                var user = new LoginDto
+                {
+                    Password = PasswordBindProp,
+                    Username = UsernameBindProp.ToLower().Trim() 
                 };
 
                 var json = JsonConvert.SerializeObject(user);

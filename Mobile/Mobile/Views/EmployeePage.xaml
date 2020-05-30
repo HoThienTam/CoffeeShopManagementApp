@@ -7,7 +7,9 @@
              mc:Ignorable="d"
              xmlns:lcModels="clr-namespace:Mobile.Models"
              xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures" 
+             xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
              NavigationPage.HasNavigationBar="False"
+             x:Name="employeePage"
              x:Class="Mobile.Views.EmployeePage">
     <Grid BackgroundColor="{StaticResource MainColor}" ColumnSpacing="1" RowSpacing="1">
         <Grid.RowDefinitions>
@@ -33,13 +35,57 @@
                     <Label Text="Nhân viên" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
                 </Grid>
             </Frame>
-            <Frame VerticalOptions="FillAndExpand">
+            <Frame VerticalOptions="FillAndExpand" Padding="0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
+                    
+                    <ScrollView>
+                        <StackLayout Spacing="0" BindableLayout.ItemsSource="{Binding ListEmployeeBindProp, Mode=OneWay}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <mr:StackLayout 
+                                        Spacing="0" 
+                                        TappedCommand="{Binding BindingContext.SelectEmployeeCommand, Source={x:Reference employeePage}}" 
+                                        TappedCommandParameter="{Binding}">
+                                        <Grid Style="{StaticResource CommonWrapper}" Padding="{StaticResource CommonVerticalThickness}">
+                                            <Grid.Triggers>
+                                                <DataTrigger TargetType="Grid" Binding="{Binding IsSelected}" Value="True">
+                                                    <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
+                                                </DataTrigger>
+                                            </Grid.Triggers>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.User}"/>
+
+                                            <Label
+                                                Grid.Column="1"
+                                                InputTransparent="True"
+                                                Text="{Binding Fullname}"/>
+
+                                            <Label
+                                                Grid.Column="2"
+                                                HorizontalOptions="End"
+                                                Text="{Binding Role}"/>
+
+                                        </Grid>
+
+                                        <BoxView BackgroundColor="{StaticResource SubColor}" HeightRequest="1" />
+                                    </mr:StackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </ScrollView>
+
+                    
                     <Button 
+                        Margin="{StaticResource CommonThickness}"
                         Command="{Binding AddNewEmployeeCommand}"
                         Grid.Row="1" 
                         Text="Thêm nhân viên mới"/>
@@ -57,20 +103,66 @@
                     </Grid.ColumnDefinitions>
                     <!--Title-->
                     <Label Text="{Binding EmployeeBindProp.Name}" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
-
-                    <!--Right text-->
-                    <StackLayout Orientation="Horizontal" Grid.Column="2">
-                        <mr:Grid TappedCommand="{Binding DeleteCommand}">
-                            <Label Text="{x:Static lcModels:FontAwesomeIcon.Trash}" TextColor="#ef5350" Style="{StaticResource CommonIcon}"/>
-                        </mr:Grid>
-                        <mr:Grid TappedCommand="{Binding SaveCommand}" >
-                            <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
-                        </mr:Grid>
-                    </StackLayout>
                 </Grid>
             </Frame>
             <Frame VerticalOptions="FillAndExpand">
-                
+                <ScrollView Grid.Row="2">
+                    <StackLayout Margin="{StaticResource LargeThickness}">
+                        <Grid>
+                            <Image x:Name="background" Aspect="AspectFill" BackgroundColor="Red" HeightRequest="200"/>
+                            
+                            <StackLayout VerticalOptions="Center">
+                                <Label Text="Tên tài khoản" FontSize="Small" TextColor="White" HorizontalOptions="Center"/>
+                                <Label Text="{Binding EmployeeBindProp.Username}" TextColor="White" FontSize="Large" HorizontalOptions="Center"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="2" Text="Admin" HorizontalOptions="Center" FontSize="Small" TextColor="White"/>
+                                    <BoxView Grid.Column="1" Style="{StaticResource CommonTitleRule}" BackgroundColor="White"/>
+                                    <BoxView Grid.Column="3" Style="{StaticResource CommonTitleRule}" BackgroundColor="White"/>
+                                </Grid>
+                            </StackLayout>
+                        </Grid>
+                        <!--  Họ tên  -->
+                        <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                            <mr:StackLayout Orientation="Horizontal" Spacing="0" TappedCommand="{Binding EditCommand}">
+                                <tlrInput:RadEntry InputTransparent="True" Text="Họ tên" />
+                                <Label Text="{Binding EmployeeBindProp.Fullname, Mode=OneWay}"/>
+                                <Label
+                                    Style="{StaticResource CommonIcon}"
+                                    Text="{x:Static lcModels:FontAwesomeIcon.AngleRight}"/>
+                            </mr:StackLayout>
+                        </tlrPrimitives:RadBorder>
+
+                        <!--  Quyền  -->
+                        <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                            <mr:StackLayout Orientation="Horizontal" Spacing="0" TappedCommand="{Binding EditCommand}">
+                                <tlrInput:RadEntry InputTransparent="True" Text="Quyền"/>
+                                <Label Text="Quyen"/>
+                                <Label
+                                    Style="{StaticResource CommonIcon}"
+                                    Text="{x:Static lcModels:FontAwesomeIcon.AngleRight}"/>
+                            </mr:StackLayout>
+                        </tlrPrimitives:RadBorder>  
+
+                        <!--  Button  -->
+                        <Grid Margin="{StaticResource CommonThickness}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Button Command="{Binding ChangePasswordCommand, Mode=OneWay}" Text="Đổi mật khẩu"/>
+                            
+                            <Button Grid.Column="1" Command="{Binding DeleteCommand, Mode=OneWay}" Text="Xóa nhân viên" BackgroundColor="Red"/>
+                        </Grid>
+                    </StackLayout>
+                </ScrollView>
             </Frame>
         </StackLayout>
         <tlrPrimitives:RadBusyIndicator Grid.ColumnSpan="2" Style="{StaticResource LoadingIndicator}" />

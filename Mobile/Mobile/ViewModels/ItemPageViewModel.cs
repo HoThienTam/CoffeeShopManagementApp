@@ -276,7 +276,6 @@ namespace Mobile.ViewModels
 
         #endregion
 
-
         #region DeleteCommand
 
         public DelegateCommand<object> DeleteCommand { get; private set; }

@@ -15,6 +15,7 @@ namespace Mobile.Views
         public NewEmployeePage()
         {
             InitializeComponent();
+            picker.SelectedIndex = 0;
         }
     }
 }

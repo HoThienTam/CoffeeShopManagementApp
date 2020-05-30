@@ -10,6 +10,6 @@ namespace Infrastructure.Models
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public string Fullname { get; set; }
-        public string Role { get; set; }
+        public int Role { get; set; }
     }
 }

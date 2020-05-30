@@ -25,7 +25,7 @@ namespace ApplicationCore.UserService
 
         public async Task<IEnumerable<UserDto>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
         {
-            var users = _context.Users.Where(c => c.IsDeleted == false).AsNoTracking();
+            var users = _context.Users.Where(c => c.IsDeleted == false).OrderBy(u => u.CreatedAt).AsNoTracking();
             var userDtos = _mapper.Map<IEnumerable<UserDto>>(users);
             return userDtos;
         }

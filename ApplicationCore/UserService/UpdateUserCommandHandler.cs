@@ -30,10 +30,13 @@ namespace ApplicationCore.UserService
                 return false;
             }
             _mapper.Map(request.User, user);
-            byte[] passwordHash, passwordSalt;
-            HashPassword(request.User.Password, out passwordHash, out passwordSalt);
-            user.PasswordSalt = passwordSalt;
-            user.PasswordHash = passwordHash;
+            if (request.User.Password != null)
+            {
+                byte[] passwordHash, passwordSalt;
+                HashPassword(request.User.Password, out passwordHash, out passwordSalt);
+                user.PasswordSalt = passwordSalt;
+                user.PasswordHash = passwordHash;
+            }
             if (await _context.SaveChangesAsync() > 0)
             {
                 return true;

@@ -30,7 +30,6 @@ namespace ApplicationCore.UserService
             {
                 throw new ArgumentException($"This username {request.User.Username} is already existed!", nameof(request.User.Username));
             }
-
             var user = _mapper.Map<User>(request.User);
 
             await RegisterAsync(user, request.User.Password);

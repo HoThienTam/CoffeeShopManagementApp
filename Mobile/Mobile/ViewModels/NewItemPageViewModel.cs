@@ -83,7 +83,7 @@ namespace Mobile.ViewModels
                         {
                             var item = JsonConvert.DeserializeObject<ItemDto>(await response.Content.ReadAsStringAsync());
                             var param = new NavigationParameters();
-                            param.Add("ItemBindProp", item);
+                            param.Add(nameof(ItemBindProp), item);
                             await NavigationService.GoBackAsync(param);
                         }
                     }

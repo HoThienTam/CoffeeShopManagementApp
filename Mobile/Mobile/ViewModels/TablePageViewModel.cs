@@ -18,7 +18,7 @@ namespace Mobile.ViewModels
     {
         public TablePageViewModel(InitParams initParams) : base(initParams)
         {
-        }   
+        }
 
         #region ZoneBindProp
         private ZoneDto _ZoneBindProp;
@@ -60,19 +60,11 @@ namespace Mobile.ViewModels
                 {
                     HttpResponseMessage response = new HttpResponseMessage();
                     response = await client.PutAsync(Properties.Resources.BaseUrl + "zones/", content);
-                    switch (response.StatusCode)
+                    if (response.IsSuccessStatusCode)
                     {
-                        case HttpStatusCode.NoContent:
-                            ZoneBindProp.Name = TempZone.Name;
-                            ZoneBindProp.Tables = TempZone.Tables;
-                            await NavigationService.GoBackAsync();
-                            break;
-                        case HttpStatusCode.BadRequest:
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await response.Content.ReadAsStringAsync()}", "Đóng");
-                            break;
-                        default:
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"Lỗi hệ thống!", "Đóng");
-                            break;
+                        ZoneBindProp.Name = TempZone.Name;
+                        ZoneBindProp.Tables = TempZone.Tables;
+                        await NavigationService.GoBackAsync();
                     }
                 };
             }

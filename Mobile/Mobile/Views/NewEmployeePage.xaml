@@ -2,14 +2,140 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
              mc:Ignorable="d"
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures" 
+             xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input" 
+             xmlns:b="http://prismlibrary.com"
+             xmlns:custom="clr-namespace:Mobile.CustomRenderer"
+             xmlns:lcModels="clr-namespace:Mobile.Models"
+             NavigationPage.HasNavigationBar="False"
              x:Class="Mobile.Views.NewEmployeePage">
-    <ContentPage.Content>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Frame Padding="0">
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--Title-->
+                    <Label Text="{Binding Title}" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                    <!--Back icon-->
+                    <mr:Grid TappedCommand="{Binding GoBackCommand}" >
+                        <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
+                    </mr:Grid>
+                    <!--Right text-->
+                    <StackLayout Orientation="Horizontal" Grid.Column="2">
+                        <mr:Grid TappedCommand="{Binding SaveCommand}" >
+                            <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                        </mr:Grid>
+                    </StackLayout>
+                </Grid>
+            </Frame>
+            <Frame Padding="0" VerticalOptions="FillAndExpand">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ScrollView Grid.Column="1">
+                        <StackLayout  VerticalOptions="CenterAndExpand">
+                            <!--  Họ tên  -->
+                            <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                                <mr:StackLayout Orientation="Horizontal" Spacing="0">
+                                    <Label Text="Họ tên"/>
+
+                                    <tlrInput:RadEntry
+                                        HorizontalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="End"
+                                        Text="{Binding TempEmployee.Fullname}"
+                                        WatermarkText="Họ tên"/>
+                                </mr:StackLayout>
+                            </tlrPrimitives:RadBorder>
+
+                            <!--  Tên người dùng  -->
+                            <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+
+                                <StackLayout Orientation="Horizontal" Spacing="0">
+                                    <Label Text="Tên tài khoản"/>
+
+                                    <tlrInput:RadEntry
+                                        HorizontalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="End"
+                                        Text="{Binding TempEmployee.Username}"
+                                        WatermarkText="Tên tài khoản"/>
+                                </StackLayout>
+                            </tlrPrimitives:RadBorder>
+
+                            <!--  Mật khẩu  -->
+                            <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                                <mr:StackLayout Orientation="Horizontal" Spacing="0">
+
+                                    <Label Text="Mật khẩu"/>
+
+                                    <tlrInput:RadEntry
+                                        HorizontalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="End"
+                                        IsPassword="True"
+                                        Text="{Binding PasswordBindProp}"
+                                        WatermarkText="Mật khẩu" />
+                                </mr:StackLayout>
+                            </tlrPrimitives:RadBorder>
+
+                            <!--  Xác nhận Mật khẩu  -->
+                            <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                                <mr:StackLayout Orientation="Horizontal" Spacing="0">
+
+                                    <Label Text="Xác nhận mật khẩu"/>
+
+                                    <tlrInput:RadEntry
+                                        IsPassword="True" 
+                                        Text="{Binding ConfirmedPasswordBindProp}"
+                                        HorizontalOptions="FillAndExpand"
+                                        HorizontalTextAlignment="End"
+                                        WatermarkText="Xác nhận mật khẩu"/>
+                                </mr:StackLayout>
+                            </tlrPrimitives:RadBorder>
+
+                            <!--  Quyền  -->
+                            <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                                <mr:StackLayout Orientation="Horizontal" Spacing="0">
+
+                                    <Label Text="Quyền" />
+
+                                    <custom:CustomPicker
+                                        Margin="{StaticResource CommonHorizontalThickness}"
+                                        x:Name="picker"
+                                        Title="Chọn quyền nhân viên"
+                                        HorizontalOptions="EndAndExpand">
+                                        <Picker.ItemsSource>
+                                            <x:Array Type="{x:Type x:String}">
+                                                <x:String>Nhân viên</x:String>
+                                                <x:String>Quản lý</x:String>
+                                            </x:Array>
+                                        </Picker.ItemsSource>
+                                        <Picker.Behaviors>
+                                            <b:EventToCommandBehavior Command="{Binding SelectedChangedCommand}" CommandParameter="{Binding}" EventName="SelectedIndexChanged"/>
+                                        </Picker.Behaviors>
+                                    </custom:CustomPicker>
+                                </mr:StackLayout>
+                            </tlrPrimitives:RadBorder>
+
+                        </StackLayout>
+                    </ScrollView>
+                </Grid>
+            </Frame>
         </StackLayout>
-    </ContentPage.Content>
+
+        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}"/>
+    </Grid>
 </ContentPage>

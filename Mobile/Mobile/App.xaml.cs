@@ -49,7 +49,7 @@ namespace Mobile
             containerRegistry.RegisterForNavigation<TablePage, TablePageViewModel>();
             containerRegistry.RegisterForNavigation<EmployeePage, EmployeePageViewModel>();
             containerRegistry.RegisterForNavigation<NewItemPage, NewItemPageViewModel>();
-
+            containerRegistry.RegisterForNavigation<NewEmployeePage, NewEmployeePageViewModel>();
         }
     }
 }
