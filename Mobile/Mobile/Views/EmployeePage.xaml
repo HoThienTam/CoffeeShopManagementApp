@@ -57,22 +57,23 @@
                                                 </DataTrigger>
                                             </Grid.Triggers>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="2*" />
-                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-
                                             <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.User}"/>
 
                                             <Label
-                                                Grid.Column="1"
+                                                Margin="0" Grid.Column="1"
                                                 InputTransparent="True"
+                                                LineBreakMode="TailTruncation"
                                                 Text="{Binding Fullname}"/>
 
                                             <Label
                                                 Grid.Column="2"
-                                                HorizontalOptions="End"
-                                                Text="{Binding Role}"/>
+                                                HorizontalTextAlignment="End"
+                                                HorizontalOptions="FillAndExpand"
+                                                Text="{Binding Role, Converter={StaticResource IntToRoleConverter}}"/>
 
                                         </Grid>
 
@@ -122,7 +123,7 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Grid.Column="2" Text="Admin" HorizontalOptions="Center" FontSize="Small" TextColor="White"/>
+                                    <Label Grid.Column="2" Text="{Binding EmployeeBindProp.Role, Converter={StaticResource IntToRoleConverter}}" HorizontalOptions="Center" FontSize="Small" TextColor="White"/>
                                     <BoxView Grid.Column="1" Style="{StaticResource CommonTitleRule}" BackgroundColor="White"/>
                                     <BoxView Grid.Column="3" Style="{StaticResource CommonTitleRule}" BackgroundColor="White"/>
                                 </Grid>
@@ -130,7 +131,7 @@
                         </Grid>
                         <!--  Họ tên  -->
                         <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                            <mr:StackLayout Orientation="Horizontal" Spacing="0" TappedCommand="{Binding EditCommand}">
+                            <mr:StackLayout Orientation="Horizontal" Spacing="0" TappedCommand="{Binding UpdateEmployeeCommand}">
                                 <tlrInput:RadEntry InputTransparent="True" Text="Họ tên" />
                                 <Label Text="{Binding EmployeeBindProp.Fullname, Mode=OneWay}"/>
                                 <Label
@@ -139,17 +140,6 @@
                             </mr:StackLayout>
                         </tlrPrimitives:RadBorder>
 
-                        <!--  Quyền  -->
-                        <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                            <mr:StackLayout Orientation="Horizontal" Spacing="0" TappedCommand="{Binding EditCommand}">
-                                <tlrInput:RadEntry InputTransparent="True" Text="Quyền"/>
-                                <Label Text="Quyen"/>
-                                <Label
-                                    Style="{StaticResource CommonIcon}"
-                                    Text="{x:Static lcModels:FontAwesomeIcon.AngleRight}"/>
-                            </mr:StackLayout>
-                        </tlrPrimitives:RadBorder>  
-
                         <!--  Button  -->
                         <Grid Margin="{StaticResource CommonThickness}">
                             <Grid.ColumnDefinitions>
@@ -157,7 +147,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             
-                            <Button Command="{Binding ChangePasswordCommand, Mode=OneWay}" Text="Đổi mật khẩu"/>
+                            <Button Command="{Binding UpdateEmployeeCommand, Mode=OneWay}" Text="Đổi mật khẩu"/>
                             
                             <Button Grid.Column="1" Command="{Binding DeleteCommand, Mode=OneWay}" Text="Xóa nhân viên" BackgroundColor="Red"/>
                         </Grid>

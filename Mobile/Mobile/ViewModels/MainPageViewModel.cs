@@ -250,6 +250,18 @@ namespace Mobile.ViewModels
                     case "Employee":
                         await NavigationService.NavigateAsync(nameof(EmployeePage));
                         break;
+                    case "Inventory":
+                        await NavigationService.NavigateAsync(nameof(InventoryPage));
+                        break;
+                    case "History":
+                        await NavigationService.NavigateAsync(nameof(EmployeePage));
+                        break;
+                    case "Report":
+                        await NavigationService.NavigateAsync(nameof(EmployeePage));
+                        break;
+                    case "Session":
+                        await NavigationService.NavigateAsync(nameof(EmployeePage));
+                        break;
                     default:
                         break;
                 }

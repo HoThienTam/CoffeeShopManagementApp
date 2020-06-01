@@ -50,6 +50,8 @@ namespace Mobile
             containerRegistry.RegisterForNavigation<EmployeePage, EmployeePageViewModel>();
             containerRegistry.RegisterForNavigation<NewItemPage, NewItemPageViewModel>();
             containerRegistry.RegisterForNavigation<NewEmployeePage, NewEmployeePageViewModel>();
+            containerRegistry.RegisterForNavigation<InventoryPage, InventoryPageViewModel>();
+
         }
     }
 }

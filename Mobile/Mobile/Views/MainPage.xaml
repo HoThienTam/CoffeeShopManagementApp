@@ -485,20 +485,6 @@
                             VerticalOptions="Center" 
                             Grid.Column="1"
                             TappedCommand="{Binding SelectSettingCommand}" 
-                            TappedCommandParameter="">
-                            <Grid>
-                                <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
-                                <Label Style="{StaticResource CommonIcon}" 
-                                   TextColor="{StaticResource ContrastColor}" 
-                                   Text="{x:Static lcModels:FontAwesomeIcon.List}"/>
-                            </Grid>
-                            <Label HorizontalOptions="Center" Text="Mặt hàng"/>
-                        </mr:StackLayout>
-                        <mr:StackLayout 
-                            Spacing="0" Orientation="Vertical" 
-                            VerticalOptions="Center" 
-                            Grid.Column="2"
-                            TappedCommand="{Binding SelectSettingCommand}" 
                             TappedCommandParameter="Discount">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
@@ -511,7 +497,7 @@
                         <mr:StackLayout 
                             Spacing="0" Orientation="Vertical" 
                             VerticalOptions="Center" 
-                            Grid.Column="3"
+                            Grid.Column="2"
                             TappedCommand="{Binding SelectSettingCommand}" 
                             TappedCommandParameter="Zone">
                             <Grid>
@@ -521,6 +507,20 @@
                                    Text="{x:Static lcModels:FontAwesomeIcon.List}"/>
                             </Grid>
                             <Label HorizontalOptions="Center" Text="Khu vực"/>
+                        </mr:StackLayout>
+                        <mr:StackLayout 
+                            Spacing="0" Orientation="Vertical" 
+                            VerticalOptions="Center" 
+                            Grid.Column="3"
+                            TappedCommand="{Binding SelectSettingCommand}" 
+                            TappedCommandParameter="Employee">
+                            <Grid>
+                                <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
+                                <Label Style="{StaticResource CommonIcon}" 
+                                   TextColor="{StaticResource ContrastColor}" 
+                                   Text="{x:Static lcModels:FontAwesomeIcon.List}"/>
+                            </Grid>
+                            <Label HorizontalOptions="Center" Text="Nhân viên"/>
                         </mr:StackLayout>
                     </Grid>
                     <Grid>
@@ -534,56 +534,56 @@
                             Spacing="0" Orientation="Vertical" 
                             VerticalOptions="Center" 
                             TappedCommand="{Binding SelectSettingCommand}" 
-                            TappedCommandParameter="Employee">
+                            TappedCommandParameter="Inventory">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
                                 <Label Style="{StaticResource CommonIcon}" 
                                    TextColor="{StaticResource ContrastColor}" 
                                    Text="{x:Static lcModels:FontAwesomeIcon.List}"/>
                             </Grid>
-                            <Label HorizontalOptions="Center" Text="Nhân viên"/>
+                            <Label HorizontalOptions="Center" Text="Hàng hóa"/>
                         </mr:StackLayout>
                         <mr:StackLayout 
                             Spacing="0" Orientation="Vertical" 
                             VerticalOptions="Center" 
                             Grid.Column="1"
                             TappedCommand="{Binding SelectSettingCommand}" 
-                            TappedCommandParameter="">
+                            TappedCommandParameter="History">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
                                 <Label Style="{StaticResource CommonIcon}" 
                                    TextColor="{StaticResource ContrastColor}" 
                                    Text="{x:Static lcModels:FontAwesomeIcon.List}"/>
                             </Grid>
-                            <Label HorizontalOptions="Center" Text="Danh mục"/>
+                            <Label HorizontalOptions="Center" Text="Lịch sử"/>
                         </mr:StackLayout>
                         <mr:StackLayout 
                             Spacing="0" Orientation="Vertical" 
                             VerticalOptions="Center" 
                             Grid.Column="2"
                             TappedCommand="{Binding SelectSettingCommand}" 
-                            TappedCommandParameter="">
+                            TappedCommandParameter="Report">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
                                 <Label Style="{StaticResource CommonIcon}" 
                                    TextColor="{StaticResource ContrastColor}" 
                                    Text="{x:Static lcModels:FontAwesomeIcon.List}"/>
                             </Grid>
-                            <Label HorizontalOptions="Center" Text="Danh mục"/>
+                            <Label HorizontalOptions="Center" Text="Thống kê"/>
                         </mr:StackLayout>
                         <mr:StackLayout 
                             Spacing="0" Orientation="Vertical" 
                             VerticalOptions="Center" 
                             Grid.Column="3"
                             TappedCommand="{Binding SelectSettingCommand}" 
-                            TappedCommandParameter="">
+                            TappedCommandParameter="Session">
                             <Grid>
                                 <Label Style="{StaticResource CommonIcon}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Square}"/>
                                 <Label Style="{StaticResource CommonIcon}" 
                                    TextColor="{StaticResource ContrastColor}" 
                                    Text="{x:Static lcModels:FontAwesomeIcon.List}"/>
                             </Grid>
-                            <Label HorizontalOptions="Center" Text="Danh mục"/>
+                            <Label HorizontalOptions="Center" Text="Phiên làm việc"/>
                         </mr:StackLayout>
                     </Grid>
                 </FlexLayout>

@@ -110,10 +110,11 @@ namespace Mobile.ViewModels
 
         #endregion
 
-        #region ChangePasswordCommand
 
-        public DelegateCommand<object> ChangePasswordCommand { get; private set; }
-        private async void OnChangePassword(object obj)
+        #region UpdateEmployeeCommand
+
+        public DelegateCommand<object> UpdateEmployeeCommand { get; private set; }
+        private async void OnUpdateEmployee(object obj)
         {
             if (IsBusy)
             {
@@ -140,13 +141,14 @@ namespace Mobile.ViewModels
 
         }
         [Initialize]
-        private void InitChangePasswordCommand()
+        private void InitUpdateEmployeeCommand()
         {
-            ChangePasswordCommand = new DelegateCommand<object>(OnChangePassword);
-            ChangePasswordCommand.ObservesCanExecute(() => IsNotBusy);
+            UpdateEmployeeCommand = new DelegateCommand<object>(OnUpdateEmployee);
+            UpdateEmployeeCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion
+
 
         #region DeleteCommand
 
@@ -199,11 +201,6 @@ namespace Mobile.ViewModels
                         var employee = parameters[nameof(EmployeeBindProp)] as UserDto;
                         ListEmployeeBindProp.Add(employee);
                     }
-                    if (parameters.ContainsKey("IsDeleted"))
-                    {
-                        var employee = parameters["IsDeleted"] as UserDto;
-                        ListEmployeeBindProp.Remove(employee);
-                    }
                     break;
                 case NavigationMode.New:
                     using (var client = new HttpClient())
@@ -216,13 +213,14 @@ namespace Mobile.ViewModels
                             {
                                 ListEmployeeBindProp.Add(employee);
                             }
+                            EmployeeBindProp = ListEmployeeBindProp.FirstOrDefault();
                         }
                         else
                         {
                             await PageDialogService.DisplayAlertAsync("Lỗi", $"{await response.Content.ReadAsStringAsync()}", "Đóng");
                         }
                     }
-                        break;
+                    break;
                 case NavigationMode.Forward:
                     break;
                 case NavigationMode.Refresh:

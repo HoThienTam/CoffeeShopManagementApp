@@ -10,12 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace Mobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EmployeePage : ContentPage
+    public partial class InventoryPage : ContentPage
     {
-        public EmployeePage()
+        public InventoryPage()
         {
             InitializeComponent();
-            background.Source = ImageSource.FromResource("Mobile.Files.background.jpg");
         }
     }
 }
