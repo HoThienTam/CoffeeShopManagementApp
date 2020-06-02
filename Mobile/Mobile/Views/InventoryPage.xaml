@@ -6,11 +6,12 @@
              xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
              xmlns:lcModels="clr-namespace:Mobile.Models"
              xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures" 
-             xmlns:tlrGrid="clr-namespace:Telerik.XamarinForms.DataGrid;assembly=Telerik.XamarinForms.DataGrid"
+             xmlns:tlrGrid="clr-namespace:Telerik.XamarinForms.DataGrid;assembly=Telerik.XamarinForms.DataGrid" xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
              mc:Ignorable="d"
              NavigationPage.HasNavigationBar="False"
+             x:Name="inventoryPage"
              x:Class="Mobile.Views.InventoryPage">
-    <Grid>
+    <Grid BackgroundColor="{StaticResource MainColor}" ColumnSpacing="1" RowSpacing="1">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -40,39 +41,36 @@
             <Frame VerticalOptions="FillAndExpand" Padding="0">
                 <ScrollView>
                     <StackLayout Spacing="0">
-                        <mr:StackLayout Spacing="0">
-                            <Label Text="Danh sách hàng tồn"/>
+                        <StackLayout Spacing="0">
+                            <tlrInput:RadEntry Text="Danh sách hàng tồn" InputTransparent="True"/>
                             <BoxView Grid.Column="1" BackgroundColor="{StaticResource SubColor}" HeightRequest="1"/>
-                            <StackLayout.Triggers>
-                                <DataTrigger TargetType="StackLayout" Binding="{Binding IsSelected}" Value="True">
-                                    <Setter Property="BackgroundColor" Value="{StaticResource SelectedColor}"/>
-                                </DataTrigger>
-                            </StackLayout.Triggers>
-                        </mr:StackLayout>
-                        <mr:StackLayout Spacing="0">
-                            <Label Text="Danh sách hàng sắp hết"/>
+                        </StackLayout>
+                        <StackLayout Spacing="0">
+                            <tlrInput:RadEntry Text="Danh sách hàng sắp hết" InputTransparent="True"/>
                             <BoxView Grid.Column="1" BackgroundColor="{StaticResource SubColor}" HeightRequest="1"/>
-                            <StackLayout.Triggers>
-                                <DataTrigger TargetType="StackLayout" Binding="{Binding IsSelected}" Value="True">
-                                    <Setter Property="BackgroundColor" Value="{StaticResource SelectedColor}"/>
-                                </DataTrigger>
-                            </StackLayout.Triggers>
-                        </mr:StackLayout>
-                        <mr:StackLayout Spacing="0">
-                            <Label Text="Lịch sử"/>
+                        </StackLayout>
+                        <StackLayout Spacing="0">
+                            <tlrInput:RadEntry Text="Lịch sử" InputTransparent="True"/>
                             <BoxView Grid.Column="1" BackgroundColor="{StaticResource SubColor}" HeightRequest="1"/>
-                            <StackLayout.Triggers>
-                                <DataTrigger TargetType="StackLayout" Binding="{Binding IsSelected}" Value="True">
-                                    <Setter Property="BackgroundColor" Value="{StaticResource SelectedColor}"/>
-                                </DataTrigger>
-                            </StackLayout.Triggers>
-                        </mr:StackLayout>
+                        </StackLayout>
                     </StackLayout>
                 </ScrollView>
 
             </Frame>
         </StackLayout>
         <StackLayout Grid.Column="1" Spacing="1">
+            <Frame Padding="0">
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--Title-->
+                    <Label Text="{Binding Title}" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                </Grid>
+            </Frame>
             <!--  danh sach hang ton  -->
             <Frame VerticalOptions="FillAndExpand">
                 <StackLayout Margin="{StaticResource CommonThickness}">
@@ -85,7 +83,7 @@
                         UserEditMode="None" UserFilterMode="Disabled" 
                         UserSortMode="None" UserGroupMode="Disabled">
                         <tlrGrid:RadDataGrid.Columns>
-                            <tlrGrid:DataGridTextColumn PropertyName="ItemName" HeaderText="Tên hàng tồn" SizeMode="Stretch">
+                            <tlrGrid:DataGridTextColumn PropertyName="Name" HeaderText="Tên hàng tồn" SizeMode="Stretch">
                                 <tlrGrid:DataGridTextColumn.HeaderStyle>
                                     <tlrGrid:DataGridColumnHeaderStyle
                                         TextFontAttributes="Bold"
@@ -125,8 +123,10 @@
                                 <tlrGrid:DataGridTemplateColumn.CellContentTemplate>
                                     <DataTemplate>
                                         <mr:Label 
-                                        Style="{StaticResource CommonIcon}" 
-                                        Text="{x:Static lcModels:FontAwesomeIcon.PlusCircle}"/>
+                                            Style="{StaticResource CommonIcon}" 
+                                            TappedCommand="{Binding BindingContext.ModifyQuantityCommand, Source={x:Reference inventoryPage}}"
+                                            TappedCommandParameter="add"
+                                            Text="{x:Static lcModels:FontAwesomeIcon.PlusCircle}"/>
                                     </DataTemplate>
                                 </tlrGrid:DataGridTemplateColumn.CellContentTemplate>
                             </tlrGrid:DataGridTemplateColumn>
@@ -155,8 +155,10 @@
                                 <tlrGrid:DataGridTemplateColumn.CellContentTemplate>
                                     <DataTemplate>
                                         <mr:Label 
-                                        Style="{StaticResource CommonIcon}" 
-                                        Text="{x:Static lcModels:FontAwesomeIcon.MinusCircle}"/>
+                                            Style="{StaticResource CommonIcon}" 
+                                            TappedCommand="{Binding BindingContext.ModifyQuantityCommand, Source={x:Reference inventoryPage}}"
+                                            TappedCommandParameter="reduce"
+                                            Text="{x:Static lcModels:FontAwesomeIcon.MinusCircle}"/>
                                     </DataTemplate>
                                 </tlrGrid:DataGridTemplateColumn.CellContentTemplate>
                             </tlrGrid:DataGridTemplateColumn>

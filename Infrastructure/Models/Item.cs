@@ -16,5 +16,6 @@ namespace Infrastructure.Models
         public Category Category { get; set; }
         public ICollection<ItemDiscount> ItemDiscounts { get; set; }
         public ICollection<InvoiceItem> InvoiceItems { get; set; }
+        public ICollection<ImportExportHistory> ImportExportHistories { get; set; }
     }
 }
