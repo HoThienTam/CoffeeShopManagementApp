@@ -124,8 +124,8 @@
                                     <DataTemplate>
                                         <mr:Label 
                                             Style="{StaticResource CommonIcon}" 
-                                            TappedCommand="{Binding BindingContext.ModifyQuantityCommand, Source={x:Reference inventoryPage}}"
-                                            TappedCommandParameter="add"
+                                            TappedCommand="{Binding BindingContext.AddQuantityCommand, Source={x:Reference inventoryPage}}"
+                                            TappedCommandParameter="{Binding}"
                                             Text="{x:Static lcModels:FontAwesomeIcon.PlusCircle}"/>
                                     </DataTemplate>
                                 </tlrGrid:DataGridTemplateColumn.CellContentTemplate>
@@ -156,8 +156,8 @@
                                     <DataTemplate>
                                         <mr:Label 
                                             Style="{StaticResource CommonIcon}" 
-                                            TappedCommand="{Binding BindingContext.ModifyQuantityCommand, Source={x:Reference inventoryPage}}"
-                                            TappedCommandParameter="reduce"
+                                            TappedCommand="{Binding BindingContext.ReduceQuantityCommand, Source={x:Reference inventoryPage}}"
+                                            TappedCommandParameter="{Binding}"
                                             Text="{x:Static lcModels:FontAwesomeIcon.MinusCircle}"/>
                                     </DataTemplate>
                                 </tlrGrid:DataGridTemplateColumn.CellContentTemplate>

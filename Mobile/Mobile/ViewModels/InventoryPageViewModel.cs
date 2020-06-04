@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using Telerik.XamarinForms.Input.Calendar;
 
 namespace Mobile.ViewModels
 {
@@ -41,10 +42,10 @@ namespace Mobile.ViewModels
         #endregion
 
 
-        #region ModifyQuantityCommand
+        #region AddQuantityCommand
 
-        public DelegateCommand<string> ModifyQuantityCommand { get; private set; }
-        private async void OnModifyQuantity(string obj)
+        public DelegateCommand<ItemDto> AddQuantityCommand { get; private set; }
+        private async void OnAddQuantity(ItemDto obj)
         {
             if (IsBusy)
             {
@@ -56,17 +57,9 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                switch (obj)
-                {
-                    case "add":
-                        await NavigationService.NavigateAsync(nameof(AddQuantityPage));
-                        break;
-                    case "reduce":
-                        await NavigationService.NavigateAsync(nameof(ReduceQuantityPage));
-                        break;
-                    default:
-                        break;
-                }
+                var param = new NavigationParameters();
+                param.Add("ItemBindProp", obj);
+                await NavigationService.NavigateAsync(nameof(AddQuantityPage), param);
             }
             catch (Exception e)
             {
@@ -79,10 +72,49 @@ namespace Mobile.ViewModels
 
         }
         [Initialize]
-        private void InitModifyQuantityCommand()
+        private void InitAddQuantityCommand()
         {
-            ModifyQuantityCommand = new DelegateCommand<string>(OnModifyQuantity);
-            ModifyQuantityCommand.ObservesCanExecute(() => IsNotBusy);
+            AddQuantityCommand = new DelegateCommand<ItemDto>(OnAddQuantity);
+            AddQuantityCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+
+        #region ReduceQuantityCommand
+
+        public DelegateCommand<ItemDto> ReduceQuantityCommand { get; private set; }
+        private async void OnReduceQuantity(ItemDto obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                var param = new NavigationParameters();
+                param.Add("ItemBindProp", obj);
+                await NavigationService.NavigateAsync(nameof(ReduceQuantityPage), param);
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitReduceQuantityCommand()
+        {
+            ReduceQuantityCommand = new DelegateCommand<ItemDto>(OnReduceQuantity);
+            ReduceQuantityCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion
@@ -93,6 +125,10 @@ namespace Mobile.ViewModels
             switch (parameters.GetNavigationMode())
             {
                 case NavigationMode.Back:
+                    if (parameters.ContainsKey("History"))
+                    {
+                        var history = parameters["History"] as ImportExportHistoryDto;
+                    }
                     break;
                 case NavigationMode.New:
                     using (var client = new HttpClient())

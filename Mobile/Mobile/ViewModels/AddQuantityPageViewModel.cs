@@ -145,12 +145,13 @@ namespace Mobile.ViewModels
                         ItemId = ItemBindProp.Id,
                         Reason = IsSelectingOtherReason == true ? OtherReasonBindProp : _reason
                     };
-                    using(var client = new HttpClient())
+                    var json = JsonConvert.SerializeObject(history);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    using (var client = new HttpClient())
                     {
-                        var response = await client.GetAsync(Properties.Resources.BaseUrl + "histories/");
+                        var response = await client.PostAsync(Properties.Resources.BaseUrl + "histories/", content);
                         if (response.IsSuccessStatusCode)
                         {
-                            var historyDto = JsonConvert.DeserializeObject<IEnumerable<ImportExportHistoryDto>>(await response.Content.ReadAsStringAsync());
                             ItemBindProp.CurrentQuantity += history.Quantity;
                             param.Add("History", history);
                             await NavigationService.GoBackAsync(param);
