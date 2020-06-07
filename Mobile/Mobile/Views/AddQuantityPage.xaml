@@ -33,7 +33,7 @@
                         <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
                     </mr:Grid>
                     <!--Right text-->
-                    <mr:Grid TappedCommand="{Binding ShowPopUpCommand}" Grid.Column="2">
+                    <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
                         <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
                     </mr:Grid>
                 </Grid>
@@ -71,7 +71,7 @@
                                             </StackLayout.Triggers>
                                             <tlrInput:RadEntry
                                                         IsEnabled="{Binding IsSelectingOtherReason}"
-                                                        Text="{Binding Reason}"
+                                                        Text="{Binding Name}"
                                                         IsTabStop="False"
                                                         InputTransparent="True">
                                                 </tlrInput:RadEntry>
@@ -84,14 +84,19 @@
                             <dataControls:RadListView.FooterTemplate>
                                 <DataTemplate>
                                     <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                                        <mr:StackLayout Orientation="Horizontal" Spacing="0" TappedCommand="{Binding SelectReasonCommand}" TappedCommandParameter="other">
-                                            <tlrInput:RadEntry
-                                                    IsEnabled="{Binding IsSelectingOtherReason}"
-                                                    Text="{Binding OtherReason, Mode=OneWayToSource}"
-                                                    WatermarkText="Nhập lí do khác">
-                                            </tlrInput:RadEntry>
-                                        </mr:StackLayout>
-                                    </tlrPrimitives:RadBorder>
+                                    <mr:StackLayout Orientation="Horizontal" Spacing="0" TappedCommand="{Binding BindingContext.SelectReasonCommand, Source={x:Reference addQuantityPage}}"  TappedCommandParameter="other">
+                                        <StackLayout.Triggers>
+                                            <DataTrigger TargetType="StackLayout" Binding="{Binding IsSelectingOtherReason}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
+                                            </DataTrigger>
+                                        </StackLayout.Triggers>
+                                        <tlrInput:RadEntry
+                                                        IsEnabled="{Binding IsSelectingOtherReason}"
+                                                        Text="{Binding OtherReasonBindProp, Mode=OneWayToSource}"
+                                                        WatermarkText="Nhập lí do khác">
+                                        </tlrInput:RadEntry>
+                                    </mr:StackLayout>
+                                </tlrPrimitives:RadBorder>
                                 </DataTemplate>
                             </dataControls:RadListView.FooterTemplate>
                         </dataControls:RadListView>

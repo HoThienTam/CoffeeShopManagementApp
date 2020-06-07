@@ -25,7 +25,8 @@ namespace ApplicationCore.ImportExportHistoryService
 
         public async Task<IEnumerable<ImportExportHistoryDto>> Handle(GetHistoriesQuery request, CancellationToken cancellationToken)
         {
-            var histories = _context.ImportExportHistories.Where(h => !h.IsDeleted).OrderByDescending(h => h.CreatedAt).AsNoTracking();
+            var histories = _context.ImportExportHistories.Where(h => !h.IsDeleted)
+                .OrderByDescending(h => h.CreatedAt).AsNoTracking();
             var historyDtos = _mapper.Map<IEnumerable<ImportExportHistoryDto>>(histories);
             return historyDtos;
         }

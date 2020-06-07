@@ -18,16 +18,16 @@ namespace Mobile.ViewModels
         private string _reason;
         public AddQuantityPageViewModel(InitParams initParams) : base(initParams)
         {
-            ImportReasonsBindProp = new ObservableCollection<ReasonModel>
+            ImportReasonsBindProp = new ObservableCollection<SelectionModel>
             {
-                new ReasonModel{Reason = "Nhập thêm", IsSelected = false},
-                new ReasonModel{Reason = "Điều chỉnh số dư", IsSelected = false}
+                new SelectionModel{Name = "Nhập thêm", IsSelected = false},
+                new SelectionModel{Name = "Điều chỉnh số dư", IsSelected = false}
             };
         }
 
         #region ImportReasonsBindProp
-        private ObservableCollection<ReasonModel> _ImportReasonsBindProp = null;
-        public ObservableCollection<ReasonModel> ImportReasonsBindProp
+        private ObservableCollection<SelectionModel> _ImportReasonsBindProp = null;
+        public ObservableCollection<SelectionModel> ImportReasonsBindProp
         {
             get { return _ImportReasonsBindProp; }
             set { SetProperty(ref _ImportReasonsBindProp, value); }
@@ -72,8 +72,8 @@ namespace Mobile.ViewModels
 
         #region SelectReasonCommand
 
-        public DelegateCommand<ReasonModel> SelectReasonCommand { get; private set; }
-        private async void OnSelectReason(ReasonModel obj)
+        public DelegateCommand<object> SelectReasonCommand { get; private set; }
+        private async void OnSelectReason(object obj)
         {
             if (IsBusy)
             {
@@ -90,11 +90,12 @@ namespace Mobile.ViewModels
                 {
                     reason.IsSelected = false;
                 }
-                if (obj is ReasonModel)
+                if (obj is SelectionModel)
                 {
-                    obj.IsSelected = true;
+                    var selection = obj as SelectionModel;
+                    selection.IsSelected = true;
                     IsSelectingOtherReason = false;
-                    _reason = obj.Reason;
+                    _reason = selection.Name;
                 }
                 else
                 {
@@ -114,7 +115,7 @@ namespace Mobile.ViewModels
         [Initialize]
         private void InitSelectReasonCommand()
         {
-            SelectReasonCommand = new DelegateCommand<ReasonModel>(OnSelectReason);
+            SelectReasonCommand = new DelegateCommand<object>(OnSelectReason);
             SelectReasonCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
@@ -140,9 +141,9 @@ namespace Mobile.ViewModels
                 {
                     var history = new ImportExportHistoryDto
                     {
-                        IsImported = true,
                         Quantity = QuantityBindProp,
                         ItemId = ItemBindProp.Id,
+                        ItemName = ItemBindProp.Name,
                         Reason = IsSelectingOtherReason == true ? OtherReasonBindProp : _reason
                     };
                     var json = JsonConvert.SerializeObject(history);
@@ -152,9 +153,14 @@ namespace Mobile.ViewModels
                         var response = await client.PostAsync(Properties.Resources.BaseUrl + "histories/", content);
                         if (response.IsSuccessStatusCode)
                         {
-                            ItemBindProp.CurrentQuantity += history.Quantity;
-                            param.Add("History", history);
+                            var newHistory = JsonConvert.DeserializeObject<ImportExportHistoryDto>(await response.Content.ReadAsStringAsync());
+                            ItemBindProp.CurrentQuantity += newHistory.Quantity;
+                            param.Add("History", newHistory);
                             await NavigationService.GoBackAsync(param);
+                        }
+                        else
+                        {
+                            await PageDialogService.DisplayAlertAsync("Lỗi hệ thống", await response.Content.ReadAsStringAsync(), "Đóng");
                         }
                     }
                 }

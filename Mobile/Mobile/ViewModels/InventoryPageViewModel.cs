@@ -20,6 +20,13 @@ namespace Mobile.ViewModels
         {
             ListItemBindProp = new ObservableCollection<ItemDto>();
             ListItemOutOfStockBindProp = new ObservableCollection<ItemDto>();
+            ListHistoryBindProp = new ObservableCollection<ImportExportHistoryDto>();
+            SideBarBindProp = new ObservableCollection<SelectionModel>
+            {
+                new SelectionModel{ Name = "Danh sách hàng tồn", IsSelected = true },
+                new SelectionModel{ Name = "Danh sách hàng sắp hết", IsSelected = false },
+                new SelectionModel{ Name = "Lịch sử", IsSelected = false }
+            };
             Title = "Danh sách hàng tồn";
         }
 
@@ -41,6 +48,50 @@ namespace Mobile.ViewModels
         }
         #endregion
 
+        #region ListHistoryBindProp
+        private ObservableCollection<ImportExportHistoryDto> _ListHistoryBindProp;
+        public ObservableCollection<ImportExportHistoryDto> ListHistoryBindProp
+        {
+            get { return _ListHistoryBindProp; }
+            set { SetProperty(ref _ListHistoryBindProp, value); }
+        }
+        #endregion
+
+        #region ListItemVisibleBindProp
+        private bool _ListItemVisibleBindProp = true;
+        public bool ListItemVisibleBindProp
+        {
+            get { return _ListItemVisibleBindProp; }
+            set { SetProperty(ref _ListItemVisibleBindProp, value); }
+        }
+        #endregion
+
+        #region ListItemOutOfStockVisibleBindProp
+        private bool _ListItemOutOfStockVisibleBindProp;
+        public bool ListItemOutOfStockVisibleBindProp
+        {   
+            get { return _ListItemOutOfStockVisibleBindProp; }
+            set { SetProperty(ref _ListItemOutOfStockVisibleBindProp, value); }
+        }
+        #endregion
+
+        #region HistoryVisibleBindProp
+        private bool _HistoryVisibleBindProp;
+        public bool HistoryVisibleBindProp
+        {
+            get { return _HistoryVisibleBindProp; }
+            set { SetProperty(ref _HistoryVisibleBindProp, value); }
+        }
+        #endregion
+
+        #region SideBarBindProp
+        private ObservableCollection<SelectionModel> _SideBarBindProp;
+        public ObservableCollection<SelectionModel> SideBarBindProp
+        {
+            get { return _SideBarBindProp; }
+            set { SetProperty(ref _SideBarBindProp, value); }
+        }
+        #endregion
 
         #region AddQuantityCommand
 
@@ -80,6 +131,67 @@ namespace Mobile.ViewModels
 
         #endregion
 
+
+        #region SelectSidebarCommand
+
+        public DelegateCommand<SelectionModel> SelectSidebarCommand { get; private set; }
+        private async void OnSelectSidebar(SelectionModel obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                var sidebar = SideBarBindProp.FirstOrDefault(i => i.IsSelected);
+                if (sidebar != null)
+                {
+                    sidebar.IsSelected = false;
+                }
+                obj.IsSelected = true;
+                switch (obj.Name)
+                {
+                    case "Danh sách hàng tồn":
+                        ListItemVisibleBindProp = true;
+                        ListItemOutOfStockVisibleBindProp = false;
+                        HistoryVisibleBindProp = false;
+                        break;
+                    case "Danh sách hàng sắp hết":
+                        ListItemOutOfStockVisibleBindProp = true;
+                        ListItemVisibleBindProp = false;
+                        HistoryVisibleBindProp = false;
+                        break;
+                    case "Lịch sử":
+                        HistoryVisibleBindProp = true;
+                        ListItemVisibleBindProp = false;
+                        ListItemOutOfStockVisibleBindProp = false;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectSidebarCommand()
+        {
+            SelectSidebarCommand = new DelegateCommand<SelectionModel>(OnSelectSidebar);
+            SelectSidebarCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
 
         #region ReduceQuantityCommand
 
@@ -128,6 +240,7 @@ namespace Mobile.ViewModels
                     if (parameters.ContainsKey("History"))
                     {
                         var history = parameters["History"] as ImportExportHistoryDto;
+                        ListHistoryBindProp.Insert(0, history);
                     }
                     break;
                 case NavigationMode.New:
@@ -138,7 +251,13 @@ namespace Mobile.ViewModels
                         {
                             var items = JsonConvert.DeserializeObject<IEnumerable<ItemDto>>(await response.Content.ReadAsStringAsync());
                             ListItemBindProp = new ObservableCollection<ItemDto>(items.Where(i => i.IsManaged && i.CurrentQuantity >= i.MinQuantity));
-                            ListItemOutOfStockBindProp = new ObservableCollection<ItemDto>(items.Where(i => i.IsManaged && i.CurrentQuantity < i.MinQuantity));
+                            ListItemOutOfStockBindProp = new ObservableCollection<ItemDto>(items.Where(i => i.IsManaged && i.CurrentQuantity < i.MinQuantity));                      
+                        }
+                        response = await client.GetAsync(Properties.Resources.BaseUrl + "histories/");
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var histories = JsonConvert.DeserializeObject<IEnumerable<ImportExportHistoryDto>>(await response.Content.ReadAsStringAsync());
+                            ListHistoryBindProp = new ObservableCollection<ImportExportHistoryDto>(histories);
                         }
                     }
                     break;

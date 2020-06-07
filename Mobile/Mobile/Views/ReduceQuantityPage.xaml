@@ -73,7 +73,7 @@
                                                 </StackLayout.Triggers>
                                                 <tlrInput:RadEntry
                                                         IsEnabled="{Binding IsSelectingOtherReason}"
-                                                        Text="{Binding Reason}"
+                                                        Text="{Binding Name}"
                                                         IsTabStop="False"
                                                         InputTransparent="True">
                                                 </tlrInput:RadEntry>
@@ -87,9 +87,14 @@
                                 <DataTemplate>
                                     <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
                                         <mr:StackLayout Orientation="Horizontal" Spacing="0" TappedCommand="{Binding SelectReasonCommand}" TappedCommandParameter="other">
-                                            <tlrInput:RadEntry
+                                        <StackLayout.Triggers>
+                                            <DataTrigger TargetType="StackLayout" Binding="{Binding IsSelectingOtherReason}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
+                                            </DataTrigger>
+                                        </StackLayout.Triggers>
+                                        <tlrInput:RadEntry
                                                     IsEnabled="{Binding IsSelectingOtherReason}"
-                                                    Text="{Binding OtherReason, Mode=OneWayToSource}"
+                                                    Text="{Binding OtherReasonBindProp, Mode=OneWayToSource}"
                                                     WatermarkText="Nhập lí do khác">
                                             </tlrInput:RadEntry>
                                         </mr:StackLayout>

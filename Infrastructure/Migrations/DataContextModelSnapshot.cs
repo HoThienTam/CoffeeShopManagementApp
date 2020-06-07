@@ -114,11 +114,11 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsImported")
-                        .HasColumnType("bit");
-
                     b.Property<Guid>("ItemId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ItemName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
@@ -508,7 +508,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Infrastructure.Models.ImportExportHistory", b =>
                 {
-                    b.HasOne("Infrastructure.Models.Item", "Item")
+                    b.HasOne("Infrastructure.Models.Item", null)
                         .WithMany("ImportExportHistories")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)

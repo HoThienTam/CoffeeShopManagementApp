@@ -20,8 +20,8 @@ namespace Infrastructure.Migrations
                     RowVersion = table.Column<byte[]>(rowVersion: true, nullable: true),
                     Quantity = table.Column<int>(nullable: false),
                     Reason = table.Column<string>(nullable: true),
-                    IsImported = table.Column<bool>(nullable: false),
-                    ItemId = table.Column<Guid>(nullable: false)
+                    ItemId = table.Column<Guid>(nullable: false),
+                    ItemName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

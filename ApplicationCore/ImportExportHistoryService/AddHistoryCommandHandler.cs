@@ -3,6 +3,7 @@ using Dtos;
 using Infrastructure.Data;
 using Infrastructure.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,12 +27,22 @@ namespace ApplicationCore.ImportExportHistoryService
         {
             var history = _mapper.Map<ImportExportHistory>(request.History);
             await _context.ImportExportHistories.AddAsync(history);
-
-            if (await _context.SaveChangesAsync() > 0)
+            var item = await _context.Items.FirstOrDefaultAsync(i => i.Id == request.History.ItemId);
+            item.CurrentQuantity += request.History.Quantity;
+            try
             {
-                var historyToReturn = _mapper.Map<ImportExportHistoryDto>(history);
-                return historyToReturn;
+                if (await _context.SaveChangesAsync() > 0)
+                {
+                    var historyToReturn = _mapper.Map<ImportExportHistoryDto>(history);
+                    return historyToReturn;
+                }
             }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
             return null;
         }
     }

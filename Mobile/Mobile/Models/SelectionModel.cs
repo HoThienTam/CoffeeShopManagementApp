@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Mobile.Models
 {
-    public class ReasonModel : BindableBase
+    public class SelectionModel : BindableBase
     {
-        public string Reason { get; set; }
+        public string Name { get; set; }
 
         #region IsSelected
         private bool _IsSelected;

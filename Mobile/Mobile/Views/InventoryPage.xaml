@@ -40,19 +40,24 @@
 
             <Frame VerticalOptions="FillAndExpand" Padding="0">
                 <ScrollView>
-                    <StackLayout Spacing="0">
-                        <StackLayout Spacing="0">
-                            <tlrInput:RadEntry Text="Danh sách hàng tồn" InputTransparent="True"/>
-                            <BoxView Grid.Column="1" BackgroundColor="{StaticResource SubColor}" HeightRequest="1"/>
-                        </StackLayout>
-                        <StackLayout Spacing="0">
-                            <tlrInput:RadEntry Text="Danh sách hàng sắp hết" InputTransparent="True"/>
-                            <BoxView Grid.Column="1" BackgroundColor="{StaticResource SubColor}" HeightRequest="1"/>
-                        </StackLayout>
-                        <StackLayout Spacing="0">
-                            <tlrInput:RadEntry Text="Lịch sử" InputTransparent="True"/>
-                            <BoxView Grid.Column="1" BackgroundColor="{StaticResource SubColor}" HeightRequest="1"/>
-                        </StackLayout>
+                    <StackLayout Spacing="0" BindableLayout.ItemsSource="{Binding SideBarBindProp}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <mr:StackLayout TappedCommand="{Binding BindingContext.SelectSidebarCommand, Source={x:Reference inventoryPage}}" TappedCommandParameter="{Binding}">
+                                        <StackLayout.Triggers>
+                                            <DataTrigger TargetType="StackLayout" Binding="{Binding IsSelected}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
+                                            </DataTrigger>
+                                        </StackLayout.Triggers>
+                                        <tlrInput:RadEntry
+                                            Text="{Binding Name}"
+                                            IsTabStop="False"
+                                            InputTransparent="True">
+                                        </tlrInput:RadEntry>
+                                    <BoxView BackgroundColor="{StaticResource SubColor}" HeightRequest="1"/>
+                                </mr:StackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
                     </StackLayout>
                 </ScrollView>
 
@@ -72,7 +77,7 @@
                 </Grid>
             </Frame>
             <!--  danh sach hang ton  -->
-            <Frame VerticalOptions="FillAndExpand">
+            <Frame VerticalOptions="FillAndExpand" IsVisible="{Binding ListItemVisibleBindProp}">
                 <StackLayout Margin="{StaticResource CommonThickness}">
                     <!--  Tab hang ton  -->
                     <tlrGrid:RadDataGrid
@@ -168,9 +173,7 @@
                 </StackLayout>
             </Frame>
             <!--  danh sach hang sap het  -->
-            <Frame IsVisible="False">
-                <StackLayout Margin="{StaticResource CommonThickness}">
-
+            <Frame IsVisible="{Binding ListItemOutOfStockVisibleBindProp}" VerticalOptions="FillAndExpand">
                     <!--  Tab hang ton  -->
                     <tlrGrid:RadDataGrid
                         Margin="{StaticResource CommonThickness}"
@@ -258,11 +261,10 @@
 
                         </tlrGrid:RadDataGrid.Columns>
                     </tlrGrid:RadDataGrid>
-                </StackLayout>
             </Frame>
             
             <!--  Lich su  -->
-            <Frame IsVisible="False">
+            <Frame IsVisible="{Binding HistoryVisibleBindProp}" VerticalOptions="FillAndExpand">
                 <tlrGrid:RadDataGrid
                     AutoGenerateColumns="False"
                     ItemsSource="{Binding ListHistoryBindProp, Mode=OneWay}"
@@ -272,7 +274,7 @@
                     <tlrGrid:RadDataGrid.Columns>
                         <tlrGrid:DataGridTimeColumn
                                 Width="200"
-                                HeaderText="Thời gian" PropertyName="CreationDate" SizeMode="Fixed">
+                                HeaderText="Thời gian" PropertyName="CreatedAt" SizeMode="Fixed">
                             <tlrGrid:DataGridTimeColumn.HeaderStyle>
                                 <tlrGrid:DataGridColumnHeaderStyle
                                     TextFontAttributes="Bold" TextColor="Black"
@@ -287,7 +289,7 @@
                             </tlrGrid:DataGridTimeColumn.CellContentStyle>
 
                         </tlrGrid:DataGridTimeColumn>
-                        <tlrGrid:DataGridTextColumn HeaderText="Mặt hàng" PropertyName="Item">
+                        <tlrGrid:DataGridTextColumn HeaderText="Mặt hàng" PropertyName="ItemName">
                             <tlrGrid:DataGridTextColumn.HeaderStyle>
                                 <tlrGrid:DataGridColumnHeaderStyle
                                     TextFontAttributes="Bold" TextColor="Black"
@@ -327,7 +329,7 @@
                                 <tlrGrid:DataGridTextCellStyle
                                         FontSize="17" HorizontalTextAlignment="Center"
                                         TextMargin="{StaticResource CommonThickness}"
-                                        VerticalTextAlignment="Center" />
+                                        VerticalTextAlignment="Center"/>
                             </tlrGrid:DataGridTextColumn.CellContentStyle>
                         </tlrGrid:DataGridTextColumn>
 
