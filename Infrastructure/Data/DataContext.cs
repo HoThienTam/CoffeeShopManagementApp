@@ -22,6 +22,7 @@ namespace Infrastructure.Data
         public DbSet<InvoiceItem> InvoiceItems { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemDiscount> ItemDiscounts { get; set; }
+        public DbSet<ImportExportHistory> ImportExportHistories { get; set; }
         public DbSet<Table> Tables { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Zone> Zones { get; set; }

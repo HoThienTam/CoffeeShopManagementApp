@@ -54,6 +54,15 @@ namespace Dtos
 
         public Guid CategoryId { get; set; }
         public int MinQuantity { get; set; }
-        public int CurrentQuantity { get; set; }
+
+        #region CurrentQuantity
+        private int _CurrentQuantity;
+        public int CurrentQuantity
+        {
+            get { return _CurrentQuantity; }
+            set { SetProperty(ref _CurrentQuantity, value); }
+        }
+        #endregion
+
     }
 }

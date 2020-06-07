@@ -11,6 +11,16 @@
     <Compile Remove="Migrations\20200416153636_add_category_item.Designer.cs" />
     <Compile Remove="Migrations\20200510100428_final.cs" />
     <Compile Remove="Migrations\20200510100428_final.Designer.cs" />
+    <Compile Remove="Migrations\20200602111504_add_import_export_history.cs" />
+    <Compile Remove="Migrations\20200602111504_add_import_export_history.Designer.cs" />
+    <Compile Remove="Migrations\20200602111551_add_import_export_history.cs" />
+    <Compile Remove="Migrations\20200602111551_add_import_export_history.Designer.cs" />
+    <Compile Remove="Migrations\20200602111945_add_import_export_history.cs" />
+    <Compile Remove="Migrations\20200602111945_add_import_export_history.Designer.cs" />
+    <Compile Remove="Migrations\20200602162613_import_export_history.cs" />
+    <Compile Remove="Migrations\20200602162613_import_export_history.Designer.cs" />
+    <Compile Remove="Migrations\20200607101130_import_export_history.cs" />
+    <Compile Remove="Migrations\20200607101130_import_export_history.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
