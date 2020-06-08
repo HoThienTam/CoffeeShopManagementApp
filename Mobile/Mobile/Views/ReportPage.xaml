@@ -1,0 +1,368 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             xmlns:lcModels="clr-namespace:Mobile.Models"
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures" 
+             xmlns:tlrGrid="clr-namespace:Telerik.XamarinForms.DataGrid;assembly=Telerik.XamarinForms.DataGrid" 
+             xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input" 
+             xmlns:tlrChart="clr-namespace:Telerik.XamarinForms.Chart;assembly=Telerik.XamarinForms.Chart"
+             x:Name="reportPage"
+             NavigationPage.HasNavigationBar="False"
+             x:Class="Mobile.Views.ReportPage">
+    <Grid BackgroundColor="{StaticResource MainColor}" ColumnSpacing="1" RowSpacing="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <StackLayout Spacing="1">
+            <Frame Padding="0">
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <mr:Grid TappedCommand="{Binding GoBackCommand}" >
+                        <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
+                    </mr:Grid>
+                    <!--Title-->
+                    <Label Text="Thống kê" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                </Grid>
+            </Frame>
+
+            <Frame VerticalOptions="FillAndExpand" Padding="0">
+                <ScrollView>
+                    <StackLayout Spacing="0" BindableLayout.ItemsSource="{Binding SideBarBindProp}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <mr:StackLayout TappedCommand="{Binding BindingContext.SelectSidebarCommand, Source={x:Reference reportPage}}" TappedCommandParameter="{Binding}">
+                                    <StackLayout.Triggers>
+                                        <DataTrigger TargetType="StackLayout" Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
+                                        </DataTrigger>
+                                    </StackLayout.Triggers>
+                                    <tlrInput:RadEntry
+                                            Text="{Binding Name}"
+                                            IsTabStop="False"
+                                            InputTransparent="True">
+                                    </tlrInput:RadEntry>
+                                    <BoxView BackgroundColor="{StaticResource SubColor}" HeightRequest="1"/>
+                                </mr:StackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </ScrollView>
+
+            </Frame>
+        </StackLayout>
+
+        <StackLayout  Grid.Column="1" Spacing="1">
+            <Frame Padding="0">
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--Title-->
+                    <Label Text="{Binding Title}" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                </Grid>
+            </Frame>
+
+            <Frame VerticalOptions="FillAndExpand" IsVisible="{Binding OverallVisibleBindProp}">
+                <ScrollView Padding="{StaticResource CommonThickness}">
+                    <!--  Detail  -->
+                    <StackLayout Spacing="{StaticResource CommonThickness}">
+                        <Label Text="{Binding SelectedDateBindProp}"></Label>
+
+                        <!--Doanh thu theo gio-->
+                        <tlrPrimitives:RadBorder Padding="{StaticResource CommonThickness}" IsVisible="{Binding RevenuePerHourVisibleBindProp}" Style="{StaticResource CommonBorder}">
+                            <StackLayout Orientation="Vertical">
+                                <Label
+                                        FontAttributes="Bold"
+                                        HorizontalOptions="StartAndExpand" Text="Doanh thu bình quân giờ" />
+                                <tlrChart:RadCartesianChart>
+                                    <tlrChart:RadCartesianChart.HorizontalAxis>
+                                        <tlrChart:CategoricalAxis/>
+                                    </tlrChart:RadCartesianChart.HorizontalAxis>
+                                    <tlrChart:RadCartesianChart.VerticalAxis>
+                                        <tlrChart:NumericalAxis/>
+                                    </tlrChart:RadCartesianChart.VerticalAxis>
+                                    <tlrChart:RadCartesianChart.Series>
+                                        <tlrChart:BarSeries ValueBinding="Value"
+                                                            CategoryBinding="Category"
+                                                            ItemsSource="{Binding Data}" />
+                                    </tlrChart:RadCartesianChart.Series>
+                                </tlrChart:RadCartesianChart>
+                            </StackLayout>
+                        </tlrPrimitives:RadBorder>
+
+                        <!--Doanh thu theo ngay -->
+                        <tlrPrimitives:RadBorder Padding="{StaticResource CommonThickness}" IsVisible="{Binding RevenuePerDayVisibleBindProp}" Style="{StaticResource CommonBorder}">
+                            <StackLayout Orientation="Vertical">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label
+                                        FontAttributes="Bold"
+                                        HorizontalOptions="StartAndExpand" Text="Doanh thu theo ngày"/>
+                                    <Label
+                                        HorizontalOptions="EndAndExpand" Text="{Binding SelectedDateBindProp}"/>
+                                </StackLayout>
+                                <tlrChart:RadCartesianChart>
+                                    <tlrChart:RadCartesianChart.HorizontalAxis>
+                                        <tlrChart:CategoricalAxis PlotMode="OnTicks" MajorTickInterval="{Binding Interval}"/>
+                                    </tlrChart:RadCartesianChart.HorizontalAxis>
+                                    <tlrChart:RadCartesianChart.VerticalAxis>
+                                        <tlrChart:NumericalAxis LabelFormat="C"/>
+                                    </tlrChart:RadCartesianChart.VerticalAxis>
+                                    <tlrChart:RadCartesianChart.Series>
+                                        <tlrChart:AreaSeries 
+                                                            CategoryBinding="DateTime"
+                                                            ValueBinding="Value" 
+                                                            ItemsSource="{Binding AverageData, Mode=OneWay}"/>
+                                    </tlrChart:RadCartesianChart.Series>
+                                </tlrChart:RadCartesianChart>
+                            </StackLayout>
+                        </tlrPrimitives:RadBorder>
+
+                        <!-- Thong ke-->
+                        <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                            <StackLayout Spacing="0">
+                                <StackLayout Padding="{StaticResource CommonHorizontalThickness}" Orientation="Horizontal" Spacing="0">
+                                    <Label
+                                        HorizontalOptions="StartAndExpand" Text="Tổng số tiền thu được"/>
+                                    <Label
+                                        HorizontalOptions="End" Text="Giảm giá" />
+                                </StackLayout>
+
+                                <Grid Padding="{StaticResource CommonHorizontalThickness}" Style="{StaticResource CommonWrapper}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label
+                                            FontSize="Large"
+                                            FontAttributes="Bold"
+                                            HorizontalOptions="FillAndExpand" Text="{Binding TotalMoneyBindProp, StringFormat='{0:C}'}"/>
+                                    <Label
+                                           Grid.Column="1"
+                                            FontSize="Large"
+                                            FontAttributes="Bold"
+                                            HorizontalTextAlignment="End" Text="0đ"/>
+                                </Grid>
+
+                                <BoxView HeightRequest="1" BackgroundColor="{StaticResource SubColor}" />
+
+                                <StackLayout Padding="{StaticResource CommonHorizontalThickness}" Orientation="Horizontal" Spacing="0">
+                                    <Label
+                                        HorizontalOptions="StartAndExpand" Text="Số lượng giao dịch"/>
+                                    <Label
+                                        HorizontalOptions="End" Text="Giá trị/Giao dịch"/>
+                                </StackLayout>
+
+                                <Grid Padding="{StaticResource CommonHorizontalThickness}" Style="{StaticResource CommonWrapper}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label
+                                            FontSize="Large"
+                                            FontAttributes="Bold"
+                                            HorizontalOptions="Start" Text="{Binding TotalTransactionBindProp}" />
+                                    <Label
+                                            Grid.Column="1"
+                                            FontSize="Large"
+                                            FontAttributes="Bold"
+                                            HorizontalTextAlignment="End" Text="{Binding AverageMoneyBindProp, StringFormat='{0:C}'}"/>
+                                </Grid>
+                            </StackLayout>
+                        </tlrPrimitives:RadBorder>
+                    </StackLayout>
+                </ScrollView>
+
+            </Frame>
+
+            <Frame VerticalOptions="FillAndExpand"  IsVisible="{Binding TopSellersVisibleBindProp}">
+                <!--  Mat hang ban chay  -->
+                <ScrollView Padding="{StaticResource CommonThickness}">
+                    <!--  Detail  -->
+                    <StackLayout>
+                        <Label Text="{Binding SelectedDateBindProp}"></Label>
+
+                        <tlrGrid:RadDataGrid
+                            Margin="{StaticResource CommonVerticalThickness}"
+                            AutoGenerateColumns="False" HorizontalOptions="FillAndExpand"
+                            ItemsSource="{Binding TopSellersBindProp, Mode=OneWay}"
+                            UserEditMode="None" SelectionMode="None" 
+                            UserFilterMode="Disabled" UserSortMode="None">
+                            <tlrGrid:RadDataGrid.RowBackgroundStyle>
+                                <tlrGrid:DataGridBorderStyle 
+                                     BorderColor="{StaticResource SubColor}" 
+                                     BorderThickness="0,0,0,1"/>
+                            </tlrGrid:RadDataGrid.RowBackgroundStyle>
+                            <tlrGrid:RadDataGrid.Columns>
+                                <tlrGrid:DataGridTextColumn PropertyName="Name"
+                                HeaderText="Tên mặt hàng">
+                                    <tlrGrid:DataGridTextColumn.HeaderStyle>
+                                        <tlrGrid:DataGridColumnHeaderStyle
+                                            BackgroundColor="White" HorizontalTextAlignment="Start" 
+                                            OptionsButtonTextColor="Transparent"
+                                            TextMargin="0,20"
+                                            BorderThickness="0,1"
+                                            TextFontAttributes="Bold"/>
+                                    </tlrGrid:DataGridTextColumn.HeaderStyle>
+                                    <tlrGrid:DataGridTextColumn.CellContentStyle>
+                                        <tlrGrid:DataGridTextCellStyle TextMargin="0,20"/>
+                                    </tlrGrid:DataGridTextColumn.CellContentStyle>
+                                </tlrGrid:DataGridTextColumn>
+                                <tlrGrid:DataGridTextColumn PropertyName="TransactionCount"
+                                HeaderText="Số lượng đã bán">
+                                    <tlrGrid:DataGridTextColumn.HeaderStyle>
+                                        <tlrGrid:DataGridColumnHeaderStyle
+                                            BackgroundColor="White" HorizontalTextAlignment="Start" OptionsButtonTextColor="Transparent"
+                                            BorderThickness="0,1"
+                                            TextMargin="0,20"
+                                            TextFontAttributes="Bold"/>
+                                    </tlrGrid:DataGridTextColumn.HeaderStyle>
+                                    <tlrGrid:DataGridTextColumn.CellContentStyle>
+                                        <tlrGrid:DataGridTextCellStyle TextMargin="0,20"/>
+                                    </tlrGrid:DataGridTextColumn.CellContentStyle>
+                                </tlrGrid:DataGridTextColumn>
+                                <tlrGrid:DataGridTextColumn PropertyName="Type"
+                                HeaderText="Phần trăm">
+                                    <tlrGrid:DataGridTextColumn.HeaderStyle>
+                                        <tlrGrid:DataGridColumnHeaderStyle
+                                            BackgroundColor="White" HorizontalTextAlignment="Start" OptionsButtonTextColor="Transparent"
+                                            BorderThickness="0,1"
+                                            TextMargin="0,20"
+                                            TextFontAttributes="Bold"/>
+                                    </tlrGrid:DataGridTextColumn.HeaderStyle>
+                                    <tlrGrid:DataGridTextColumn.CellContentStyle>
+                                        <tlrGrid:DataGridTextCellStyle TextMargin="0,20"/>
+                                    </tlrGrid:DataGridTextColumn.CellContentStyle>
+                                </tlrGrid:DataGridTextColumn>
+                                <tlrGrid:DataGridTextColumn PropertyName="Revenue"
+                                HeaderText="Doanh thu">
+                                    <tlrGrid:DataGridTextColumn.HeaderStyle>
+                                        <tlrGrid:DataGridColumnHeaderStyle
+                                            BackgroundColor="White" HorizontalTextAlignment="Start" OptionsButtonTextColor="Transparent"
+                                            BorderThickness="0,1"
+                                            TextMargin="0,20"
+                                            TextFontAttributes="Bold"/>
+                                    </tlrGrid:DataGridTextColumn.HeaderStyle>
+                                    <tlrGrid:DataGridTextColumn.CellContentStyle>
+                                        <tlrGrid:DataGridTextCellStyle TextMargin="0,20"/>
+                                    </tlrGrid:DataGridTextColumn.CellContentStyle>
+                                </tlrGrid:DataGridTextColumn>
+                            </tlrGrid:RadDataGrid.Columns>
+                        </tlrGrid:RadDataGrid>
+                        <Label Margin="{StaticResource CommonThickness}" Text="Chỉ hiển thị 10 mặt hàng bán chạy nhất" FontSize="Small" HorizontalOptions="Center"/>
+                    </StackLayout>
+                </ScrollView>
+            </Frame>
+        </StackLayout>
+        
+        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}"/>
+        <tlrPrimitives:RadPopup.Popup>
+            <tlrPrimitives:RadPopup IsOpen="{Binding PopupVisibleBindProp}"
+                                IsModal="True"
+                                OutsideBackgroundColor="#6F000000">
+                <Grid Style="{StaticResource CommonWrapper}" BackgroundColor="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid Style="{StaticResource CommonWrapper}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <!--  Title  -->
+                        <Label Style="{StaticResource CommonHeader}" Text="Tùy chỉnh Báo cáo" />
+                        <!--  Back icon  -->
+                        <mr:Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.AngleLeft}" />
+                        <!--  Luu  -->
+                        <mr:Label TappedCommand="{Binding CloseDatePickerCommand}" Style="{StaticResource CommonHeader}" Grid.Column="2" Text="Áp dụng" />
+                    </Grid>
+
+                    <!--  Seperate header bottom line  -->
+                    <BoxView Grid.Row="1" HeightRequest="1" BackgroundColor="{StaticResource SubColor}" />
+
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <tlrInput:RadCalendar
+                          ViewMode="Month"
+                          SelectedRange="{Binding DateRangeBindProp, Mode=TwoWay}"
+                          SelectionMode="Range" />
+
+                        <StackLayout Grid.Column="1" Margin="10,20">
+                            <tlrPrimitives:RadBorder 
+                                HorizontalOptions="FillAndExpand"
+                                Style="{StaticResource CommonBorder}">
+                                <tlrInput:RadButton 
+                                    Command="{Binding TapDateButtonCommand}"
+                                    CommandParameter="today"
+                                    Text="Hôm nay"/>
+                            </tlrPrimitives:RadBorder>
+                            <tlrPrimitives:RadBorder 
+                                HorizontalOptions="FillAndExpand"
+                                Style="{StaticResource CommonBorder}">
+                                <tlrInput:RadButton 
+                                    Command="{Binding TapDateButtonCommand}"
+                                    CommandParameter="yesterday"
+                                    Text="Hôm qua"/>
+                            </tlrPrimitives:RadBorder>
+                            <tlrPrimitives:RadBorder 
+                                HorizontalOptions="FillAndExpand"
+                                Style="{StaticResource CommonBorder}">
+                                <tlrInput:RadButton 
+                                    Command="{Binding TapDateButtonCommand}"
+                                    CommandParameter="thisweek"
+                                    Text="Tuần này"/>
+                            </tlrPrimitives:RadBorder>
+                            <tlrPrimitives:RadBorder 
+                                HorizontalOptions="FillAndExpand"
+                                Style="{StaticResource CommonBorder}">
+                                <tlrInput:RadButton 
+                                    Command="{Binding TapDateButtonCommand}"
+                                    CommandParameter="lastweek"
+                                    Text="Tuần trước"/>
+                            </tlrPrimitives:RadBorder>
+                            <tlrPrimitives:RadBorder 
+                                HorizontalOptions="FillAndExpand"
+                                Style="{StaticResource CommonBorder}">
+                                <tlrInput:RadButton
+                                    Command="{Binding TapDateButtonCommand}"
+                                    CommandParameter="thismonth"
+                                    Text="Tháng này"/>
+                            </tlrPrimitives:RadBorder>
+                            <tlrPrimitives:RadBorder 
+                                HorizontalOptions="FillAndExpand"
+                                Style="{StaticResource CommonBorder}">
+                                <tlrInput:RadButton
+                                    Command="{Binding TapDateButtonCommand}"
+                                    CommandParameter="lastmonth"
+                                    Text="Tháng trước"/>
+                            </tlrPrimitives:RadBorder>
+                        </StackLayout>
+                    </Grid>
+
+                </Grid>
+            </tlrPrimitives:RadPopup>
+        </tlrPrimitives:RadPopup.Popup>
+    </Grid>
+</ContentPage>
