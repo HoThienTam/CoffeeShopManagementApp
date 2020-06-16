@@ -1,4 +1,5 @@
 ﻿using Dtos;
+using Microsoft.AspNetCore.SignalR.Client;
 using Mobile.Models;
 using Mobile.Views;
 using Newtonsoft.Json;
@@ -14,11 +15,13 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Telerik.XamarinForms.Input.Calendar;
+using Xamarin.Forms;
 
 namespace Mobile.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
+        private HubConnection _connection;
         public MainPageViewModel(InitParams initParams) : base(initParams)
         {
             ListCategoryBindProp = new ObservableCollection<CategoryDto>();
@@ -499,18 +502,10 @@ namespace Mobile.ViewModels
                     }
                     switch (response.StatusCode)
                     {
-                        case HttpStatusCode.NoContent:
-                            break;
                         case HttpStatusCode.Created:
                             var invoice = JsonConvert.DeserializeObject<InvoiceDto>(await response.Content.ReadAsStringAsync());
                             ListInvoiceBindProp.Add(invoice);
                             InvoiceBindProp = null;
-                            break;
-                        case HttpStatusCode.BadRequest:
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await response.Content.ReadAsStringAsync()}", "Đóng");
-                            break;
-                        default:
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"Lỗi hệ thống!", "Đóng");
                             break;
                     }
                 };
@@ -570,6 +565,36 @@ namespace Mobile.ViewModels
 
         #endregion
 
+        private async void StartSignalRAsync()
+        {
+            _connection = new HubConnectionBuilder()
+                     .WithUrl(Properties.Resources.SignalR)
+                     .Build();
+
+            _connection.Closed += async (error) =>
+            {
+                await Task.Delay(new Random().Next(0, 5) * 1000);
+                await _connection.StartAsync();
+            };
+
+            _connection.On<string, string>("ReceiveInvoice", (user, message) =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    var invoiceDto = JsonConvert.DeserializeObject<InvoiceDto>(message);
+                    ListInvoiceBindProp.Add(invoiceDto);
+                });
+            });
+
+            try
+            {
+                await _connection.StartAsync();
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorAsync(ex);
+            }
+        }
         public async override void OnNavigatedTo(INavigationParameters parameters)
         {
             switch (parameters.GetNavigationMode())
