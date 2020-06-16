@@ -24,10 +24,12 @@ namespace Mobile.ViewModels
         private HubConnection _connection;
         public MainPageViewModel(InitParams initParams) : base(initParams)
         {
+            StartSignalRAsync();
             ListCategoryBindProp = new ObservableCollection<CategoryDto>();
             ListDiscountBindProp = new ObservableCollection<DiscountDto>();
             ListInvoiceBindProp = new ObservableCollection<InvoiceDto>();
             ListZoneBindProp = new ObservableCollection<ZoneDto>();
+            InvoiceBindProp = new InvoiceDto();
         }
 
         #region Bindprops
@@ -382,10 +384,6 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                if (InvoiceBindProp == null)
-                {
-                    InvoiceBindProp = new InvoiceDto();
-                }
                 var itemForInvoice = new ItemForInvoiceDto(item);
                 InvoiceBindProp.Items.Add(itemForInvoice);
                 InvoiceBindProp.TotalPrice += item.Price;
@@ -432,12 +430,15 @@ namespace Mobile.ViewModels
                         SettingFrameVisibleBindProp = true;
                         break;
                     case "invoice":
-                        MenuFrameVisibleBindProp = false;
-                        InvoiceFrameVisibleBindProp = true;
-                        SettingFrameVisibleBindProp = false;
                         if (InvoiceBindProp != null)
                         {
-                            await PageDialogService.DisplayAlertAsync("Cảnh báo", "Hủy hóa đơn?", "Đồng ý", "Không");
+                            var ok = await PageDialogService.DisplayAlertAsync("Cảnh báo", "Hủy hóa đơn?", "Đồng ý", "Không");
+                            if (ok)
+                            {
+                                MenuFrameVisibleBindProp = false;
+                                InvoiceFrameVisibleBindProp = true;
+                                SettingFrameVisibleBindProp = false;
+                            }
                         }
                         break;
                     case "discount":
@@ -505,6 +506,7 @@ namespace Mobile.ViewModels
                         case HttpStatusCode.Created:
                             var invoice = JsonConvert.DeserializeObject<InvoiceDto>(await response.Content.ReadAsStringAsync());
                             ListInvoiceBindProp.Add(invoice);
+                            await _connection.InvokeAsync("SendInvoice", invoice);
                             InvoiceBindProp = null;
                             break;
                     }
@@ -565,6 +567,56 @@ namespace Mobile.ViewModels
 
         #endregion
 
+        #region SelectTableCommand
+
+        public DelegateCommand<object> SelectTableCommand { get; private set; }
+        private async void OnSelectTable(object obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                if (obj is TableDto)
+                {
+                    var table = obj as TableDto;
+                    InvoiceBindProp.TableName = table.Name;
+                    InvoiceBindProp.TableId = table.Id;
+                    MenuFrameVisibleBindProp = true;
+                    InvoiceFrameVisibleBindProp = false;
+                }
+                else
+                {
+                    MenuFrameVisibleBindProp = false;
+                    InvoiceFrameVisibleBindProp = true;
+                    ListInvoiceFrameVisibleBindProp = false;
+                    ZoneFrameVisibleBindProp = true;
+                }
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectTableCommand()
+        {
+            SelectTableCommand = new DelegateCommand<object>(OnSelectTable);
+            SelectTableCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
         private async void StartSignalRAsync()
         {
             _connection = new HubConnectionBuilder()
@@ -577,12 +629,11 @@ namespace Mobile.ViewModels
                 await _connection.StartAsync();
             };
 
-            _connection.On<string, string>("ReceiveInvoice", (user, message) =>
+            _connection.On<InvoiceDto>("ReceiveInvoice", (invoice) =>
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    var invoiceDto = JsonConvert.DeserializeObject<InvoiceDto>(message);
-                    ListInvoiceBindProp.Add(invoiceDto);
+                    ListInvoiceBindProp.Add(invoice);
                 });
             });
 
@@ -674,7 +725,7 @@ namespace Mobile.ViewModels
                                 }
                             }
                             allTasks.Remove(finished);
-                        }                      
+                        }
                     }
                     break;
                 case NavigationMode.Forward:

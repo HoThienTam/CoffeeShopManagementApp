@@ -163,10 +163,10 @@
                         </dataControls:RadListView.LayoutDefinition>
                         <dataControls:RadListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <mr:Grid TappedCommand="{Binding BindingContext.SelectTableCommand, Source={x:Reference mainPage}}" TappedCommandParameter="{Binding}">
                                     <Label Text="{x:Static lcModels:FontAwesomeIcon.Square}" Style="{StaticResource CommonIcon}" FontSize="Header"/>
                                     <Label Text="{Binding Name}" HorizontalOptions="Center" FontSize="Large" TextColor="{StaticResource ContrastColor}"/>
-                                </Grid>
+                                </mr:Grid>
                             </DataTemplate>
                         </dataControls:RadListView.ItemTemplate>
                     </dataControls:RadListView>
@@ -289,7 +289,7 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <mr:StackLayout Orientation="Horizontal" 
+                            <mr:StackLayout Orientation="Horizontal" Spacing="0"
                                             Margin="{StaticResource CommonHorizontalThickness}" 
                                             TappedCommand="{Binding SelectViewCommand}"
                                             TappedCommandParameter="billmode">
@@ -350,10 +350,15 @@
                             <BoxView Grid.Column="1" WidthRequest="1" BackgroundColor="{StaticResource SubColor}"/>
 
                             <!--Title-->
-                            <mr:Grid Grid.Column="2">
-                                <Label VerticalOptions="Center" TextColor="Black" Text="Table Name" FontSize="Large"/>
+                            <mr:Grid Grid.Column="2" TappedCommand="{Binding SelectTableCommand}">
+                                <Label VerticalOptions="Center" TextColor="Black" Text="{Binding InvoiceBindProp.TableName}" FontSize="Large">
+                                    <Label.Triggers>
+                                        <DataTrigger TargetType="Label" Binding="{Binding InvoiceBindProp.TableName}" Value="null">
+                                            <Setter Property="Text" Value="SELECT TABLE"/>
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
                             </mr:Grid>
-                            <Label Grid.Column="2" Text="MANG ĐI" IsVisible="False"/>
                             <!--Seperate line-->
                         </Grid>
 
