@@ -61,11 +61,20 @@ namespace Mobile.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://ee258564c4b3.ngrok.io/api/.
+        ///   Looks up a localized string similar to https://de620fc09764.ngrok.io/api/.
         /// </summary>
         internal static string BaseUrl {
             get {
                 return ResourceManager.GetString("BaseUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://4ef9a30bbbc3.ngrok.io/servicehub.
+        /// </summary>
+        internal static string SignalR {
+            get {
+                return ResourceManager.GetString("SignalR", resourceCulture);
             }
         }
     }
