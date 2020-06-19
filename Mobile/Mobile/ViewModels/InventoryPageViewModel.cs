@@ -131,7 +131,6 @@ namespace Mobile.ViewModels
 
         #endregion
 
-
         #region SelectSidebarCommand
 
         public DelegateCommand<SelectionModel> SelectSidebarCommand { get; private set; }

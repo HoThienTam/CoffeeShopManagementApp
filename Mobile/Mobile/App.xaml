@@ -11,6 +11,7 @@
 
 		<!-- Application resource dictionary -->
         <cvt:IntToRoleConverter x:Key="IntToRoleConverter"/>
+        <cvt:NullToBoolConverter x:Key="NullToBoolConverter"/>
         
         <!-- Icon -->
         <OnPlatform x:Key="FontAwesomeBrands" x:TypeArguments="x:String">

@@ -55,6 +55,7 @@ namespace Mobile
             containerRegistry.RegisterForNavigation<ReduceQuantityPage, ReduceQuantityPageViewModel>();
             containerRegistry.RegisterForNavigation<ReportPage, ReportPageViewModel>();
             containerRegistry.RegisterForNavigation<InvoicePage, InvoicePageViewModel>();
+            containerRegistry.RegisterForNavigation<ItemDiscountPage, ItemDiscountPageViewModel>();
 
         }
     }

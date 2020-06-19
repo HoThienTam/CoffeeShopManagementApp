@@ -127,7 +127,7 @@
 
                                         <StackLayout Grid.ColumnSpan="2" Padding="{StaticResource CommonHorizontalThickness}" Grid.Row="2" Orientation="Horizontal">
                                             <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Clock}" />
-                                            <Label Text="{Binding CreateAt}" TextColor="Black"/>
+                                            <Label Text="{Binding CreatedAt, StringFormat='{}{0:HH\\:mm\\:ss}'}" TextColor="Black"/>
                                         </StackLayout>
 
                                         <tlrInput:RadButton
@@ -293,27 +293,29 @@
                                             Margin="{StaticResource CommonHorizontalThickness}" 
                                             TappedCommand="{Binding SelectViewCommand}"
                                             TappedCommandParameter="billmode">
-                                <Label FontSize="Medium" Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Coffee}">
-                                    <!--<Label.Triggers>
-                                        <DataTrigger TargetType="Label" Binding="{Binding IsTakeAway}" Value="True">
-                                            <Setter Property="Text" Value="{x:Static lcModels:FontAwesomeIcon.CoffeeTogo}"/>
-                                        </DataTrigger>
-                                    </Label.Triggers>-->
-                                </Label>
+                                <mr:StackLayout Orientation="Horizontal" Spacing="0" TappedCommand="{Binding OpenTakeAwayCommand}">
+                                    <Label WidthRequest="30" FontSize="Medium" Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Coffee}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsTakeAway}" Value="True">
+                                                <Setter Property="Text" Value="{x:Static lcModels:FontAwesomeIcon.CoffeeTogo}"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
 
-                                <Label FontSize="Medium" Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.AngleDown}">
-                                    <!--<Label.Triggers>
-                                        <DataTrigger TargetType="Label" Binding="{Binding IsVisibleBillModeBindProp}" Value="True">
-                                            <Setter Property="Text" Value="{x:Static lcModels:FontAwesomeIcon.AngleUp}"/>
-                                        </DataTrigger>
-                                    </Label.Triggers>-->
-                                </Label>
+                                    <Label FontSize="Medium" Style="{StaticResource CommonIcon}" Margin="0" Text="{x:Static lcModels:FontAwesomeIcon.AngleDown}">
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsOpenTakeAway}" Value="True">
+                                                <Setter Property="Text" Value="{x:Static lcModels:FontAwesomeIcon.AngleUp}"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                </mr:StackLayout>
                                 <tlrPrimitives:RadPopup.Popup>
                                     <tlrPrimitives:RadPopup
                                         Placement="Top"
                                         VerticalOffset="-10"
                                         HorizontalOffset="-10"
-                                        IsOpen="True"
+                                        IsOpen="{Binding IsOpenTakeAway}"
                                         IsModal="False">
                                         <tlrPrimitives:RadBorder
                                             BackgroundColor="{StaticResource MainColor}"
@@ -325,7 +327,7 @@
                                                         <x:Double x:Key="Width">25</x:Double>
                                                     </ResourceDictionary>
                                                 </StackLayout.Resources>
-                                                <mr:StackLayout Orientation="Horizontal" TappedCommand="{Binding SelectViewCommand}" TappedCommandParameter="inplace">
+                                                <mr:StackLayout Orientation="Horizontal" TappedCommand="{Binding SelectTakeAwayCommand}" TappedCommandParameter="inplace">
                                                     <Label WidthRequest="{StaticResource Width}" 
                                                            FontSize="Medium" 
                                                            Style="{StaticResource CommonIcon}" 
@@ -333,7 +335,7 @@
                                                            Text="{x:Static lcModels:FontAwesomeIcon.Coffee}" />
                                                     <Label TextColor="{StaticResource ContrastColor}" Text="Dùng tại bàn" />
                                                 </mr:StackLayout>
-                                                <mr:StackLayout Orientation="Horizontal" TappedCommand="{Binding SelectViewCommand}" TappedCommandParameter="togo">
+                                                <mr:StackLayout Orientation="Horizontal" TappedCommand="{Binding SelectTakeAwayCommand}" TappedCommandParameter="togo">
                                                     <Label WidthRequest="{StaticResource Width}" 
                                                            FontSize="Medium" 
                                                            Style="{StaticResource CommonIcon}" 
@@ -353,8 +355,8 @@
                             <mr:Grid Grid.Column="2" TappedCommand="{Binding SelectTableCommand}">
                                 <Label VerticalOptions="Center" TextColor="Black" Text="{Binding InvoiceBindProp.TableName}" FontSize="Large">
                                     <Label.Triggers>
-                                        <DataTrigger TargetType="Label" Binding="{Binding InvoiceBindProp.TableName}" Value="null">
-                                            <Setter Property="Text" Value="SELECT TABLE"/>
+                                        <DataTrigger TargetType="Label" Binding="{Binding IsTakeAway}" Value="True">
+                                            <Setter Property="Text" Value="MANG ĐI"/>
                                         </DataTrigger>
                                     </Label.Triggers>
                                 </Label>
@@ -383,7 +385,7 @@
                                                 </Grid.RowDefinitions>
 
                                                 <Label Text="{Binding Name}" />
-                                                <Label Grid.Column="1" Text="x2" Margin="0"/>
+                                                <Label Grid.Column="1" Text="{Binding Quantity, StringFormat='x{0}'}" Margin="0"/>
                                                 <Label Grid.Column="2" Text="{Binding Price, StringFormat='{}{0:C}'}" HorizontalOptions="EndAndExpand" />
 
                                                 <!--  Danh sach sub item  -->
@@ -412,11 +414,11 @@
                                 </StackLayout>
 
                                 <Grid>
-                                    <!--<Grid.Triggers>
-                                        <DataTrigger TargetType="Grid" Binding="{Binding CurrentBillBindProp.ListDiscount.Count}" Value="0">
+                                    <Grid.Triggers>
+                                        <DataTrigger TargetType="Grid" Binding="{Binding InvoiceBindProp.Discounts.Count}" Value="0">
                                             <Setter Property="IsVisible" Value="False"/>
                                         </DataTrigger>
-                                    </Grid.Triggers>-->
+                                    </Grid.Triggers>
                                     <BoxView Style="{StaticResource CommonTitleRule}" Margin="{StaticResource CommonHorizontalThickness}"/>
                                     <Label Style="{StaticResource CommonTitle}" Text="Giảm giá" FontSize="Small"/>
                                 </Grid>
@@ -671,6 +673,7 @@
                     <Label Grid.Row="1" TextColor="{StaticResource ContrastColor}" Text="Thư viện" HorizontalOptions="Center" />
                 </mr:Grid>
             </Grid>
+                     
         </Grid>
         <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
     </Grid>

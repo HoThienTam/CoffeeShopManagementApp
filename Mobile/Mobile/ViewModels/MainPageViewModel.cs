@@ -29,7 +29,6 @@ namespace Mobile.ViewModels
             ListDiscountBindProp = new ObservableCollection<DiscountDto>();
             ListInvoiceBindProp = new ObservableCollection<InvoiceDto>();
             ListZoneBindProp = new ObservableCollection<ZoneDto>();
-            InvoiceBindProp = new InvoiceDto();
         }
 
         #region Bindprops
@@ -173,6 +172,24 @@ namespace Mobile.ViewModels
         {
             get { return _InvoiceBindProp; }
             set { SetProperty(ref _InvoiceBindProp, value); }
+        }
+        #endregion
+
+        #region IsTakeAway
+        private bool _IsTakeAway;
+        public bool IsTakeAway
+        {
+            get { return _IsTakeAway; }
+            set { SetProperty(ref _IsTakeAway, value); }
+        }
+        #endregion
+
+        #region IsOpenTakeAway
+        private bool _IsOpenTakeAway;
+        public bool IsOpenTakeAway
+        {
+            get { return _IsOpenTakeAway; }
+            set { SetProperty(ref _IsOpenTakeAway, value); }
         }
         #endregion
 
@@ -384,9 +401,11 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                var itemForInvoice = new ItemForInvoiceDto(item);
-                InvoiceBindProp.Items.Add(itemForInvoice);
-                InvoiceBindProp.TotalPrice += item.Price;
+                var param = new NavigationParameters();
+                param.Add(nameof(ListDiscountBindProp), ListDiscountBindProp);
+                param.Add("ItemBindProp", item);
+
+                await NavigationService.NavigateAsync(nameof(ItemDiscountPage), param);
             }
             catch (Exception e)
             {
@@ -438,7 +457,14 @@ namespace Mobile.ViewModels
                                 MenuFrameVisibleBindProp = false;
                                 InvoiceFrameVisibleBindProp = true;
                                 SettingFrameVisibleBindProp = false;
+                                InvoiceBindProp = null;
                             }
+                        }
+                        else
+                        {
+                            MenuFrameVisibleBindProp = false;
+                            InvoiceFrameVisibleBindProp = true;
+                            SettingFrameVisibleBindProp = false;
                         }
                         break;
                     case "discount":
@@ -546,6 +572,10 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                if (InvoiceBindProp == null)
+                {
+                    InvoiceBindProp = new InvoiceDto();
+                }
                 InvoiceBindProp.Discounts.Add(obj);
             }
             catch (Exception e)
@@ -584,6 +614,10 @@ namespace Mobile.ViewModels
                 // Thuc hien cong viec tai day
                 if (obj is TableDto)
                 {
+                    if (InvoiceBindProp == null)
+                    {
+                        InvoiceBindProp = new InvoiceDto();
+                    }
                     var table = obj as TableDto;
                     InvoiceBindProp.TableName = table.Name;
                     InvoiceBindProp.TableId = table.Id;
@@ -613,6 +647,87 @@ namespace Mobile.ViewModels
         {
             SelectTableCommand = new DelegateCommand<object>(OnSelectTable);
             SelectTableCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region OpenTakeAwayCommand
+
+        public DelegateCommand<object> OpenTakeAwayCommand { get; private set; }
+        private async void OnOpenTakeAway(object obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                IsOpenTakeAway = true;
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitOpenTakeAwayCommand()
+        {
+            OpenTakeAwayCommand = new DelegateCommand<object>(OnOpenTakeAway);
+            OpenTakeAwayCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region SelectTakeAwayCommand
+
+        public DelegateCommand<string> SelectTakeAwayCommand { get; private set; }
+        private async void OnSelectTakeAway(string mode)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                switch (mode)
+                {
+                    case "togo":
+                        IsTakeAway = true;
+                        break;
+                    case "inplace":
+                        IsTakeAway = false;
+                        break;
+                }
+                IsOpenTakeAway = false;
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectTakeAwayCommand()
+        {
+            SelectTakeAwayCommand = new DelegateCommand<string>(OnSelectTakeAway);
+            SelectTakeAwayCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion
@@ -651,6 +766,16 @@ namespace Mobile.ViewModels
             switch (parameters.GetNavigationMode())
             {
                 case NavigationMode.Back:
+                    if (parameters.ContainsKey("item"))
+                    {
+                        var item = parameters["item"] as ItemForInvoiceDto;
+                        if (InvoiceBindProp == null)
+                        {
+                            InvoiceBindProp = new InvoiceDto();
+                        }
+                        InvoiceBindProp.Items.Add(item);
+                        InvoiceBindProp.TotalPrice += item.Price;
+                    }
                     break;
                 case NavigationMode.New:
                     using (var client = new HttpClient())

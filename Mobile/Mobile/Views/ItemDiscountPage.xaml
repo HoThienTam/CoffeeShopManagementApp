@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             mc:Ignorable="d"
+             xmlns:lcModels="clr-namespace:Mobile.Models"
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures" 
+             xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
+             x:Name="itemDiscountPage"
+             NavigationPage.HasNavigationBar="False"
+             x:Class="Mobile.Views.ItemDiscountPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackLayout>
+            <Frame Padding="0">
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--Title-->
+                    <Label Text="{Binding ItemBindProp.Name}" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                    <!--Back icon-->
+                    <mr:Grid TappedCommand="{Binding GoBackCommand}" >
+                        <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
+                    </mr:Grid>
+                    <!--Right text-->
+                    <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
+                        <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                    </mr:Grid>
+                </Grid>
+            </Frame>
+            <Frame VerticalOptions="FillAndExpand">
+                <ScrollView Grid.Row="2" Margin="{StaticResource CommonThickness}">
+                    <StackLayout Spacing="0">
+
+                        <tlrPrimitives:RadBorder Style="{StaticResource CommonUpperBorder}">
+                            <StackLayout Orientation="Horizontal" Spacing="0">
+
+                                <tlrInput:RadEntry Text="Giá niêm yết" InputTransparent="True" />
+
+                                <Label  Text="{Binding ItemBindProp.Price, StringFormat='{0:C}'}" />
+                            </StackLayout>
+                        </tlrPrimitives:RadBorder>
+
+                        <tlrPrimitives:RadBorder Style="{StaticResource CommonLowerBorder}">
+                            <StackLayout Orientation="Horizontal"
+                                            Spacing="0">
+
+                                <tlrInput:RadEntry Text="Số lượng" InputTransparent="True"/>
+
+                                <tlrInput:RadNumericInput 
+                                    ControlTemplate="{StaticResource CustomNumericInput}"
+                                    Value="{Binding ItemForInvoiceBindProp.Quantity, FallbackValue=0, Mode=TwoWay}"
+                                    HorizontalOptions="FillAndExpand"
+                                    Minimum="0" Maximum="10000"/>
+                            </StackLayout>
+                        </tlrPrimitives:RadBorder>
+
+                        <!--  Giam gia  -->
+                        <Grid Margin="{StaticResource CommonVerticalThickness}">
+                            <Grid.Triggers>
+                                <DataTrigger TargetType="Grid" Binding="{Binding ListDiscountBindProp.Count}" Value="0">
+                                    <Setter Property="IsVisible" Value="False"/>
+                                </DataTrigger>
+                            </Grid.Triggers>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+                            <Label Style="{StaticResource CommonTitle}" Text="Giảm giá" />
+                        </Grid>
+                        <FlexLayout
+                                    BindableLayout.ItemsSource="{Binding ListDiscountBindProp, Mode=OneWay}"
+                                    JustifyContent="Start" Wrap="Wrap">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <tlrPrimitives:RadBorder
+                                                Margin="{StaticResource CommonThickness}"
+                                                Style="{StaticResource CommonBorder}"
+                                                HorizontalOptions="Start" 
+                                                HeightRequest="80"
+                                                VerticalOptions="Start" WidthRequest="150">
+                                        <mr:Grid
+                                                    TappedCommand="{Binding BindingContext.SelectDiscountCommand, Source={x:Reference itemDiscountPage}}"
+                                                    TappedCommandParameter="{Binding}"
+                                                    Margin="{StaticResource CommonThickness}"
+                                                    Style="{StaticResource CommonWrapper}">
+                                            <Grid.Triggers>
+                                                <DataTrigger TargetType="Grid" Binding="{Binding IsSelected}" Value="True">
+                                                    <Setter Property="BackgroundColor" Value="{StaticResource SelectedColor}"/>
+                                                </DataTrigger>
+                                            </Grid.Triggers>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Label
+                                                        Margin="{StaticResource CommonThickness}"
+                                                        HorizontalOptions="FillAndExpand"
+                                                        Text="{Binding Name, Mode=OneWay}"
+                                                        VerticalOptions="Center" />
+                                            <Label
+                                                        Grid.Row="1"
+                                                        HorizontalOptions="End"
+                                                        Text="{Binding Value, StringFormat='{0:C}'}"
+                                                        VerticalOptions="Center">
+                                                <Label.Triggers>
+                                                    <DataTrigger Binding="{Binding IsPercentage}" Value="True" TargetType="Label">
+                                                        <Setter Property="Text" Value="{Binding Value, StringFormat='{0} %'}"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+
+                                        </mr:Grid>
+                                    </tlrPrimitives:RadBorder>
+
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </FlexLayout>
+
+                    </StackLayout>
+                </ScrollView>
+            </Frame>
+        </StackLayout>
+
+        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
+
+    </Grid>
+</ContentPage>

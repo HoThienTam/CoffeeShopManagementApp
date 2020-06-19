@@ -118,9 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BaseUrl" xml:space="preserve">
-    <value>https://4d1a75c571df.ngrok.io/api/</value>
+    <value>https://8f8160202385.ngrok.io/api/</value>
   </data>
   <data name="SignalR" xml:space="preserve">
-    <value>https://3ea17e490879.ngrok.io/servicehub</value>
+    <value>https://8cdde5045c04.ngrok.io/servicehub</value>
   </data>
 </root>

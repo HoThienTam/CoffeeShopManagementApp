@@ -56,5 +56,15 @@ namespace Dtos
             set { SetProperty(ref _Discounts, value); }
         }
         #endregion
+
+        #region Quantity
+        private int _Quantity = 1;
+        public int Quantity
+        {
+            get { return _Quantity; }
+            set { SetProperty(ref _Quantity, value); }
+        }
+        #endregion
+
     }
 }
