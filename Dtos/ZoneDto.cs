@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Dtos
 {
-    public class ZoneDto : BindableBase
+    public class ZoneDto : BaseDto
     {
         public ZoneDto()
         {
@@ -19,8 +19,6 @@ namespace Dtos
             Name = zone.Name;
             Tables = new ObservableCollection<TableDto>(zone.Tables.Select(t => new TableDto { Id = t.Id, Name = t.Name }).ToList());
         }
-
-        public Guid Id { get; set; }
 
         #region Name
         private string _Name;

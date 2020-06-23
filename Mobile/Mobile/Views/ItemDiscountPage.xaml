@@ -79,46 +79,20 @@
                                     JustifyContent="Start" Wrap="Wrap">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <tlrPrimitives:RadBorder
-                                                Margin="{StaticResource CommonThickness}"
-                                                Style="{StaticResource CommonBorder}"
-                                                HorizontalOptions="Start" 
-                                                HeightRequest="80"
-                                                VerticalOptions="Start" WidthRequest="150">
-                                        <mr:Grid
-                                                    TappedCommand="{Binding BindingContext.SelectDiscountCommand, Source={x:Reference itemDiscountPage}}"
-                                                    TappedCommandParameter="{Binding}"
-                                                    Margin="{StaticResource CommonThickness}"
-                                                    Style="{StaticResource CommonWrapper}">
-                                            <Grid.Triggers>
-                                                <DataTrigger TargetType="Grid" Binding="{Binding IsSelected}" Value="True">
-                                                    <Setter Property="BackgroundColor" Value="{StaticResource SelectedColor}"/>
-                                                </DataTrigger>
-                                            </Grid.Triggers>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
-                                            <Label
-                                                        Margin="{StaticResource CommonThickness}"
-                                                        HorizontalOptions="FillAndExpand"
-                                                        Text="{Binding Name, Mode=OneWay}"
-                                                        VerticalOptions="Center" />
-                                            <Label
-                                                        Grid.Row="1"
-                                                        HorizontalOptions="End"
-                                                        Text="{Binding Value, StringFormat='{0:C}'}"
-                                                        VerticalOptions="Center">
-                                                <Label.Triggers>
-                                                    <DataTrigger Binding="{Binding IsPercentage}" Value="True" TargetType="Label">
-                                                        <Setter Property="Text" Value="{Binding Value, StringFormat='{0} %'}"/>
-                                                    </DataTrigger>
-                                                </Label.Triggers>
-                                            </Label>
-
+                                    <tlrPrimitives:RadBorder HeightRequest="100" Style="{StaticResource CommonBorder}" Margin="{StaticResource CommonThickness}">
+                                        <mr:Grid BackgroundColor="{StaticResource MainColor}" 
+                                                         Style="{StaticResource CommonWrapper}"
+                                                         TappedCommand="{Binding BindingContext.SelectDiscountCommand, Source={x:Reference itemDiscountPage}}"
+                                                         TappedCommandParameter="{Binding}">
+                                            <BoxView  
+                                                        HeightRequest="100"
+                                                        WidthRequest="100"
+                                                        BackgroundColor="{StaticResource MainColor}"/>
+                                            <Label Text="{Binding Name}" TextColor="{StaticResource ContrastColor}" HorizontalOptions="Center" VerticalOptions="Start" />
+                                            <Label FontSize="30" Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Tags}" TextColor="{StaticResource ContrastColor}"/>
+                                            <Label Text="{Binding Value}" TextColor="{StaticResource ContrastColor}" HorizontalOptions="Center" VerticalOptions="End" />
                                         </mr:Grid>
                                     </tlrPrimitives:RadBorder>
-
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </FlexLayout>

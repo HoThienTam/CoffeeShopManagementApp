@@ -13,6 +13,7 @@ namespace Dtos
             Id = item.Id;
             Name = item.Name;
             Price = item.Price;
+            SubItems = new ObservableCollection<ItemDto>();
             Discounts = new ObservableCollection<DiscountDto>();
         }
 
@@ -66,5 +67,13 @@ namespace Dtos
         }
         #endregion
 
+        #region SubItems
+        private ObservableCollection<ItemDto> _SubItems;
+        public ObservableCollection<ItemDto> SubItems
+        {
+            get { return _SubItems; }
+            set { SetProperty(ref _SubItems, value); }
+        }
+        #endregion
     }
 }

@@ -3,10 +3,8 @@ using System;
 
 namespace Dtos
 {
-    public class TableDto : BindableBase
+    public class TableDto : BaseDto
     {
-        public Guid Id { get; set; }
-
         #region Name
         private string _Name;
         public string Name

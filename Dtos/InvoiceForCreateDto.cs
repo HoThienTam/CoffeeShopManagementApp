@@ -12,6 +12,7 @@ namespace Dtos
         }
         public InvoiceForCreateDto(InvoiceDto invoiceDto)
         {
+            Id = invoiceDto.Id;
             TotalPrice = invoiceDto.TotalPrice;
             Items = invoiceDto.Items;
             Discounts = invoiceDto.Discounts;

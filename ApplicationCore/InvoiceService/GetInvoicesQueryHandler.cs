@@ -30,7 +30,9 @@ namespace ApplicationCore.InvoiceService
             var invoices = _context.Invoices.Where(c => c.IsDeleted == false)
                 .OrderBy(c => c.CreatedAt)
                 .Include(c => c.InvoiceDiscounts)
+                .ThenInclude(c => c.Discount)
                 .Include(c => c.InvoiceItems)
+                .ThenInclude(c => c.Item)
                 .AsNoTracking();
 
             var invoiceDtos = new List<InvoiceDto>();

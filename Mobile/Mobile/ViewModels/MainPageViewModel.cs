@@ -1,4 +1,5 @@
 ﻿using Dtos;
+using ImTools;
 using Microsoft.AspNetCore.SignalR.Client;
 using Mobile.Models;
 using Mobile.Views;
@@ -24,7 +25,7 @@ namespace Mobile.ViewModels
         private HubConnection _connection;
         public MainPageViewModel(InitParams initParams) : base(initParams)
         {
-            StartSignalRAsync();
+            //StartSignalRAsync();
             ListCategoryBindProp = new ObservableCollection<CategoryDto>();
             ListDiscountBindProp = new ObservableCollection<DiscountDto>();
             ListInvoiceBindProp = new ObservableCollection<InvoiceDto>();
@@ -322,6 +323,12 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                var selectedCategory = ListCategoryBindProp.FindFirst(z => z.IsSelected);
+                if (selectedCategory != null)
+                {
+                    selectedCategory.IsSelected = false;
+                }
+                obj.IsSelected = true;
                 CurrentCategory = obj;
                 InvoiceFrameVisibleBindProp = false;
                 MenuFrameVisibleBindProp = true;
@@ -363,6 +370,12 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                var selectedZone = ListZoneBindProp.FindFirst(z => z.IsSelected);
+                if (selectedZone != null)
+                {
+                    selectedZone.IsSelected = false;
+                }
+                obj.IsSelected = true;
                 CurrentZone = obj;
                 ZoneFrameVisibleBindProp = true;
                 ListInvoiceFrameVisibleBindProp = false;
@@ -441,14 +454,14 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                var selectedCategory = ListCategoryBindProp.FirstOrDefault(z => z.IsSelected);
+                if (selectedCategory != null)
+                {
+                    selectedCategory.IsSelected = false;
+                }
                 switch (obj)
                 {
                     case "setting":
-                        MenuFrameVisibleBindProp = false;
-                        InvoiceFrameVisibleBindProp = false;
-                        SettingFrameVisibleBindProp = true;
-                        break;
-                    case "invoice":
                         if (InvoiceBindProp != null)
                         {
                             var ok = await PageDialogService.DisplayAlertAsync("Cảnh báo", "Hủy hóa đơn?", "Đồng ý", "Không");
@@ -463,16 +476,47 @@ namespace Mobile.ViewModels
                         else
                         {
                             MenuFrameVisibleBindProp = false;
+                            InvoiceFrameVisibleBindProp = false;
+                            SettingFrameVisibleBindProp = true;
+                            DiscountFrameVisibleBindProp = false;
+                        }
+                        break;
+                    case "invoice":
+                        if (InvoiceBindProp != null)
+                        {
+                            var ok = await PageDialogService.DisplayAlertAsync("Cảnh báo", "Hủy hóa đơn?", "Đồng ý", "Không");
+                            if (ok)
+                            {
+                                InvoiceBindProp = null;
+                                MenuFrameVisibleBindProp = false;
+                                InvoiceFrameVisibleBindProp = true;
+                                SettingFrameVisibleBindProp = false;
+                                DiscountFrameVisibleBindProp = false;
+                            }
+                        }
+                        else
+                        {
+                            MenuFrameVisibleBindProp = false;
                             InvoiceFrameVisibleBindProp = true;
                             SettingFrameVisibleBindProp = false;
+                            DiscountFrameVisibleBindProp = false;
                         }
                         break;
                     case "discount":
-                        MenuFrameVisibleBindProp = true;
-                        InvoiceFrameVisibleBindProp = false;
-                        ItemFrameVisibleBindProp = false;
-                        DiscountFrameVisibleBindProp = true;
-                        SettingFrameVisibleBindProp = false;
+                            MenuFrameVisibleBindProp = true;
+                            InvoiceFrameVisibleBindProp = false;
+                            ItemFrameVisibleBindProp = false;
+                            DiscountFrameVisibleBindProp = true;
+                            SettingFrameVisibleBindProp = false;
+                        break;
+                    case "invoicelist":
+                        var selectedZone = ListZoneBindProp.FindFirst(z => z.IsSelected);
+                        if (selectedZone != null)
+                        {
+                            selectedZone.IsSelected = false;
+                        }
+                        ListInvoiceFrameVisibleBindProp = true;
+                        ZoneFrameVisibleBindProp = false;
                         break;
                     default:
                         break;
@@ -512,6 +556,18 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                if (InvoiceBindProp.TableId == Guid.Empty)
+                {
+                    var selectedCategory = ListCategoryBindProp.FirstOrDefault(z => z.IsSelected);
+                    if (selectedCategory != null)
+                    {
+                        selectedCategory.IsSelected = false;
+                    }
+                    MenuFrameVisibleBindProp = false;
+                    InvoiceFrameVisibleBindProp = true;
+                    ListInvoiceFrameVisibleBindProp = false;
+                    ZoneFrameVisibleBindProp = true;
+                }
                 var invoiceToCreate = new InvoiceForCreateDto(InvoiceBindProp);
                 var json = JsonConvert.SerializeObject(invoiceToCreate);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -532,7 +588,7 @@ namespace Mobile.ViewModels
                         case HttpStatusCode.Created:
                             var invoice = JsonConvert.DeserializeObject<InvoiceDto>(await response.Content.ReadAsStringAsync());
                             ListInvoiceBindProp.Add(invoice);
-                            await _connection.InvokeAsync("SendInvoice", invoice);
+                            //await _connection.InvokeAsync("SendInvoice", invoice);
                             InvoiceBindProp = null;
                             break;
                     }
@@ -732,6 +788,50 @@ namespace Mobile.ViewModels
 
         #endregion
 
+        #region SelectInvoiceCommand
+
+        public DelegateCommand<InvoiceDto> SelectInvoiceCommand { get; private set; }
+        private async void OnSelectInvoice(InvoiceDto obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                InvoiceBindProp = obj;
+                var selectedCategory = ListCategoryBindProp.FirstOrDefault();
+                selectedCategory.IsSelected = true;
+                InvoiceFrameVisibleBindProp = false;
+                MenuFrameVisibleBindProp = true;
+                ItemFrameVisibleBindProp = true;
+                DiscountFrameVisibleBindProp = false;
+                SettingFrameVisibleBindProp = false;
+
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectInvoiceCommand()
+        {
+            SelectInvoiceCommand = new DelegateCommand<InvoiceDto>(OnSelectInvoice);
+            SelectInvoiceCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
         private async void StartSignalRAsync()
         {
             _connection = new HubConnectionBuilder()
@@ -774,7 +874,7 @@ namespace Mobile.ViewModels
                             InvoiceBindProp = new InvoiceDto();
                         }
                         InvoiceBindProp.Items.Add(item);
-                        InvoiceBindProp.TotalPrice += item.Price;
+                        InvoiceBindProp.TotalPrice += item.Price * item.Quantity;
                     }
                     break;
                 case NavigationMode.New:

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Dtos;
+using ImTools;
 using Infrastructure.Data;
 using Infrastructure.Models;
 using MediatR;
@@ -31,17 +32,18 @@ namespace ApplicationCore.InvoiceService
 
             await _context.Invoices.AddAsync(invoice);
 
-            foreach (var item in items)
+            foreach (var item in request.Invoice.Items)
             {
                 var invoiceItem = new InvoiceItem
                 {
                     InvoiceId = invoice.Id,
                     ItemId = item.Id,
+                    Quantity = item.Quantity
                 };
                 await _context.InvoiceItems.AddAsync(invoiceItem);
             }
 
-            foreach (var discount in discounts)
+            foreach (var discount in request.Invoice.Discounts)
             {
                 var invoiceDiscount = new InvoiceDiscount
                 {
@@ -50,13 +52,12 @@ namespace ApplicationCore.InvoiceService
                 };
                 await _context.InvoiceDiscounts.AddAsync(invoiceDiscount);
             }
-
             if (await _context.SaveChangesAsync() > 0)
             {
-                var discountToReturn = _mapper.Map<InvoiceDto>(invoice);
-                discountToReturn.Items = _mapper.Map<ObservableCollection<ItemForInvoiceDto>>(items);
-                discountToReturn.Discounts = _mapper.Map<ObservableCollection<DiscountDto>>(discounts);
-                return discountToReturn;
+                var invoiceToReturn = _mapper.Map<InvoiceDto>(invoice);
+                invoiceToReturn.Items = _mapper.Map<ObservableCollection<ItemForInvoiceDto>>(items);
+                invoiceToReturn.Discounts = _mapper.Map<ObservableCollection<DiscountDto>>(discounts);
+                return invoiceToReturn;
             }
             return null;
         }

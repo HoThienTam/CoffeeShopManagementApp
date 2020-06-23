@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Dtos
 {
-    public class CategoryDto : BindableBase
+    public class CategoryDto : BaseDto
     {
         public CategoryDto()
         {
@@ -28,8 +28,6 @@ namespace Dtos
                 MinQuantity = t.MinQuantity 
             }).ToList());
         }
-
-        public Guid Id { get; set; }
 
         #region Name
         private string _Name;

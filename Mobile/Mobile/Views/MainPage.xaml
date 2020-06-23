@@ -36,13 +36,14 @@
                         </Grid.ColumnDefinitions>
 
                         <!--Hoa don-->
-                        <mr:Grid BackgroundColor="{StaticResource SubColor}" Padding="{StaticResource CommonHorizontalThickness}" 
-                                 TappedCommand="{Binding SelectViewCommand}"
-                                 TappedCommandParameter="hoadon">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                        <mr:Grid BackgroundColor="{StaticResource MainColor}" Padding="{StaticResource CommonHorizontalThickness}" 
+                                 TappedCommand="{Binding SelectFrameCommand}"
+                                 TappedCommandParameter="invoicelist">
+                            <Grid.Triggers>
+                                <DataTrigger TargetType="Grid" Binding="{Binding ListInvoiceFrameVisibleBindProp}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
+                                </DataTrigger>
+                            </Grid.Triggers>
                             <Label FontSize="Large" VerticalOptions="Center" TextColor="{StaticResource ContrastColor}" Text="Hóa đơn"/>
                         </mr:Grid>
 
@@ -56,11 +57,11 @@
                                             Padding="{StaticResource CommonHorizontalThickness}"
                                             TappedCommand="{Binding BindingContext.SelectZoneCommand, Source={x:Reference mainPage}}"
                                             TappedCommandParameter="{Binding}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
-                                            </Grid.ColumnDefinitions>
-
+                                            <Grid.Triggers>
+                                                <DataTrigger TargetType="Grid" Binding="{Binding IsSelected}" Value="True">
+                                                    <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
+                                                </DataTrigger>
+                                            </Grid.Triggers>
                                             <Label VerticalOptions="Center" TextColor="{StaticResource ContrastColor}" FontSize="Large" Text="{Binding Name}"/>
                                         </mr:Grid>
                                     </DataTemplate>
@@ -101,7 +102,7 @@
                         <dataControls:RadListView.ItemTemplate>
                             <DataTemplate>
                                 <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                                    <mr:Grid VerticalOptions="FillAndExpand" ColumnSpacing="1">
+                                    <Grid VerticalOptions="FillAndExpand" ColumnSpacing="1">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="*" />
@@ -139,6 +140,8 @@
                                             Grid.Row="3" Grid.Column="1"
                                             BackgroundColor="{StaticResource MainColor}"
                                             TextColor="{StaticResource ContrastColor}"
+                                            Command="{Binding BindingContext.SelectInvoiceCommand, Source={x:Reference mainPage}}"
+                                            CommandParameter="{Binding}"
                                             Text="Xem hóa đơn" />
                                         <tlrInput:RadButton
                                             IsVisible="False"
@@ -146,7 +149,7 @@
                                             BackgroundColor="White"
                                             TextColor="Red"
                                             Text="Xóa" />
-                                    </mr:Grid>
+                                    </Grid>
                                 </tlrPrimitives:RadBorder>
                             </DataTemplate>
                         </dataControls:RadListView.ItemTemplate>
@@ -247,16 +250,13 @@
                                                          Style="{StaticResource CommonWrapper}"
                                                          TappedCommand="{Binding BindingContext.SelectDiscountCommand, Source={x:Reference mainPage}}"
                                                          TappedCommandParameter="{Binding}">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="*"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                    </Grid.RowDefinitions>
                                                     <BoxView  
                                                         HeightRequest="120"
                                                         WidthRequest="150"
                                                         BackgroundColor="{StaticResource MainColor}"/>
-                                                    <Label FontSize="50" Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Tags}" TextColor="{StaticResource ContrastColor}"/>
-                                                    <Label Grid.Row="1" Text="{Binding Name}" TextColor="{StaticResource ContrastColor}" HorizontalOptions="Center" VerticalOptions="End" />
+                                                    <Label Text="{Binding Name}" TextColor="{StaticResource ContrastColor}" HorizontalOptions="Center" VerticalOptions="Start" />
+                                                    <Label FontSize="30" Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Tags}" TextColor="{StaticResource ContrastColor}"/>
+                                                    <Label Text="{Binding Value}" TextColor="{StaticResource ContrastColor}" HorizontalOptions="Center" VerticalOptions="End" />
                                                 </mr:Grid>
                                             </tlrPrimitives:RadBorder>
                                         </listView:ListViewTemplateCell.View>
@@ -391,7 +391,7 @@
                                                 <!--  Danh sach sub item  -->
                                                 <StackLayout
                                                     Grid.Row="1" Grid.ColumnSpan="3"
-                                                    BindableLayout.ItemsSource="{Binding Items}"
+                                                    BindableLayout.ItemsSource="{Binding}"
                                                     Spacing="0">
                                                     <BindableLayout.ItemTemplate>
                                                         <DataTemplate>
@@ -615,6 +615,11 @@
                          TappedCommand="{Binding SelectFrameCommand}" 
                          TappedCommandParameter="invoice"
                          WidthRequest="{StaticResource CommonWidth}">
+                    <Grid.Triggers>
+                        <DataTrigger TargetType="Grid" Binding="{Binding InvoiceFrameVisibleBindProp}" Value="True">
+                            <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
+                        </DataTrigger>
+                    </Grid.Triggers>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
@@ -633,6 +638,11 @@
                                          WidthRequest="{StaticResource CommonWidth}" 
                                          TappedCommand="{Binding BindingContext.SelectCategoryCommand, Source={x:Reference mainPage}}"
                                          TappedCommandParameter="{Binding }">
+                                    <Grid.Triggers>
+                                        <DataTrigger TargetType="Grid" Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
+                                        </DataTrigger>
+                                    </Grid.Triggers>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="Auto" />
@@ -651,6 +661,11 @@
                     Padding="{StaticResource CommonThickness}"
                     TappedCommand="{Binding SelectFrameCommand}" 
                     TappedCommandParameter="discount">
+                    <Grid.Triggers>
+                        <DataTrigger TargetType="Grid" Binding="{Binding DiscountFrameVisibleBindProp}" Value="True">
+                            <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
+                        </DataTrigger>
+                    </Grid.Triggers>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
@@ -665,6 +680,11 @@
                     Padding="{StaticResource CommonThickness}"
                     TappedCommand="{Binding SelectFrameCommand}" 
                     TappedCommandParameter="setting">
+                    <Grid.Triggers>
+                        <DataTrigger TargetType="Grid" Binding="{Binding SettingFrameVisibleBindProp}" Value="True">
+                            <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
+                        </DataTrigger>
+                    </Grid.Triggers>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />

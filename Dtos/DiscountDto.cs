@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Dtos
 {
-    public class DiscountDto : BindableBase
+    public class DiscountDto : BaseDto
     {
         public DiscountDto(DiscountDto discount)
         {
@@ -20,8 +20,6 @@ namespace Dtos
         public DiscountDto()
         {
         }
-
-        public Guid Id { get; set; }
 
         #region Name
         private string _Name;

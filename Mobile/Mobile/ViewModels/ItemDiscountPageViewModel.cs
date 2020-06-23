@@ -58,6 +58,7 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                ItemForInvoiceBindProp.SubItems.Add(ItemBindProp);
                 var param = new NavigationParameters();
                 param.Add("item", ItemForInvoiceBindProp);
                 await NavigationService.GoBackAsync(param);
@@ -77,6 +78,41 @@ namespace Mobile.ViewModels
         {
             SaveCommand = new DelegateCommand<object>(OnSave);
             SaveCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region SelectDiscountCommand
+
+        public DelegateCommand<DiscountDto> SelectDiscountCommand { get; private set; }
+        private async void OnSelectDiscount(DiscountDto obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectDiscountCommand()
+        {
+            SelectDiscountCommand = new DelegateCommand<DiscountDto>(OnSelectDiscount);
+            SelectDiscountCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion
