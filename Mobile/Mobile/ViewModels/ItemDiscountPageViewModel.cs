@@ -5,7 +5,10 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
+using Telerik.XamarinForms.Input.Calendar;
+using Xamarin.Forms.Internals;
 
 namespace Mobile.ViewModels
 {
@@ -58,7 +61,31 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                ItemForInvoiceBindProp.SubItems.Add(ItemBindProp);
+                ItemForInvoiceBindProp.SubItems.Add(new ItemDto
+                {
+                    Id = ItemBindProp.Id,
+                    Name = "Đơn giá",
+                    Price = ItemBindProp.Price
+                });
+                ItemForInvoiceBindProp.Price += ItemBindProp.Price * ItemForInvoiceBindProp.Quantity;
+
+                ListDiscountBindProp.Where(d => d.IsSelected).OrderBy(d => d.IsPercentage).ForEach(discount =>
+                {
+                    discount.IsSelected = false;
+                    if (discount.IsPercentage)
+                    {
+                        var newDiscount = new DiscountDto(discount);
+                        newDiscount.Value = discount.Value / 100 * ItemForInvoiceBindProp.Price;
+                        ItemForInvoiceBindProp.Discounts.Add(newDiscount);
+                        ItemForInvoiceBindProp.Price -= newDiscount.Value;
+                    }
+                    else
+                    {
+                        ItemForInvoiceBindProp.Discounts.Add(discount);
+                        ItemForInvoiceBindProp.Price -= discount.Value;
+                    }
+
+                });
                 var param = new NavigationParameters();
                 param.Add("item", ItemForInvoiceBindProp);
                 await NavigationService.GoBackAsync(param);
@@ -97,6 +124,14 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                if (obj.IsSelected == true)
+                {
+                    obj.IsSelected = false;
+                }
+                else
+                {
+                    obj.IsSelected = true;
+                }
             }
             catch (Exception e)
             {

@@ -544,12 +544,20 @@ namespace Mobile.ViewModels
         #region SaveInvoiceCommand
 
         public DelegateCommand<object> SaveInvoiceCommand { get; private set; }
-        private async void OnSaveInvoice(object obj)
+        private bool OnCanSaveInvoce(object obj)
         {
             if (IsBusy)
             {
-                return;
+                return false;
             }
+            if (InvoiceBindProp == null)
+            {
+                return false;
+            }
+            return true;
+        }
+        private async void OnSaveInvoice(object obj)
+        {
 
             IsBusy = true;
 
@@ -587,7 +595,7 @@ namespace Mobile.ViewModels
                     {
                         case HttpStatusCode.Created:
                             var invoice = JsonConvert.DeserializeObject<InvoiceDto>(await response.Content.ReadAsStringAsync());
-                            ListInvoiceBindProp.Add(invoice);
+                            ListInvoiceBindProp.Add(InvoiceBindProp);
                             //await _connection.InvokeAsync("SendInvoice", invoice);
                             InvoiceBindProp = null;
                             break;
@@ -607,8 +615,9 @@ namespace Mobile.ViewModels
         [Initialize]
         private void InitSaveInvoiceCommand()
         {
-            SaveInvoiceCommand = new DelegateCommand<object>(OnSaveInvoice);
-            SaveInvoiceCommand.ObservesCanExecute(() => IsNotBusy);
+            SaveInvoiceCommand = new DelegateCommand<object>(OnSaveInvoice, OnCanSaveInvoce);
+            SaveInvoiceCommand.ObservesProperty(() => IsNotBusy);
+            SaveInvoiceCommand.ObservesProperty(() => InvoiceBindProp);
         }
 
         #endregion
@@ -832,6 +841,44 @@ namespace Mobile.ViewModels
 
         #endregion
 
+        #region PayCommand
+
+        public DelegateCommand<object> PayCommand { get; private set; }
+        private async void OnPay(object obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                var param = new NavigationParameters();
+                param.Add(nameof(InvoiceBindProp), InvoiceBindProp);
+                await NavigationService.NavigateAsync(nameof(PaymentPage), param);
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitPayCommand()
+        {
+            PayCommand = new DelegateCommand<object>(OnPay);
+            PayCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
         private async void StartSignalRAsync()
         {
             _connection = new HubConnectionBuilder()
@@ -874,7 +921,7 @@ namespace Mobile.ViewModels
                             InvoiceBindProp = new InvoiceDto();
                         }
                         InvoiceBindProp.Items.Add(item);
-                        InvoiceBindProp.TotalPrice += item.Price * item.Quantity;
+                        InvoiceBindProp.TotalPrice += item.Price;
                     }
                     break;
                 case NavigationMode.New:

@@ -137,10 +137,10 @@
 
                                                 <Label Text="Phần trăm" VerticalOptions="Center" />
                                                 <tlrInput:RadNumericInput
-                                                    HorizontalOptions="FillAndExpand"
+                                                    HorizontalOptions="FillAndExpand"                                               
                                                     ControlTemplate="{StaticResource CustomNumericInput}"
                                                     Maximum="100" Minimum="0"                                  
-                                                    Value="{Binding DiscountBindProp.Value, Mode=TwoWay}" />
+                                                    Value="{Binding PercentBindProp, Mode=TwoWay}" />
 
                                             </mr:StackLayout>
 
@@ -161,7 +161,7 @@
                                                 HorizontalOptions="FillAndExpand"
                                                 ControlTemplate="{StaticResource CustomNumericInput}"
                                                 Maximum="1000000000" Minimum="0"                                  
-                                                Value="{Binding DiscountBindProp.MaxValue, Mode=TwoWay}" />
+                                                Value="{Binding DiscountBindProp.MaxValue, Mode=TwoWay, StringFormat='{}%'}" />
                                             </StackLayout>
                                         </tlrPrimitives:RadBorder>
                                     </StackLayout>
@@ -182,7 +182,7 @@
                                             HorizontalOptions="FillAndExpand" 
                                             Minimum="0"                                        
                                             Maximum="1000000000"                               
-                                            Value="{Binding DiscountBindProp.Value, Mode=TwoWay}"/>
+                                            Value="{Binding ValueBindProp, Mode=TwoWay, StringFormat='{0:C}'}"/>
                                         </mr:StackLayout>
                                     </tlrPrimitives:RadBorder>
 

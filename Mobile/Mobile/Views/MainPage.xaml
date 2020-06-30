@@ -380,10 +380,10 @@
                                                     <ColumnDefinition Width="3*" />
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto" />
-                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-
                                                 <Label Text="{Binding Name}" />
                                                 <Label Grid.Column="1" Text="{Binding Quantity, StringFormat='x{0}'}" Margin="0"/>
                                                 <Label Grid.Column="2" Text="{Binding Price, StringFormat='{}{0:C}'}" HorizontalOptions="EndAndExpand" />
@@ -391,18 +391,37 @@
                                                 <!--  Danh sach sub item  -->
                                                 <StackLayout
                                                     Grid.Row="1" Grid.ColumnSpan="3"
-                                                    BindableLayout.ItemsSource="{Binding}"
+                                                    BindableLayout.ItemsSource="{Binding SubItems}"
                                                     Spacing="0">
                                                     <BindableLayout.ItemTemplate>
                                                         <DataTemplate>
                                                             <mr:Grid Padding="{StaticResource CommonHorizontalThickness}">
                                                                 <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="3*" />
                                                                     <ColumnDefinition Width="2*" />
-                                                                    <ColumnDefinition Width="*" />
                                                                 </Grid.ColumnDefinitions>
 
                                                                 <Label Text="{Binding Name}" />
-                                                                <Label Grid.Column="1" Text="{Binding Price}" />
+                                                                <Label Grid.Column="1" Text="{Binding Price, StringFormat='{}{0:C}'}" />
+                                                            </mr:Grid>
+                                                        </DataTemplate>
+                                                    </BindableLayout.ItemTemplate>
+                                                </StackLayout>
+                                                
+                                                <StackLayout
+                                                    Grid.Row="2" Grid.ColumnSpan="3"
+                                                    BindableLayout.ItemsSource="{Binding Discounts}"
+                                                    Spacing="0">
+                                                    <BindableLayout.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <mr:Grid Padding="{StaticResource CommonHorizontalThickness}">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="3*" />
+                                                                    <ColumnDefinition Width="2*" />
+                                                                </Grid.ColumnDefinitions>
+
+                                                                <Label Text="{Binding Name}" />
+                                                                <Label Grid.Column="1" Text="{Binding Value, StringFormat='{}-{0:C}'}" />
                                                             </mr:Grid>
                                                         </DataTemplate>
                                                     </BindableLayout.ItemTemplate>
@@ -458,7 +477,7 @@
 
                             <Button Text="Lưu" Command="{Binding SaveInvoiceCommand}"/>
 
-                            <Button Grid.Column="1" Text="Thanh toán" Command="{Binding InstantPayCommand}"/>
+                            <Button Grid.Column="1" Text="Thanh toán" Command="{Binding PayCommand}"/>
                         </Grid>
                     </Grid>
                 </Frame>

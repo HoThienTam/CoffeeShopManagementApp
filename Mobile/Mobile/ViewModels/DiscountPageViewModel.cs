@@ -38,6 +38,24 @@ namespace Mobile.ViewModels
         }
         #endregion
 
+        #region PercentBindProp
+        private double _PercentBindProp;
+        public double PercentBindProp
+        {
+            get { return _PercentBindProp; }
+            set { SetProperty(ref _PercentBindProp, value); }
+        }
+        #endregion
+
+        #region ValueBindProp
+        private double _ValueBindProp;
+        public double ValueBindProp
+        {
+            get { return _ValueBindProp; }
+            set { SetProperty(ref _ValueBindProp, value); }
+        }
+        #endregion
+
         #region IsEditing
         private bool _IsEditing = false;
         public bool IsEditing
@@ -147,6 +165,16 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                if (IsPercentage)
+                {
+                    DiscountBindProp.Value = PercentBindProp;
+                    DiscountBindProp.IsPercentage = true;
+                }
+                else
+                {
+                    DiscountBindProp.Value = ValueBindProp;
+                    DiscountBindProp.IsPercentage = false;
+                }
                 var discountToCreate = new DiscountForCreateDto(DiscountBindProp);
                 var json = JsonConvert.SerializeObject(discountToCreate);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
@@ -174,12 +202,6 @@ namespace Mobile.ViewModels
                             var discount = JsonConvert.DeserializeObject<DiscountDto>(await response.Content.ReadAsStringAsync());
                             ListDiscountBindProp.Add(discount);
                             DiscountBindProp = new DiscountDto();
-                            break;
-                        case HttpStatusCode.BadRequest:
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"{await response.Content.ReadAsStringAsync()}", "Đóng");
-                            break;
-                        default:
-                            await PageDialogService.DisplayAlertAsync("Lỗi", $"Lỗi hệ thống!", "Đóng");
                             break;
                     }
                 };

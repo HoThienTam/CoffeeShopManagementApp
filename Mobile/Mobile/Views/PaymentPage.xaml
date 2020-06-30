@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input" 
+             xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures" 
+             xmlns:lcModels="clr-namespace:Mobile.Models"
+             mc:Ignorable="d"
+             NavigationPage.HasNavigationBar="False"
+             x:Class="Mobile.Views.PaymentPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+            <StackLayout>
+                <Frame Padding="0">
+                    <!-- Navigation bar -->
+                    <Grid Style="{StaticResource CommonWrapper}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <!--Title-->
+                        <Label Text="{Binding InvoiceBindProp.TotalPrice, StringFormat='Thanh toán - {0:C}'}" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                        <!--Back icon-->
+                        <mr:Grid TappedCommand="{Binding GoBackCommand}" >
+                            <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
+                        </mr:Grid>
+                        <!--Right text-->
+                        <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
+                            <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
+                        </mr:Grid>
+                    </Grid>
+                </Frame>
+                <Frame VerticalOptions="FillAndExpand">
+                    <Frame.Triggers>
+                        <DataTrigger TargetType="Frame" Binding="{Binding IsCompletedBindProp}" Value="True">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                    </Frame.Triggers>
+                    <ScrollView Margin="{StaticResource CommonThickness}">
+                        <ScrollView.Triggers>
+                            <DataTrigger TargetType="ScrollView" Binding="{Binding IsCompletedBindProp}" Value="True">
+                                <Setter Property="IsVisible" Value="False"/>
+                            </DataTrigger>
+                        </ScrollView.Triggers>
+                        <Grid Style="{StaticResource CommonWrapper}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid ColumnSpacing="{StaticResource CommonThickness}"
+                              Margin="{StaticResource CommonHorizontalThickness}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <!--  Đã nhận  -->
+                                <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                                    <StackLayout Margin="{StaticResource CommonHorizontalThickness}"
+                                             VerticalOptions="CenterAndExpand">
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label HorizontalOptions="StartAndExpand"
+                                               Text="Đã nhận" />
+                                            <Label HorizontalOptions="EndAndExpand"
+                                               Text="Tổng tiền thanh toán" />
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label 
+                                            FontAttributes="Bold"
+                                            FontSize="Large"
+                                            HorizontalOptions="StartAndExpand"
+                                            Text="{Binding ReceivedMoneyBindProp, StringFormat='{0:C}'}"/>
+                                            <Label 
+                                            FontAttributes="Bold"
+                                            FontSize="Large"
+                                            HorizontalOptions="EndAndExpand"
+                                            Text="{Binding InvoiceBindProp.TotalPrice, StringFormat='{0:C}'}" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                </tlrPrimitives:RadBorder>
+                                <!--  Tiền thừa  -->
+                                <tlrPrimitives:RadBorder 
+                                Style="{StaticResource CommonBorder}"
+                                Grid.Column="1">
+                                    <StackLayout VerticalOptions="CenterAndExpand" Margin="{StaticResource CommonHorizontalThickness}">
+                                        <Label HorizontalOptions="EndAndExpand"
+                                           Text="Tiền thừa" />
+                                        <Label 
+                                        FontAttributes="Bold"
+                                        FontSize="Large"
+                                        HorizontalOptions="EndAndExpand"
+                                        Text="{Binding ChangeMoneyBindProp, StringFormat='{0:C}'}" />
+                                    </StackLayout>
+                                </tlrPrimitives:RadBorder>
+                            </Grid>
+                            <Grid
+                            Grid.Row="1" Padding="2"
+                            BackgroundColor="{StaticResource MainColor}"
+                            ColumnSpacing="2" RowSpacing="2"
+                            Margin="{StaticResource CommonThickness}">
+                                <!--  Số 7  -->
+                                <tlrInput:RadButton 
+                                Command="{Binding TapNumberCommand}"
+                                Text="7">
+                                    <tlrInput:RadButton.CommandParameter>
+                                        <x:Decimal>7</x:Decimal>
+                                    </tlrInput:RadButton.CommandParameter>
+                                </tlrInput:RadButton>
+                                <!--  Số 8  -->
+                                <tlrInput:RadButton 
+                                Grid.Column="1"
+                                Command="{Binding TapNumberCommand}"
+                                Text="8">
+                                    <tlrInput:RadButton.CommandParameter>
+                                        <x:Decimal>8</x:Decimal>
+                                    </tlrInput:RadButton.CommandParameter>
+                                </tlrInput:RadButton>
+                                <!--  Số 9  -->
+                                <tlrInput:RadButton 
+                                Grid.Column="2"
+                                Command="{Binding TapNumberCommand}"
+                                Text="9">
+                                    <tlrInput:RadButton.CommandParameter>
+                                        <x:Decimal>9</x:Decimal>
+                                    </tlrInput:RadButton.CommandParameter>
+                                </tlrInput:RadButton>
+                                <!--  Delete 1 số  -->
+                                <tlrInput:RadButton 
+                                Grid.RowSpan="2" Grid.Column="3"
+                                VerticalContentAlignment="Center"
+                                Command="{Binding TapNumberCommand}"
+                                CommandParameter="X"
+                                Text="X" />
+                                <!--  Số 4  -->
+                                <tlrInput:RadButton 
+                                Grid.Row="1"
+                                Command="{Binding TapNumberCommand}"
+                                Text="4">
+                                    <tlrInput:RadButton.CommandParameter>
+                                        <x:Decimal>4</x:Decimal>
+                                    </tlrInput:RadButton.CommandParameter>
+                                </tlrInput:RadButton>
+                                <!--  Số 5  -->
+                                <tlrInput:RadButton 
+                                Grid.Row="1" Grid.Column="1"
+                                Command="{Binding TapNumberCommand}"
+                                Text="5">
+                                    <tlrInput:RadButton.CommandParameter>
+                                        <x:Decimal>5</x:Decimal>
+                                    </tlrInput:RadButton.CommandParameter>
+                                </tlrInput:RadButton>
+
+                                <!--  Số 6  -->
+                                <tlrInput:RadButton 
+                                Grid.Row="1" Grid.Column="2"
+                                Command="{Binding TapNumberCommand}"
+                                Text="6">
+                                    <tlrInput:RadButton.CommandParameter>
+                                        <x:Decimal>6</x:Decimal>
+                                    </tlrInput:RadButton.CommandParameter>
+                                </tlrInput:RadButton>
+                                <!--  Số 1  -->
+                                <tlrInput:RadButton 
+                                Grid.Row="2"
+                                Command="{Binding TapNumberCommand}"
+                                Text="1">
+                                    <tlrInput:RadButton.CommandParameter>
+                                        <x:Decimal>1</x:Decimal>
+                                    </tlrInput:RadButton.CommandParameter>
+                                </tlrInput:RadButton>
+                                <!--  Số 2  -->
+                                <tlrInput:RadButton 
+                                Grid.Row="2" Grid.Column="1"
+                                Command="{Binding TapNumberCommand}"
+                                Text="2">
+                                    <tlrInput:RadButton.CommandParameter>
+                                        <x:Decimal>2</x:Decimal>
+                                    </tlrInput:RadButton.CommandParameter>
+                                </tlrInput:RadButton>
+                                <!--  Số 3  -->
+                                <tlrInput:RadButton 
+                                Grid.Row="2" Grid.Column="2"
+                                Command="{Binding TapNumberCommand}"
+                                Text="3">
+                                    <tlrInput:RadButton.CommandParameter>
+                                        <x:Decimal>3</x:Decimal>
+                                    </tlrInput:RadButton.CommandParameter>
+                                </tlrInput:RadButton>
+                                <!--  Xóa All  -->
+                                <tlrInput:RadButton 
+                                Grid.Row="2" Grid.RowSpan="2"
+                                Grid.Column="3"
+                                Command="{Binding TapNumberCommand}"
+                                CommandParameter="C"
+                                Text="C" />
+                                <!--  Số 0  -->
+                                <tlrInput:RadButton 
+                                Grid.Row="3"
+                                Command="{Binding TapNumberCommand}"
+                                Text="0">
+                                    <tlrInput:RadButton.CommandParameter>
+                                        <x:Decimal>0</x:Decimal>
+                                    </tlrInput:RadButton.CommandParameter>
+                                </tlrInput:RadButton>
+                                <!--  Số 00  -->
+                                <tlrInput:RadButton 
+                                Grid.Row="3" Grid.Column="1"
+                                Command="{Binding TapNumberCommand}"
+                                CommandParameter="00"
+                                Text="00" />
+
+                                <!--  Số 000  -->
+                                <tlrInput:RadButton 
+                                Grid.Row="3" Grid.Column="2"
+                                Command="{Binding TapNumberCommand}"
+                                CommandParameter="000"
+                                Text="000"/>
+
+                            </Grid>
+                            <!--  Xác nhận thanh toán  -->
+                            <Button Grid.Row="2"
+                                BackgroundColor="{StaticResource MainColor}"
+                                Text="Xác nhận thanh toán"
+                                Command="{Binding CompeletePaymentCommand}"/>
+                        </Grid>
+                    </ScrollView>
+                </Frame>
+                <Frame VerticalOptions="FillAndExpand" IsVisible="False">
+                    <Frame.Triggers>
+                        <DataTrigger TargetType="Frame" Binding="{Binding IsCompletedBindProp}" Value="True">
+                            <Setter Property="IsVisible" Value="True"/>
+                        </DataTrigger>
+                    </Frame.Triggers>
+                    <ScrollView Margin="{StaticResource CommonThickness}">
+                        <StackLayout>
+                        <!--Check-->
+                        <Label 
+                            FontSize="Header"
+                            Style="{StaticResource CommonIcon}"
+                            Text="{x:Static lcModels:FontAwesomeIcon.UsdCircle}" />
+                        <!--Không có tiền thừa-->
+                        <Label 
+                            Margin="{StaticResource CommonThickness}"
+                            FontAttributes="Bold"
+                            FontSize="Large"
+                            HorizontalOptions="CenterAndExpand"
+                            Text="{Binding ChangeMoneyBindProp, StringFormat='{0:C} Tiền thừa'}"
+                            VerticalTextAlignment="Center" />
+                        <!--Tiền tip-->
+                        <tlrPrimitives:RadBorder 
+                            Style="{StaticResource CommonBorder}"
+                            Padding="{StaticResource CommonThickness}">
+                            <StackLayout Orientation="Horizontal" Spacing="0">
+                                <mr:Grid TappedCommand="{Binding TipCommand}">
+                                    <Label Text="Khách không lấy tiền trả lại" />
+                                </mr:Grid>
+                                <tlrInput:RadNumericInput  
+                                    Value="{Binding TipBindProp, Mode=TwoWay}"
+                                    StringFormat="{}{0:C}"
+                                    Minimum="0"  
+                                    ControlTemplate="{StaticResource CustomNumericInput}"
+                                    HorizontalOptions="FillAndExpand"/>
+                            </StackLayout>
+                        </tlrPrimitives:RadBorder>
+                        <Button 
+                                Text="Hoàn tất"
+                                Command="{Binding CompeletePaymentCommand}" />
+                    </StackLayout>
+                </ScrollView>
+                </Frame>
+            </StackLayout>
+        </tlrPrimitives:RadBorder>
+
+        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
+    </Grid>
+</ContentPage>

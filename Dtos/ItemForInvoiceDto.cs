@@ -12,7 +12,6 @@ namespace Dtos
         {
             Id = item.Id;
             Name = item.Name;
-            Price = item.Price;
             SubItems = new ObservableCollection<ItemDto>();
             Discounts = new ObservableCollection<DiscountDto>();
         }
