@@ -38,12 +38,12 @@ namespace Dtos
         }
         #endregion
 
-        #region Price
-        private double _Price = 0;
-        public double Price
+        #region Value
+        private double _Value = 0;
+        public double Value
         {
-            get { return _Price; }
-            set { SetProperty(ref _Price, value); }
+            get { return _Value; }
+            set { SetProperty(ref _Value, value); }
         }
         #endregion
 

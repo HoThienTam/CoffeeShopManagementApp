@@ -67,7 +67,7 @@ namespace Mobile.ViewModels
                     Name = "Đơn giá",
                     Price = ItemBindProp.Price
                 });
-                ItemForInvoiceBindProp.Price += ItemBindProp.Price * ItemForInvoiceBindProp.Quantity;
+                ItemForInvoiceBindProp.Value += ItemBindProp.Price * ItemForInvoiceBindProp.Quantity;
 
                 ListDiscountBindProp.Where(d => d.IsSelected).OrderBy(d => d.IsPercentage).ForEach(discount =>
                 {
@@ -75,14 +75,14 @@ namespace Mobile.ViewModels
                     if (discount.IsPercentage)
                     {
                         var newDiscount = new DiscountDto(discount);
-                        newDiscount.Value = discount.Value / 100 * ItemForInvoiceBindProp.Price;
+                        newDiscount.Value = discount.Value / 100 * ItemForInvoiceBindProp.Value;
                         ItemForInvoiceBindProp.Discounts.Add(newDiscount);
-                        ItemForInvoiceBindProp.Price -= newDiscount.Value;
+                        ItemForInvoiceBindProp.Value -= newDiscount.Value;
                     }
                     else
                     {
                         ItemForInvoiceBindProp.Discounts.Add(discount);
-                        ItemForInvoiceBindProp.Price -= discount.Value;
+                        ItemForInvoiceBindProp.Value -= discount.Value;
                     }
 
                 });

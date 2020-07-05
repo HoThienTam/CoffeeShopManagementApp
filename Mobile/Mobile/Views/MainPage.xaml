@@ -386,7 +386,7 @@
                                                 </Grid.RowDefinitions>
                                                 <Label Text="{Binding Name}" />
                                                 <Label Grid.Column="1" Text="{Binding Quantity, StringFormat='x{0}'}" Margin="0"/>
-                                                <Label Grid.Column="2" Text="{Binding Price, StringFormat='{}{0:C}'}" HorizontalOptions="EndAndExpand" />
+                                                <Label Grid.Column="2" Text="{Binding Value, StringFormat='{}{0:C}'}" HorizontalOptions="EndAndExpand" />
 
                                                 <!--  Danh sach sub item  -->
                                                 <StackLayout

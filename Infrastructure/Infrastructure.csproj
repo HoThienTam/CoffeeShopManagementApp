@@ -21,6 +21,10 @@
     <Compile Remove="Migrations\20200602162613_import_export_history.Designer.cs" />
     <Compile Remove="Migrations\20200607101130_import_export_history.cs" />
     <Compile Remove="Migrations\20200607101130_import_export_history.Designer.cs" />
+    <Compile Remove="Migrations\20200702170424_fix_invoice_item.cs" />
+    <Compile Remove="Migrations\20200702170424_fix_invoice_item.Designer.cs" />
+    <Compile Remove="Migrations\20200703171730_fix_item_discount.cs" />
+    <Compile Remove="Migrations\20200703171730_fix_item_discount.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

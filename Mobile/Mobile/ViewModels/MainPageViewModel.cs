@@ -595,7 +595,7 @@ namespace Mobile.ViewModels
                     {
                         case HttpStatusCode.Created:
                             var invoice = JsonConvert.DeserializeObject<InvoiceDto>(await response.Content.ReadAsStringAsync());
-                            ListInvoiceBindProp.Add(InvoiceBindProp);
+                            ListInvoiceBindProp.Add(invoice);
                             //await _connection.InvokeAsync("SendInvoice", invoice);
                             InvoiceBindProp = null;
                             break;
@@ -921,7 +921,7 @@ namespace Mobile.ViewModels
                             InvoiceBindProp = new InvoiceDto();
                         }
                         InvoiceBindProp.Items.Add(item);
-                        InvoiceBindProp.TotalPrice += item.Price;
+                        InvoiceBindProp.TotalPrice += item.Value;
                     }
                     break;
                 case NavigationMode.New:
