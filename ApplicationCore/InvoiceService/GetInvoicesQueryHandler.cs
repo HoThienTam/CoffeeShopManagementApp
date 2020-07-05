@@ -27,7 +27,7 @@ namespace ApplicationCore.InvoiceService
 
         public async Task<IEnumerable<InvoiceDto>> Handle(GetInvoicesQuery request, CancellationToken cancellationToken)
         {
-            var invoices = _context.Invoices.Where(c => c.IsDeleted == false)
+            var invoices = _context.Invoices.Where(c => !c.IsDeleted && c.IsPaid == request.IsPaid)
                 .OrderBy(c => c.CreatedAt)
                 .Include(c => c.InvoiceDiscounts)
                 .ThenInclude(c => c.Discount)

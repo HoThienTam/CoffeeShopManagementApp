@@ -923,6 +923,13 @@ namespace Mobile.ViewModels
                         InvoiceBindProp.Items.Add(item);
                         InvoiceBindProp.TotalPrice += item.Value;
                     }
+                    if (parameters.ContainsKey(nameof(InvoiceBindProp)))
+                    {
+                        var invoiceId = parameters[nameof(InvoiceBindProp)] as Guid?;
+                        var invoice = ListInvoiceBindProp.FindFirst(c => c.Id == invoiceId);
+                        ListInvoiceBindProp.Remove(invoice);
+                        InvoiceBindProp = null;
+                    }
                     break;
                 case NavigationMode.New:
                     using (var client = new HttpClient())

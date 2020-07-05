@@ -40,11 +40,11 @@
 
             <Frame VerticalOptions="FillAndExpand" Padding="0">
                 <StackLayout>
-                    <SearchBar Placeholder="Tìm kiếm Số biên lai" Text="{Binding}">
+                    <!--<SearchBar Placeholder="Tìm kiếm Số biên lai" Text="{Binding}">
                         <SearchBar.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding Command}" CommandParameter="{Binding}" EventName="TextChanged" />
                         </SearchBar.Behaviors>
-                    </SearchBar>
+                    </SearchBar>-->
 
                     <!--  Danh sách hoạt dộng  -->
                     <dataControls:RadListView
@@ -52,13 +52,13 @@
                             ItemsSource="{Binding ListInvoiceBindProp, Mode=OneWay}">
 
                         <dataControls:RadListView.GroupDescriptors>
-                            <listView:PropertyGroupDescriptor PropertyName="CreationDate" SortOrder="Descending" />
+                            <listView:PropertyGroupDescriptor PropertyName="CreatedAt" SortOrder="Descending" />
                         </dataControls:RadListView.GroupDescriptors>
 
                         <dataControls:RadListView.ItemTemplate>
                             <DataTemplate>
                                 <listView:ListViewTemplateCell>
-                                    <mr:Grid TappedCommand="{Binding BindingContext.SelectBillCommand, Source={x:Reference invoicePage}}" TappedCommandParameter="{Binding}">
+                                    <mr:Grid TappedCommand="{Binding BindingContext.SelectInvoiceCommand, Source={x:Reference invoicePage}}" TappedCommandParameter="{Binding}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="*" />
@@ -78,7 +78,7 @@
                                             <Label Grid.Row="1" Text="{Binding InvoiceNumber, Mode=OneWay}"/>
                                         </Grid>
 
-                                        <Label Grid.Column="2"  Text="{Binding CreationDate, Mode=OneWay}"/>
+                                        <Label Grid.Column="2"  Text="{Binding CreatedAt, Mode=OneWay}"/>
                                     </mr:Grid>
                                 </listView:ListViewTemplateCell>
                             </DataTemplate>
@@ -125,7 +125,7 @@
                                     VerticalOptions="Center" />
                             <Label
                                     HorizontalOptions="End"
-                                    Text="{Binding CurrentBillBindProp.Creator, Mode=OneWay}"
+                                    Text="{Binding CurrentInvoiceBindProp.CreatedBy, Mode=OneWay}"
                                     VerticalOptions="Center" />
                         </StackLayout>
 
@@ -138,7 +138,7 @@
                                     VerticalOptions="Center" />
                             <Label
                                     HorizontalOptions="End"
-                                    Text="{Binding CurrentBillBindProp.CreationDate, Mode=OneWay}"
+                                    Text="{Binding CurrentInvoiceBindProp.CreatedAt, Mode=OneWay}"
                                     VerticalOptions="Center" />
                         </StackLayout>
 
@@ -151,7 +151,7 @@
                                     VerticalOptions="Center" />
                             <Label
                                     HorizontalOptions="End"
-                                    Text="{Binding CurrentBillBindProp.CloseDate, Mode=OneWay}"
+                                    Text="{Binding CurrentInvoiceBindProp.ClosedAt, Mode=OneWay}"
                                     VerticalOptions="Center" />
                         </StackLayout>
 
@@ -168,7 +168,7 @@
                                     VerticalOptions="Center" />
                             <Label
                                     HorizontalOptions="End"
-                                    Text="{Binding CurrentBillBindProp.InvoiceNumber, Mode=OneWay}"
+                                    Text="{Binding CurrentInvoiceBindProp.InvoiceNumber, Mode=OneWay}"
                                     VerticalOptions="Center" />
                         </StackLayout>
 
@@ -188,7 +188,7 @@
                         <BoxView BackgroundColor="{StaticResource SubColor}" HeightRequest="1"/>
 
                         <!--  Đanh sách mặt hàng  -->
-                        <StackLayout Margin="{StaticResource CommonHorizontalThickness}" BindableLayout.ItemsSource="{Binding CurrentBillBindProp.ListItemInBill, Mode=OneWay}">
+                        <StackLayout Margin="{StaticResource CommonHorizontalThickness}" BindableLayout.ItemsSource="{Binding CurrentInvoiceBindProp.Items, Mode=OneWay}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -219,7 +219,7 @@
                                     VerticalOptions="Center" />
                             <Label
                                     HorizontalOptions="End"
-                                    Text="{Binding CurrentBillBindProp.PaidAmount, Mode=OneWay}"
+                                    Text="{Binding CurrentInvoiceBindProp.PaidAmount, Mode=OneWay}"
                                     VerticalOptions="Center" />
                         </StackLayout>
 
@@ -236,7 +236,7 @@
                                     VerticalOptions="Center" />
                             <Label
                                     HorizontalOptions="End"
-                                    Text="{Binding CurrentBillBindProp.TotalPrice, Mode=OneWay}"
+                                    Text="{Binding CurrentInvoiceBindProp.TotalPrice, Mode=OneWay}"
                                     VerticalOptions="Center" />
                         </StackLayout>
 

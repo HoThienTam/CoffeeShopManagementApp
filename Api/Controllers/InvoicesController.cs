@@ -24,7 +24,13 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetInvoices()
         {
-            var invoices = await _mediator.Send(new GetInvoicesQuery());
+            var invoices = await _mediator.Send(new GetInvoicesQuery(false));
+            return Ok(invoices);
+        }
+        [HttpGet("GetPaidInvoices")]
+        public async Task<IActionResult> GetPaidInvoices()
+        {
+            var invoices = await _mediator.Send(new GetInvoicesQuery(true));
             return Ok(invoices);
         }
         [HttpGet("{id}", Name = nameof(GetInvoice))]

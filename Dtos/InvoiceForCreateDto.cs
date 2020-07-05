@@ -20,7 +20,7 @@ namespace Dtos
 
         public Guid Id { get; set; }
         public string InvoiceNumber { get; set; }
-        public int Status { get; set; }
+        public bool IsPaid { get; set; }
         public DateTime ClosedAt { get; set; }
         public double TotalPrice { get; set; }
         public double PaidAmount { get; set; }

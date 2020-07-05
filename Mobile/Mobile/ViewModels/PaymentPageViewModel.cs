@@ -1,9 +1,12 @@
 ﻿using Dtos;
 using Mobile.Models;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 
 namespace Mobile.ViewModels
@@ -163,9 +166,32 @@ namespace Mobile.ViewModels
                 }
                 else
                 {
+                    var invoiceToCreate = new InvoiceForCreateDto(InvoiceBindProp);
+                    invoiceToCreate.IsPaid = true;
+                    invoiceToCreate.ClosedAt = DateTime.Now;
+                    var json = JsonConvert.SerializeObject(invoiceToCreate);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    // Thuc hien cong viec tai day
+                    using (var client = new HttpClient())
+                    {
+                        HttpResponseMessage response = new HttpResponseMessage();
+                        if (InvoiceBindProp.Id == Guid.Empty)
+                        {
+                            response = await client.PostAsync(Properties.Resources.BaseUrl + "invoices/", content);
+                        }
+                        else
+                        {
+                            response = await client.PutAsync(Properties.Resources.BaseUrl + "invoices/", content);
+                        }
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var invoice = JsonConvert.DeserializeObject<InvoiceDto>(await response.Content.ReadAsStringAsync());
+                            var param = new NavigationParameters();
+                            param.Add(nameof(InvoiceBindProp), invoice);
+                            await NavigationService.GoBackAsync(param);
+                        }
+                    };
 
-                    var param = new NavigationParameters();
-                    await NavigationService.GoBackAsync(param);
                 }
 
             }

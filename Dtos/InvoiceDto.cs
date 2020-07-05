@@ -61,5 +61,6 @@ namespace Dtos
             set { SetProperty(ref _Discounts, value); }
         }
         #endregion
+        public DateTime ClosedAt { get; set; }
     }
 }

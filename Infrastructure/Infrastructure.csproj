@@ -25,6 +25,8 @@
     <Compile Remove="Migrations\20200702170424_fix_invoice_item.Designer.cs" />
     <Compile Remove="Migrations\20200703171730_fix_item_discount.cs" />
     <Compile Remove="Migrations\20200703171730_fix_item_discount.Designer.cs" />
+    <Compile Remove="Migrations\20200705100935_modify-invoice.cs" />
+    <Compile Remove="Migrations\20200705100935_modify-invoice.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
