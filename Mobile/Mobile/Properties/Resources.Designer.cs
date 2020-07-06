@@ -61,7 +61,7 @@ namespace Mobile.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://3a95987f61e4.ngrok.io/api/.
+        ///   Looks up a localized string similar to https://8c14afda8fe5.ngrok.io/api/.
         /// </summary>
         internal static string BaseUrl {
             get {

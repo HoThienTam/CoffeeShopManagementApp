@@ -283,7 +283,7 @@ namespace Mobile.ViewModels
                         await NavigationService.NavigateAsync(nameof(ReportPage));
                         break;
                     case "Session":
-                        await NavigationService.NavigateAsync(nameof(EmployeePage));
+                        await NavigationService.NavigateAsync(nameof(SessionPage));
                         break;
                     default:
                         break;

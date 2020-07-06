@@ -57,7 +57,7 @@ namespace Mobile
             containerRegistry.RegisterForNavigation<InvoicePage, InvoicePageViewModel>();
             containerRegistry.RegisterForNavigation<ItemDiscountPage, ItemDiscountPageViewModel>();
             containerRegistry.RegisterForNavigation<PaymentPage, PaymentPageViewModel>();
-
+            containerRegistry.RegisterForNavigation<SessionPage, SessionPageViewModel>();
         }
     }
 }

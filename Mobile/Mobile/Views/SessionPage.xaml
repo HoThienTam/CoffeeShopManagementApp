@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
+             mc:Ignorable="d"
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures" 
+             xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
+             NavigationPage.HasNavigationBar="False"
+              xmlns:lcModels="clr-namespace:Mobile.Models"
+             x:Name="sessionPage"
+             x:Class="Mobile.Views.SessionPage">
+    <Grid BackgroundColor="{StaticResource MainColor}" ColumnSpacing="1" RowSpacing="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <StackLayout Spacing="1">
+            <Frame Padding="0">
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <mr:Grid TappedCommand="{Binding GoBackCommand}" >
+                        <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
+                    </mr:Grid>
+                    <!--Title-->
+                    <Label Text="Két tiền" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                </Grid>
+            </Frame>
+
+            <Frame VerticalOptions="FillAndExpand" Padding="0">
+                <ScrollView>
+                    <StackLayout Spacing="0" BindableLayout.ItemsSource="{Binding SideBarBindProp}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <mr:StackLayout TappedCommand="{Binding BindingContext.SelectSidebarCommand, Source={x:Reference sessionPage}}" TappedCommandParameter="{Binding}">
+                                    <StackLayout.Triggers>
+                                        <DataTrigger TargetType="StackLayout" Binding="{Binding IsSelected}" Value="True">
+                                            <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
+                                        </DataTrigger>
+                                    </StackLayout.Triggers>
+                                    <tlrInput:RadEntry
+                                            Text="{Binding Name}"
+                                            IsTabStop="False"
+                                            InputTransparent="True">
+                                    </tlrInput:RadEntry>
+                                    <BoxView BackgroundColor="{StaticResource SubColor}" HeightRequest="1"/>
+                                </mr:StackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                </ScrollView>
+
+            </Frame>
+        </StackLayout>
+
+        <StackLayout  Grid.Column="1" Spacing="1">
+            <Frame Padding="0">
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <!--Title-->
+                    <Label Text="{Binding Title}" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                </Grid>
+            </Frame>
+            <Frame VerticalOptions="FillAndExpand" IsVisible="False">
+                <ScrollView Padding="{StaticResource CommonThickness}">
+                    <StackLayout>
+                        <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Margin="{StaticResource CommonThickness}" Text="Tiền mặt đầu kỳ"/>
+
+                                <tlrInput:RadNumericInput
+                                    HorizontalOptions="FillAndExpand"                                  
+                                    ControlTemplate="{StaticResource CustomNumericInput}"
+                                    Minimum="0" StringFormat="{}{0:C}"
+                                    Value="{Binding InitMoney, Mode=TwoWay, TargetNullValue=0}" />
+                            </StackLayout>
+                        </tlrPrimitives:RadBorder>
+
+                        <Button
+                            HorizontalOptions="Fill"
+                            Text="Bắt đầu thu tiền"
+                            Command="{Binding StartSessionCommand, Mode=OneWay}" />
+                    </StackLayout>
+                </ScrollView>
+            </Frame>
+
+            <Frame VerticalOptions="FillAndExpand" IsVisible="True">
+                <ScrollView Padding="{StaticResource CommonThickness}">
+                    <StackLayout Margin="50,10" Spacing="0">
+
+                        <!--  Thoi gian bat dau  -->
+                        <Grid>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+                            <Label Text="{Binding StartTime}" Style="{StaticResource CommonTitle}" />
+                        </Grid>
+                        <!--  Tien mat dau ky  -->
+                        <StackLayout Orientation="Horizontal">
+                            <Label Margin="{StaticResource CommonThickness}" Text="Tiền mặt đầu kỳ"/>
+
+                            <Label  
+                                HorizontalOptions="End"
+                                Text="{Binding InitMoney, StringFormat='{0:C}'}"
+                                HorizontalTextAlignment="End"/>
+                        </StackLayout>
+                        <BoxView Style="{StaticResource CommonTitleRule}" />
+                        <!--  Doanh thu tien mat  -->
+                        <StackLayout Orientation="Horizontal">
+                            <Label Margin="{StaticResource CommonThickness}" Text="Doanh thu tiền mặt" />
+
+                            <Label
+                                HorizontalOptions="End"
+                                Text="{Binding CashRevenue, StringFormat='{0:C}'}"
+                                HorizontalTextAlignment="End"/>
+                        </StackLayout>
+                        <BoxView Style="{StaticResource CommonTitleRule}" />
+                        <!--  Tien hoan lai  -->
+                        <StackLayout Orientation="Horizontal">
+                            <Label Margin="{StaticResource CommonThickness}" Text="Tiền hoàn lại" />
+
+                            <Label
+                                HorizontalOptions="End"
+                                Text="{Binding Refund, StringFormat='{0:C}'}"
+                                HorizontalTextAlignment="End"/>
+                        </StackLayout>
+                        <BoxView Style="{StaticResource CommonTitleRule}" />
+                        <!--  Thu tien/tra tien  -->
+                        <mr:StackLayout TappedCommand="{Binding BindingContext.ExpandCommand}" Orientation="Horizontal">
+                            
+                            <Label Margin="{StaticResource CommonThickness}" Text="Thu tiền/Trả tiền"/>
+
+                            <Label Grid.Column="1" Text="{x:Static lcModels:FontAwesomeIcon.AngleUp}" Style="{StaticResource CommonIcon}">
+                                <Label.Triggers>
+                                    <DataTrigger Binding="{Binding CollectingAndSpendingVisibleBindProp, Mode=OneWay}" TargetType="Label" Value="true">
+                                        <Setter Property="Text" Value="{x:Static lcModels:FontAwesomeIcon.AngleDown}" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+
+                            <Label
+                                HorizontalOptions="End"
+                                Text="{Binding CollectingAndSpending, StringFormat='{0:C}'}"
+                                HorizontalTextAlignment="End"/>
+                        </mr:StackLayout>
+                        <BoxView Style="{StaticResource CommonTitleRule}" />
+                        <!--  List thu tien/tra tien  -->
+                        <StackLayout BindableLayout.ItemsSource="{Binding ColectingAndSpendingBindProp, Mode=OneWay}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Spacing="0"  BackgroundColor="#e6ffff" Orientation="Horizontal">
+                                        <Label Margin="{StaticResource CommonThickness}" Text="{Binding Note}"/>
+
+                                            <Label
+                                                HorizontalOptions="End"
+                                                Text="{Binding Money, StringFormat='{0:C}'}"
+                                                HorizontalTextAlignment="End"/>
+                                        <BoxView Style="{StaticResource CommonTitleRule}" />
+                                    </StackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                        <!--  Tien tip  -->
+                        <StackLayout Orientation="Horizontal">
+                            <Label Margin="{StaticResource CommonThickness}" Text="Tiền tip" />
+
+                            <Label
+                                HorizontalOptions="End"
+                                Text="{Binding Tip, StringFormat='{0:C}'}"
+                                HorizontalTextAlignment="End"/>
+                        </StackLayout>
+                        <BoxView Style="{StaticResource CommonTitleRule}" />
+                        <!--  So tien du kien trong ket  -->
+                        <StackLayout Orientation="Horizontal">
+                            <Label Margin="{StaticResource CommonThickness}" Text="Số tiền dự kiến trong két"/>
+
+                            <Label
+                                HorizontalOptions="End"
+                                Text="{Binding ExpectedMoney, StringFormat='{0:C}'}"
+                                HorizontalTextAlignment="End"/>
+                        </StackLayout>
+                        <BoxView Style="{StaticResource CommonTitleRule}" />
+                        <!--  Button thu tien/tra tien  -->
+                        <tlrPrimitives:RadBorder
+                                Margin="{StaticResource CommonVerticalThickness}"
+                                Style="{x:StaticResource CommonBorder}">
+                            <mr:StackLayout Orientation="Horizontal" TappedCommand="{Binding BindingContext.CollectingOrSpendingCommand}">
+                                <Label Margin="{StaticResource CommonThickness}" Text="Thu tiền/Trả tiền" HorizontalOptions="FillAndExpand"/>
+
+                                <Label
+                                    Margin="{StaticResource CommonThickness}"
+                                    HorizontalOptions="End"
+                                    Text="{x:Static lcModels:FontAwesomeIcon.AngleRight}"
+                                    Style="{StaticResource CommonIcon}" />
+                            </mr:StackLayout>
+                        </tlrPrimitives:RadBorder>
+                        <!--  Button ket thuc thu tien  -->
+                        <Button
+                            HorizontalOptions="Fill"
+                            Text="Kết thúc thu tiền"
+                            Command="{Binding BindingContext.EndSessionCommand}" />
+                    </StackLayout>
+                </ScrollView>
+            </Frame>
+        </StackLayout>
+        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}"/>
+    </Grid>
+</ContentPage>
