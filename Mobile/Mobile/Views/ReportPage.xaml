@@ -271,7 +271,7 @@
             </Frame>
         </StackLayout>
         
-        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}"/>
+        <tlrPrimitives:RadBusyIndicator Grid.ColumnSpan="2" Style="{StaticResource LoadingIndicator}"/>
         <tlrPrimitives:RadPopup.Popup>
             <tlrPrimitives:RadPopup IsOpen="{Binding PopupVisibleBindProp}"
                                 IsModal="True"

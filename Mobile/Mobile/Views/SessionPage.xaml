@@ -76,7 +76,7 @@
                     <Label Text="{Binding Title}" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
                 </Grid>
             </Frame>
-            <Frame VerticalOptions="FillAndExpand" IsVisible="False">
+            <Frame VerticalOptions="FillAndExpand" IsVisible="{Binding SessionVisibleBindProp}">
                 <ScrollView Padding="{StaticResource CommonThickness}">
                     <StackLayout>
                         <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
@@ -86,8 +86,8 @@
                                 <tlrInput:RadNumericInput
                                     HorizontalOptions="FillAndExpand"                                  
                                     ControlTemplate="{StaticResource CustomNumericInput}"
-                                    Minimum="0" StringFormat="{}{0:C}"
-                                    Value="{Binding InitMoney, Mode=TwoWay, TargetNullValue=0}" />
+                                    Minimum="0" StringFormat="{}{0:C}"                                
+                                    Value="{Binding InitMoneyBindProp, Mode=TwoWay, TargetNullValue=0}" />
                             </StackLayout>
                         </tlrPrimitives:RadBorder>
 
@@ -99,22 +99,22 @@
                 </ScrollView>
             </Frame>
 
-            <Frame VerticalOptions="FillAndExpand" IsVisible="True">
+            <Frame VerticalOptions="FillAndExpand" IsVisible="{Binding SessionDetailVisibleBindProp}">
                 <ScrollView Padding="{StaticResource CommonThickness}">
                     <StackLayout Margin="50,10" Spacing="0">
 
                         <!--  Thoi gian bat dau  -->
                         <Grid>
                             <BoxView Style="{StaticResource CommonTitleRule}" />
-                            <Label Text="{Binding StartTime}" Style="{StaticResource CommonTitle}" />
+                            <Label Text="{Binding SessionBindProp.CreatedAt}" Style="{StaticResource CommonTitle}" />
                         </Grid>
                         <!--  Tien mat dau ky  -->
                         <StackLayout Orientation="Horizontal">
                             <Label Margin="{StaticResource CommonThickness}" Text="Tiền mặt đầu kỳ"/>
 
                             <Label  
-                                HorizontalOptions="End"
-                                Text="{Binding InitMoney, StringFormat='{0:C}'}"
+                                HorizontalOptions="FillAndExpand"
+                                Text="{Binding SessionBindProp.InitMoney, StringFormat='{0:C}'}"
                                 HorizontalTextAlignment="End"/>
                         </StackLayout>
                         <BoxView Style="{StaticResource CommonTitleRule}" />
@@ -123,18 +123,8 @@
                             <Label Margin="{StaticResource CommonThickness}" Text="Doanh thu tiền mặt" />
 
                             <Label
-                                HorizontalOptions="End"
-                                Text="{Binding CashRevenue, StringFormat='{0:C}'}"
-                                HorizontalTextAlignment="End"/>
-                        </StackLayout>
-                        <BoxView Style="{StaticResource CommonTitleRule}" />
-                        <!--  Tien hoan lai  -->
-                        <StackLayout Orientation="Horizontal">
-                            <Label Margin="{StaticResource CommonThickness}" Text="Tiền hoàn lại" />
-
-                            <Label
-                                HorizontalOptions="End"
-                                Text="{Binding Refund, StringFormat='{0:C}'}"
+                                HorizontalOptions="FillAndExpand"
+                                Text="{Binding SessionBindProp.Revenue, StringFormat='{0:C}'}"
                                 HorizontalTextAlignment="End"/>
                         </StackLayout>
                         <BoxView Style="{StaticResource CommonTitleRule}" />
@@ -152,7 +142,7 @@
                             </Label>
 
                             <Label
-                                HorizontalOptions="End"
+                                HorizontalOptions="FillAndExpand"
                                 Text="{Binding CollectingAndSpending, StringFormat='{0:C}'}"
                                 HorizontalTextAlignment="End"/>
                         </mr:StackLayout>
@@ -178,8 +168,8 @@
                             <Label Margin="{StaticResource CommonThickness}" Text="Tiền tip" />
 
                             <Label
-                                HorizontalOptions="End"
-                                Text="{Binding Tip, StringFormat='{0:C}'}"
+                                HorizontalOptions="FillAndExpand"
+                                Text="{Binding SessionBindProp.Tip, StringFormat='{0:C}'}"
                                 HorizontalTextAlignment="End"/>
                         </StackLayout>
                         <BoxView Style="{StaticResource CommonTitleRule}" />
@@ -188,8 +178,8 @@
                             <Label Margin="{StaticResource CommonThickness}" Text="Số tiền dự kiến trong két"/>
 
                             <Label
-                                HorizontalOptions="End"
-                                Text="{Binding ExpectedMoney, StringFormat='{0:C}'}"
+                                HorizontalOptions="FillAndExpand"
+                                Text="{Binding SessionBindProp.ExpectedMoney, StringFormat='{0:C}'}"
                                 HorizontalTextAlignment="End"/>
                         </StackLayout>
                         <BoxView Style="{StaticResource CommonTitleRule}" />
@@ -211,11 +201,11 @@
                         <Button
                             HorizontalOptions="Fill"
                             Text="Kết thúc thu tiền"
-                            Command="{Binding BindingContext.EndSessionCommand}" />
+                            Command="{Binding EndSessionCommand}" />
                     </StackLayout>
                 </ScrollView>
             </Frame>
         </StackLayout>
-        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}"/>
+        <tlrPrimitives:RadBusyIndicator Grid.ColumnSpan="2" Style="{StaticResource LoadingIndicator}"/>
     </Grid>
 </ContentPage>

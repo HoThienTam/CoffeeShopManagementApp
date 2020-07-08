@@ -5,6 +5,9 @@ using Mobile.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Globalization;
+using System.Net.Http;
+using Newtonsoft.Json;
+using Dtos;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Mobile

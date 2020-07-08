@@ -1005,6 +1005,13 @@ namespace Mobile.ViewModels
                             }
                             allTasks.Remove(finished);
                         }
+                        var response = await client.GetAsync(Properties.Resources.BaseUrl + "sessions/current");
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var session = JsonConvert.DeserializeObject<SessionDto>(await response.Content.ReadAsStringAsync());
+                            Application.Current.Properties["session"] = session;
+                            await Application.Current.SavePropertiesAsync();
+                        }
                     }
                     break;
                 case NavigationMode.Forward:
