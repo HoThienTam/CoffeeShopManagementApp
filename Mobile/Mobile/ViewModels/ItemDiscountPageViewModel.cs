@@ -74,14 +74,14 @@ namespace Mobile.ViewModels
                     discount.IsSelected = false;
                     if (discount.IsPercentage)
                     {
-                        var newDiscount = new DiscountDto(discount);
+                        var newDiscount = new DiscountForInvoiceDto(discount);
                         newDiscount.Value = discount.Value / 100 * ItemForInvoiceBindProp.Value;
                         ItemForInvoiceBindProp.Discounts.Add(newDiscount);
                         ItemForInvoiceBindProp.Value -= newDiscount.Value;
                     }
                     else
                     {
-                        ItemForInvoiceBindProp.Discounts.Add(discount);
+                        ItemForInvoiceBindProp.Discounts.Add(new DiscountForInvoiceDto(discount));
                         ItemForInvoiceBindProp.Value -= discount.Value;
                     }
 

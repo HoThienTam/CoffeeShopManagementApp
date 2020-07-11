@@ -641,7 +641,13 @@ namespace Mobile.ViewModels
                 {
                     InvoiceBindProp = new InvoiceDto();
                 }
-                InvoiceBindProp.Discounts.Add(obj);
+                var discount = new DiscountForInvoiceDto(obj);
+                if (obj.IsPercentage)
+                {
+                    discount.Value = obj.Value / 100 * InvoiceBindProp.TotalPrice;
+                }
+                InvoiceBindProp.Discounts.Add(discount);
+                InvoiceBindProp.TotalPrice -= discount.Value;
             }
             catch (Exception e)
             {
@@ -875,6 +881,76 @@ namespace Mobile.ViewModels
         {
             PayCommand = new DelegateCommand<object>(OnPay);
             PayCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region DeleteInvoiceCommand
+
+        public DelegateCommand<InvoiceDto> DeleteInvoiceCommand { get; private set; }
+        private async void OnDeleteInvoice(InvoiceDto obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitDeleteInvoiceCommand()
+        {
+            DeleteInvoiceCommand = new DelegateCommand<InvoiceDto>(OnDeleteInvoice);
+            DeleteInvoiceCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region InstantPayCommand
+
+        public DelegateCommand<object> InstantPayCommand { get; private set; }
+        private async void OnInstantPay(object obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitInstantPayCommand()
+        {
+            InstantPayCommand = new DelegateCommand<object>(OnInstantPay);
+            InstantPayCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion

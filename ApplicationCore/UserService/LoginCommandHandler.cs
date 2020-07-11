@@ -33,7 +33,7 @@ namespace ApplicationCore.UserService
 
             if (dbUser == null)
             {
-                throw new ArgumentException($"Username or password is incorrect!");
+                return string.Empty;
             }
 
             var claims = new[]

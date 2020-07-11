@@ -67,10 +67,9 @@ namespace Mobile.ViewModels
                     {
                         Application.Current.Properties["token"] = token;
                         await Application.Current.SavePropertiesAsync();
+                        await NavigationService.NavigateAsync(nameof(MainPage));
                     }
                 }
-
-                await NavigationService.NavigateAsync(nameof(MainPage));
             }
             catch (Exception e)
             {

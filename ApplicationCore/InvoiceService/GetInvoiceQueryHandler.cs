@@ -45,8 +45,8 @@ namespace ApplicationCore.InvoiceService
             var invoiceDto = _mapper.Map<InvoiceDto>(invoice);
 
             var items = new List<ItemForInvoiceDto>();
-            var discounts = new List<DiscountDto>();
-            var itemDiscounts = new List<DiscountDto>();
+            var discounts = new List<DiscountForInvoiceDto>();
+            var itemDiscounts = new List<DiscountForInvoiceDto>();
 
             foreach (var item in invoice.InvoiceItems)
             {
@@ -55,24 +55,24 @@ namespace ApplicationCore.InvoiceService
                 itemForInvoice.Value = item.Value;
                 foreach (var discount in item.Item.ItemDiscounts)
                 {
-                    var discountForItem = _mapper.Map<DiscountDto>(discount.Discount);
+                    var discountForItem = _mapper.Map<DiscountForInvoiceDto>(discount.Discount);
                     discountForItem.Value = discount.Value;
                     if (discount.InvoiceItemId == item.Id)
                     {
                         itemDiscounts.Add(discountForItem);
                     }
                 }
-                itemForInvoice.Discounts = new ObservableCollection<DiscountDto>(itemDiscounts);
+                itemForInvoice.Discounts = new ObservableCollection<DiscountForInvoiceDto>(itemDiscounts);
                 items.Add(itemForInvoice);
             }
 
             foreach (var discount in invoice.InvoiceDiscounts)
             {
-                discounts.Add(_mapper.Map<DiscountDto>(discount.Discount));
+                discounts.Add(_mapper.Map<DiscountForInvoiceDto>(discount.Discount));
             }
 
             invoiceDto.Items = new ObservableCollection<ItemForInvoiceDto>(items);
-            invoiceDto.Discounts = new ObservableCollection<DiscountDto>(discounts);
+            invoiceDto.Discounts = new ObservableCollection<DiscountForInvoiceDto>(discounts);
 
             return invoiceDto;
         }

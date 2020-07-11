@@ -205,6 +205,77 @@
                     </StackLayout>
                 </ScrollView>
             </Frame>
+
+            <Frame VerticalOptions="FillAndExpand" IsVisible="{Binding SessionHistoryVisibleBindProp}">
+                <ScrollView Padding="{StaticResource CommonThickness}" IsVisible="{Binding LichSuVisibleBindProp, Mode=OneWay}">
+                    <StackLayout Margin="50,10" Spacing="0">
+                        <Grid>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+                            <Label Text="Két tiền mở" Style="{StaticResource CommonTitle}" />
+                        </Grid>
+
+                        <StackLayout BindableLayout.ItemsSource="{Binding ListOpenSessionBindProp, Mode=OneWay}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <tlrPrimitives:RadBorder Margin="0" Style="{StaticResource CommonBorder}">
+                                        <mr:StackLayout 
+                                            Orientation="Horizontal"
+                                            TappedCommand="{Binding BindingContext.SelectSessionCommand, Source={x:Reference sessionPage}, Mode=OneWay}" 
+                                            TappedCommandParameter="{Binding}">
+                                            <Label Text="{Binding ClosedAt}"/>
+
+                                            <Label
+                                                HorizontalOptions="End"
+                                                Text="{x:Static lcModels:FontAwesomeIcon.AngleRight}"
+                                                Style="{StaticResource CommonIcon}" />
+
+                                        </mr:StackLayout>
+                                    </tlrPrimitives:RadBorder>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+
+                        <Label
+                                Margin="{StaticResource CommonThickness}"
+                                Text="Nhập số tiền thực tế trong két để đóng két"
+                                FontSize="Small"
+                                HorizontalTextAlignment="Center" />
+
+                        <Grid>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+                            <Label Text="Lần thu tiền trước" Style="{StaticResource CommonTitle}" />
+                        </Grid>
+
+                        <StackLayout BindableLayout.ItemsSource="{Binding ListClosedSessionBindProp, Mode=OneWay}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <tlrPrimitives:RadBorder Margin="0" Style="{StaticResource CommonBorder}">
+                                        <mr:StackLayout 
+                                            Orientation="Horizontal"
+                                            TappedCommand="{Binding BindingContext.SelectSessionCommand, Source={x:Reference sessionPage}, Mode=OneWay}" 
+                                            TappedCommandParameter="{Binding}">
+
+                                            <Label Text="{Binding ClosedAt}"/>
+
+                                            <Label
+                                                Margin="{StaticResource CommonThickness}"
+                                                HorizontalOptions="End"
+                                                Text="{Binding Difference, StringFormat='Chênh lệch {0:C}'}"/>
+
+                                            <Label
+                                                HorizontalOptions="End"
+                                                Text="{x:Static lcModels:FontAwesomeIcon.AngleRight}"
+                                                Style="{StaticResource CommonIcon}" />
+
+                                        </mr:StackLayout>
+                                    </tlrPrimitives:RadBorder>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </StackLayout>
+                </ScrollView>
+
+            </Frame>
         </StackLayout>
         <tlrPrimitives:RadBusyIndicator Grid.ColumnSpan="2" Style="{StaticResource LoadingIndicator}"/>
     </Grid>

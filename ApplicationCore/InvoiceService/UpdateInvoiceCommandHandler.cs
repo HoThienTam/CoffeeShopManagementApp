@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ImTools;
 using Infrastructure.Data;
 using Infrastructure.Models;
 using MediatR;
@@ -26,18 +27,46 @@ namespace ApplicationCore.InvoiceService
         public async Task<bool> Handle(UpdateInvoiceCommand request, CancellationToken cancellationToken)
         {
             var invoice = await _context.Invoices.FirstOrDefaultAsync(i => i.Id == request.Invoice.Id);
+            invoice.TotalPrice = request.Invoice.TotalPrice;
             var invoiceItems = _context.InvoiceItems.Where(i => i.InvoiceId == request.Invoice.Id).ToList();
             foreach (var item in request.Invoice.Items)
             {
-                if(!invoiceItems.Any(i => i.ItemId == item.Id))
+                if (!item.IsAdded)
                 {
                     var invoiceItem = new InvoiceItem
                     {
-                        InvoiceId = request.Invoice.Id,
+                        InvoiceId = invoice.Id,
                         ItemId = item.Id,
-                        Quantity = item.Quantity
+                        Quantity = item.Quantity,
+                        Value = item.Value
                     };
                     await _context.InvoiceItems.AddAsync(invoiceItem);
+
+                    foreach (var discount in item.Discounts)
+                    {
+                        var itemDiscount = new ItemDiscount
+                        {
+                            ItemId = item.Id,
+                            DiscountId = discount.Id,
+                            Value = discount.Value,
+                            InvoiceItemId = invoiceItem.Id
+                        };
+                        await _context.ItemDiscounts.AddAsync(itemDiscount);
+                    }
+                }
+            }
+
+            foreach (var discount in request.Invoice.Discounts)
+            {
+                if (!discount.IsAdded)
+                {
+                    var invoiceDiscount = new InvoiceDiscount
+                    {
+                        InvoiceId = invoice.Id,
+                        DiscountId = discount.Id,
+                        Value = discount.Value
+                    };
+                    await _context.InvoiceDiscounts.AddAsync(invoiceDiscount);
                 }
             }
             if (await _context.SaveChangesAsync() > 0)

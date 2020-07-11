@@ -1,4 +1,5 @@
 ﻿using Dtos;
+using Mobile.Enums;
 using Mobile.Models;
 using Newtonsoft.Json;
 using Prism.Commands;
@@ -17,6 +18,8 @@ namespace Mobile.ViewModels
     {
         public SessionPageViewModel(InitParams initParams) : base(initParams)
         {
+            ListOpenSessionBindProp = new ObservableCollection<SessionDto>();
+            ListClosedSessionBindProp = new ObservableCollection<SessionDto>(); 
             SideBarBindProp = new ObservableCollection<SelectionModel>
             {
                 new SelectionModel{ Name = "Phiên làm việc của két tiền", IsSelected = true },
@@ -52,6 +55,15 @@ namespace Mobile.ViewModels
         }
         #endregion
 
+        #region SessionHistoryVisibleBindProp
+        private bool _SessionHistoryVisibleBindProp;
+        public bool SessionHistoryVisibleBindProp
+        {
+            get { return _SessionHistoryVisibleBindProp; }
+            set { SetProperty(ref _SessionHistoryVisibleBindProp, value); }
+        }
+        #endregion
+
         #region SessionBindProp
         private SessionDto _SessionBindProp;
         public SessionDto SessionBindProp
@@ -67,6 +79,24 @@ namespace Mobile.ViewModels
         {
             get { return _InitMoneyBindProp; }
             set { SetProperty(ref _InitMoneyBindProp, value); }
+        }
+        #endregion
+
+        #region ListOpenSessionBindProp
+        private ObservableCollection<SessionDto> _ListOpenSessionBindProp;
+        public ObservableCollection<SessionDto> ListOpenSessionBindProp
+        {
+            get { return _ListOpenSessionBindProp; }
+            set { SetProperty(ref _ListOpenSessionBindProp, value); }
+        }
+        #endregion
+
+        #region ListClosedSessionBindProp
+        private ObservableCollection<SessionDto> _ListClosedSessionBindProp;
+        public ObservableCollection<SessionDto> ListClosedSessionBindProp
+        {
+            get { return _ListClosedSessionBindProp; }
+            set { SetProperty(ref _ListClosedSessionBindProp, value); }
         }
         #endregion
 
@@ -95,9 +125,15 @@ namespace Mobile.ViewModels
                 {
                     case "Phiên làm việc của két tiền":
                         Title = "Phiên làm việc của két tiền";
+                        SessionVisibleBindProp = Application.Current.Properties.ContainsKey("session") ? false : true;
+                        SessionDetailVisibleBindProp = !SessionVisibleBindProp;
+                        SessionHistoryVisibleBindProp = false;
                         break;
                     case "Lịch sử két tiền":
                         Title = "Lịch sử két tiền";
+                        SessionVisibleBindProp = false;
+                        SessionDetailVisibleBindProp = false;
+                        SessionHistoryVisibleBindProp = true;
                         break;
                 }
             }
@@ -212,7 +248,7 @@ namespace Mobile.ViewModels
 
         #endregion
 
-        public override void OnNavigatedTo(INavigationParameters parameters)
+        public async override void OnNavigatedTo(INavigationParameters parameters)
         {
             base.OnNavigatedTo(parameters);
             switch (parameters.GetNavigationMode())
@@ -220,11 +256,32 @@ namespace Mobile.ViewModels
                 case NavigationMode.Back:
                     break;
                 case NavigationMode.New:
-                    if (Application.Current.Properties.ContainsKey("session"))
+                    using (var client = new HttpClient())
                     {
-                        SessionBindProp = Application.Current.Properties["session"] as SessionDto;
-                        SessionDetailVisibleBindProp = true;
-                        SessionVisibleBindProp = false;
+                        var task = client.GetAsync(Properties.Resources.BaseUrl + "sessions");
+                        if (Application.Current.Properties.ContainsKey("session"))
+                        {
+                            SessionBindProp = Application.Current.Properties["session"] as SessionDto;
+                            SessionDetailVisibleBindProp = true;
+                            SessionVisibleBindProp = false;
+                        }
+                        var response = await task;
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var sessions = JsonConvert.DeserializeObject<IEnumerable<SessionDto>>(await response.Content.ReadAsStringAsync());
+                            foreach (var session in sessions)
+                            {
+                                switch (session.Status)
+                                {
+                                    case (int)SessionStatus.Open:
+                                        ListOpenSessionBindProp.Add(session);
+                                        break;
+                                    case (int)SessionStatus.Closed:
+                                        ListClosedSessionBindProp.Add(session);
+                                        break;
+                                }
+                            }
+                        }
                     }
                     break;
                 case NavigationMode.Forward:

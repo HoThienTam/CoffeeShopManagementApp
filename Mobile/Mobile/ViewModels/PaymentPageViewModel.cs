@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using Xamarin.Forms;
 
 namespace Mobile.ViewModels
 {
@@ -167,6 +168,7 @@ namespace Mobile.ViewModels
                 else
                 {
                     var invoiceToCreate = new InvoiceForCreateDto(InvoiceBindProp);
+                    invoiceToCreate.Tip = TipBindProp;
                     invoiceToCreate.IsPaid = true;
                     invoiceToCreate.ClosedAt = DateTime.Now;
                     var json = JsonConvert.SerializeObject(invoiceToCreate);
@@ -186,6 +188,12 @@ namespace Mobile.ViewModels
                         if (response.IsSuccessStatusCode)
                         {
                             var invoice = JsonConvert.DeserializeObject<InvoiceDto>(await response.Content.ReadAsStringAsync());
+
+                            var session = Application.Current.Properties["session"] as SessionDto;
+                            session.Revenue += invoice.TotalPrice;
+                            session.Tip += TipBindProp;
+                            session.ExpectedMoney += invoice.TotalPrice + TipBindProp;
+
                             var param = new NavigationParameters();
                             param.Add(nameof(InvoiceBindProp), invoice);
                             await NavigationService.GoBackAsync(param);

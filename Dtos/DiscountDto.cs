@@ -56,6 +56,5 @@ namespace Dtos
             set { SetProperty(ref _IsPercentage, value); }
         }
         #endregion
-
     }
 }

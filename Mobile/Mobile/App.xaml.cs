@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Dtos;
+using System.Text;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Mobile
@@ -29,7 +30,7 @@ namespace Mobile
 
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("vi-VN");
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("vi-VN");
-
+            GetCurrentSession();
             if (Application.Current.Properties.ContainsKey("token"))
             {
                 await NavigationService.NavigateAsync("NavigationPage/MainPage");
@@ -40,6 +41,19 @@ namespace Mobile
             }
         }
 
+        private async void GetCurrentSession()
+        {
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync(Mobile.Properties.Resources.BaseUrl + "sessions/current");
+                if (response.IsSuccessStatusCode)
+                {
+                    var session = JsonConvert.DeserializeObject<SessionDto>(await response.Content.ReadAsStringAsync());
+                    Application.Current.Properties["session"] = session;
+                    await Application.Current.SavePropertiesAsync();
+                }
+            }
+        }
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();

@@ -4,6 +4,7 @@ using ImTools;
 using Infrastructure.Data;
 using Infrastructure.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -28,6 +29,7 @@ namespace ApplicationCore.InvoiceService
         public async Task<InvoiceDto> Handle(AddInvoiceCommand request, CancellationToken cancellationToken)
         {
             var invoice = _mapper.Map<Invoice>(request.Invoice);
+            var session = await _context.Sessions.FirstOrDefaultAsync(s => s.Status == 0);
 
             await _context.Invoices.AddAsync(invoice);
             foreach (var item in request.Invoice.Items)
@@ -60,9 +62,13 @@ namespace ApplicationCore.InvoiceService
                 {
                     InvoiceId = invoice.Id,
                     DiscountId = discount.Id,
+                    Value = discount.Value
                 };
                 await _context.InvoiceDiscounts.AddAsync(invoiceDiscount);
             }
+            session.Revenue += invoice.TotalPrice;
+            session.ExpectedMoney += invoice.TotalPrice + invoice.Tip;
+            session.Tip += invoice.Tip;
             if (await _context.SaveChangesAsync() > 0)
             {
                 var invoiceToReturn = await _mediator.Send(new GetInvoiceQuery(invoice.Id));

@@ -13,7 +13,7 @@ namespace Dtos
             Id = item.Id;
             Name = item.Name;
             SubItems = new ObservableCollection<ItemDto>();
-            Discounts = new ObservableCollection<DiscountDto>();
+            Discounts = new ObservableCollection<DiscountForInvoiceDto>();
         }
 
         public ItemForInvoiceDto()
@@ -48,9 +48,9 @@ namespace Dtos
         #endregion
 
         #region Discounts
-        private ObservableCollection<DiscountDto> _Discounts;
+        private ObservableCollection<DiscountForInvoiceDto> _Discounts;
 
-        public ObservableCollection<DiscountDto> Discounts
+        public ObservableCollection<DiscountForInvoiceDto> Discounts
         {
             get { return _Discounts; }
             set { SetProperty(ref _Discounts, value); }
@@ -74,5 +74,7 @@ namespace Dtos
             set { SetProperty(ref _SubItems, value); }
         }
         #endregion
+
+        public bool IsAdded { get; set; }
     }
 }

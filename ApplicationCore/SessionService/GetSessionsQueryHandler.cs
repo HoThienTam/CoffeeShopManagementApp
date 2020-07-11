@@ -2,8 +2,10 @@
 using Dtos;
 using Infrastructure.Data;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,9 +22,11 @@ namespace ApplicationCore.SessionService
             _context = context;
             _mapper = mapper;
         }
-        public Task<IEnumerable<SessionDto>> Handle(GetSessionsQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<SessionDto>> Handle(GetSessionsQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var sessions = _context.Sessions.Where(c => c.Status != 0).AsNoTracking().OrderBy(c => c.ClosedAt);
+            var sessionDtos = _mapper.Map<IEnumerable<SessionDto>>(sessions);
+            return sessionDtos;
         }
     }
 }

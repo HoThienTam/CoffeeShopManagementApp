@@ -1,38 +1,37 @@
 ﻿using AutoMapper;
-using Dtos;
 using Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.SessionService
 {
-    public class GetCurrentSessonQueryHandler : IRequestHandler<GetCurrentSessionQuery, SessionDto>
+    public class UpdateSessionCommandHandler : IRequestHandler<UpdateSessionCommand, bool>
     {
         private DataContext _context;
         private readonly IMapper _mapper;
 
-        public GetCurrentSessonQueryHandler(DataContext context, IMapper mapper)
+        public UpdateSessionCommandHandler(DataContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
-        public async Task<SessionDto> Handle(GetCurrentSessionQuery request, CancellationToken cancellationToken)
+
+        public async Task<bool> Handle(UpdateSessionCommand request, CancellationToken cancellationToken)
         {
             var session = await _context.Sessions.AsNoTracking().FirstOrDefaultAsync(s => s.Status == 0);
+            _mapper.Map(request.Session, session);
 
-            if (session == null)
+            if (await _context.SaveChangesAsync() > 0)
             {
-                throw new Exception("Phiên làm việc không tồn tại");
+                return true;
             }
 
-            var sessionDto = _mapper.Map<SessionDto>(session);
-            return sessionDto;
+            return false;
         }
     }
 }
