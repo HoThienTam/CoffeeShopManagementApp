@@ -151,22 +151,6 @@ namespace Mobile.ViewModels
         }
         #endregion
 
-        #region IsEditing
-        private bool _IsEditing = false;
-        public bool IsEditing
-        {
-            get { return _IsEditing; }
-            set
-            {
-                SetProperty(ref _IsEditing, value);
-                RaisePropertyChanged(nameof(IsNotEditting));
-            }
-        }
-
-
-        public bool IsNotEditting { get { return !_IsEditing; } }
-        #endregion
-
         #region InvoiceBindProp
         private InvoiceDto _InvoiceBindProp = null;
         public InvoiceDto InvoiceBindProp
@@ -193,49 +177,6 @@ namespace Mobile.ViewModels
             set { SetProperty(ref _IsOpenTakeAway, value); }
         }
         #endregion
-
-        #endregion
-
-        #region ChangeEditModeCommand
-
-        public DelegateCommand<object> ChangeEditModeCommand { get; private set; }
-        private async void OnChangeEditMode(object obj)
-        {
-            if (IsBusy)
-            {
-                return;
-            }
-
-            IsBusy = true;
-
-            try
-            {
-                // Thuc hien cong viec tai day
-                if (IsEditing)
-                {
-                    IsEditing = false;
-                }
-                else
-                {
-                    IsEditing = true;
-                }
-            }
-            catch (Exception e)
-            {
-                await ShowErrorAsync(e);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-
-        }
-        [Initialize]
-        private void InitChangeEditModeCommand()
-        {
-            ChangeEditModeCommand = new DelegateCommand<object>(OnChangeEditMode);
-            ChangeEditModeCommand.ObservesCanExecute(() => IsNotBusy);
-        }
 
         #endregion
 
@@ -467,9 +408,10 @@ namespace Mobile.ViewModels
                             var ok = await PageDialogService.DisplayAlertAsync("Cảnh báo", "Hủy hóa đơn?", "Đồng ý", "Không");
                             if (ok)
                             {
-                                MenuFrameVisibleBindProp = false;
-                                InvoiceFrameVisibleBindProp = true;
+                                MenuFrameVisibleBindProp = true;
+                                InvoiceFrameVisibleBindProp = false;
                                 SettingFrameVisibleBindProp = false;
+                                DiscountFrameVisibleBindProp = false;
                                 InvoiceBindProp = null;
                             }
                         }
@@ -503,11 +445,11 @@ namespace Mobile.ViewModels
                         }
                         break;
                     case "discount":
-                            MenuFrameVisibleBindProp = true;
-                            InvoiceFrameVisibleBindProp = false;
-                            ItemFrameVisibleBindProp = false;
-                            DiscountFrameVisibleBindProp = true;
-                            SettingFrameVisibleBindProp = false;
+                        MenuFrameVisibleBindProp = true;
+                        InvoiceFrameVisibleBindProp = false;
+                        ItemFrameVisibleBindProp = false;
+                        DiscountFrameVisibleBindProp = true;
+                        SettingFrameVisibleBindProp = false;
                         break;
                     case "invoicelist":
                         var selectedZone = ListZoneBindProp.FindFirst(z => z.IsSelected);
@@ -566,6 +508,7 @@ namespace Mobile.ViewModels
                 // Thuc hien cong viec tai day
                 if (InvoiceBindProp.TableId == Guid.Empty)
                 {
+                    await PageDialogService.DisplayAlertAsync("Thông báo", "Chưa chọn bàn!", "Đồng ý");
                     var selectedCategory = ListCategoryBindProp.FirstOrDefault(z => z.IsSelected);
                     if (selectedCategory != null)
                     {
@@ -576,31 +519,34 @@ namespace Mobile.ViewModels
                     ListInvoiceFrameVisibleBindProp = false;
                     ZoneFrameVisibleBindProp = true;
                 }
-                var invoiceToCreate = new InvoiceForCreateDto(InvoiceBindProp);
-                var json = JsonConvert.SerializeObject(invoiceToCreate);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                // Thuc hien cong viec tai day
-                using (var client = new HttpClient())
+                else
                 {
-                    HttpResponseMessage response = new HttpResponseMessage();
-                    if (InvoiceBindProp.Id == Guid.Empty)
+                    var invoiceToCreate = new InvoiceForCreateDto(InvoiceBindProp);
+                    var json = JsonConvert.SerializeObject(invoiceToCreate);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    // Thuc hien cong viec tai day
+                    using (var client = new HttpClient())
                     {
-                        response = await client.PostAsync(Properties.Resources.BaseUrl + "invoices/", content);
-                    }
-                    else
-                    {
-                        response = await client.PutAsync(Properties.Resources.BaseUrl + "invoices/", content);
-                    }
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.Created:
-                            var invoice = JsonConvert.DeserializeObject<InvoiceDto>(await response.Content.ReadAsStringAsync());
-                            ListInvoiceBindProp.Add(invoice);
-                            //await _connection.InvokeAsync("SendInvoice", invoice);
-                            InvoiceBindProp = null;
-                            break;
-                    }
-                };
+                        HttpResponseMessage response = new HttpResponseMessage();
+                        if (InvoiceBindProp.Id == Guid.Empty)
+                        {
+                            response = await client.PostAsync(Properties.Resources.BaseUrl + "invoices/", content);
+                        }
+                        else
+                        {
+                            response = await client.PutAsync(Properties.Resources.BaseUrl + "invoices/", content);
+                        }
+                        switch (response.StatusCode)
+                        {
+                            case HttpStatusCode.Created:
+                                var invoice = JsonConvert.DeserializeObject<InvoiceDto>(await response.Content.ReadAsStringAsync());
+                                ListInvoiceBindProp.Add(invoice);
+                                //await _connection.InvokeAsync("SendInvoice", invoice);
+                                InvoiceBindProp = null;
+                                break;
+                        }
+                    };
+                }
             }
             catch (Exception e)
             {

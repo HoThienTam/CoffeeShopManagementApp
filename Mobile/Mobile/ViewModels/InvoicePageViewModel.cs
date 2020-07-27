@@ -57,7 +57,7 @@ namespace Mobile.ViewModels
                             }
                         }
                     }
-                    CurrentInvoiceBindProp = ListInvoiceBindProp.First();
+                    CurrentInvoiceBindProp = ListInvoiceBindProp.FirstOrDefault();
                     break;
                 case NavigationMode.Forward:
                     break;
