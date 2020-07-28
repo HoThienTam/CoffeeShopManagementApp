@@ -62,7 +62,7 @@ namespace Api.Controllers
             }
             else
             {
-                return BadRequest("Không thể cập nhật danh mục!");
+                return BadRequest("Không thể cập nhật hóa đơn!");
             }
         }
 

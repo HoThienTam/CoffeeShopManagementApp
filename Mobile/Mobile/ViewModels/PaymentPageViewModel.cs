@@ -187,15 +187,14 @@ namespace Mobile.ViewModels
                         }
                         if (response.IsSuccessStatusCode)
                         {
-                            var invoice = JsonConvert.DeserializeObject<InvoiceDto>(await response.Content.ReadAsStringAsync());
 
                             var session = Application.Current.Properties["session"] as SessionDto;
-                            session.Revenue += invoice.TotalPrice;
+                            session.Revenue += InvoiceBindProp.TotalPrice;
                             session.Tip += TipBindProp;
-                            session.ExpectedMoney += invoice.TotalPrice + TipBindProp;
+                            session.ExpectedMoney += InvoiceBindProp.TotalPrice + TipBindProp;
 
                             var param = new NavigationParameters();
-                            param.Add(nameof(InvoiceBindProp), invoice);
+                            param.Add(nameof(InvoiceBindProp), InvoiceBindProp);
                             await NavigationService.GoBackAsync(param);
                         }
                     };

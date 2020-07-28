@@ -27,7 +27,7 @@ namespace ApplicationCore.InvoiceService
         public async Task<bool> Handle(UpdateInvoiceCommand request, CancellationToken cancellationToken)
         {
             var invoice = await _context.Invoices.FirstOrDefaultAsync(i => i.Id == request.Invoice.Id);
-            invoice.TotalPrice = request.Invoice.TotalPrice;
+            _mapper.Map(request.Invoice, invoice);
             var invoiceItems = _context.InvoiceItems.Where(i => i.InvoiceId == request.Invoice.Id).ToList();
             foreach (var item in request.Invoice.Items)
             {
@@ -71,6 +71,7 @@ namespace ApplicationCore.InvoiceService
             }
             if (await _context.SaveChangesAsync() > 0)
             {
+
                 return true;
             }
             return false;

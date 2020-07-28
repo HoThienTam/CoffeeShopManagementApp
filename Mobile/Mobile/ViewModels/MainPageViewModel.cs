@@ -878,8 +878,8 @@ namespace Mobile.ViewModels
 
         #region InstantPayCommand
 
-        public DelegateCommand<object> InstantPayCommand { get; private set; }
-        private async void OnInstantPay(object obj)
+        public DelegateCommand<InvoiceDto> InstantPayCommand { get; private set; }
+        private async void OnInstantPay(InvoiceDto obj)
         {
             if (IsBusy)
             {
@@ -891,6 +891,9 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                var param = new NavigationParameters();
+                param.Add(nameof(InvoiceBindProp), obj);
+                await NavigationService.NavigateAsync(nameof(PaymentPage), param);
             }
             catch (Exception e)
             {
@@ -905,7 +908,7 @@ namespace Mobile.ViewModels
         [Initialize]
         private void InitInstantPayCommand()
         {
-            InstantPayCommand = new DelegateCommand<object>(OnInstantPay);
+            InstantPayCommand = new DelegateCommand<InvoiceDto>(OnInstantPay);
             InstantPayCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
@@ -957,8 +960,7 @@ namespace Mobile.ViewModels
                     }
                     if (parameters.ContainsKey(nameof(InvoiceBindProp)))
                     {
-                        var invoiceId = parameters[nameof(InvoiceBindProp)] as Guid?;
-                        var invoice = ListInvoiceBindProp.FindFirst(c => c.Id == invoiceId);
+                        var invoice = parameters[nameof(InvoiceBindProp)] as InvoiceDto;
                         ListInvoiceBindProp.Remove(invoice);
                         InvoiceBindProp = null;
                     }
