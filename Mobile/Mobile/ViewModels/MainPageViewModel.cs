@@ -408,9 +408,9 @@ namespace Mobile.ViewModels
                             var ok = await PageDialogService.DisplayAlertAsync("Cảnh báo", "Hủy hóa đơn?", "Đồng ý", "Không");
                             if (ok)
                             {
-                                MenuFrameVisibleBindProp = true;
+                                MenuFrameVisibleBindProp = false;
                                 InvoiceFrameVisibleBindProp = false;
-                                SettingFrameVisibleBindProp = false;
+                                SettingFrameVisibleBindProp = true;
                                 DiscountFrameVisibleBindProp = false;
                                 InvoiceBindProp = null;
                             }
@@ -506,6 +506,12 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                if (!Application.Current.Properties.ContainsKey("session"))
+                {
+                    await PageDialogService.DisplayAlertAsync("Thông báo", "Chưa bắt đầu phiên làm việc!", "Đồng ý");
+                    await NavigationService.NavigateAsync(nameof(SessionPage));
+                    return;
+                }
                 if (InvoiceBindProp.TableId == Guid.Empty)
                 {
                     await PageDialogService.DisplayAlertAsync("Thông báo", "Chưa chọn bàn!", "Đồng ý");
@@ -543,6 +549,10 @@ namespace Mobile.ViewModels
                                 ListInvoiceBindProp.Add(invoice);
                                 //await _connection.InvokeAsync("SendInvoice", invoice);
                                 InvoiceBindProp = null;
+                                MenuFrameVisibleBindProp = false;
+                                InvoiceFrameVisibleBindProp = true;
+                                SettingFrameVisibleBindProp = false;
+                                DiscountFrameVisibleBindProp = false;
                                 break;
                         }
                     };
@@ -636,7 +646,7 @@ namespace Mobile.ViewModels
                         InvoiceBindProp = new InvoiceDto();
                     }
                     var table = obj as TableDto;
-                    InvoiceBindProp.TableName = table.Name;
+                    InvoiceBindProp.Table = table;
                     InvoiceBindProp.TableId = table.Id;
                     MenuFrameVisibleBindProp = true;
                     InvoiceFrameVisibleBindProp = false;

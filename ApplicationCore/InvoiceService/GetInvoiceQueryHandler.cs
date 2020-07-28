@@ -35,6 +35,7 @@ namespace ApplicationCore.InvoiceService
                 .ThenInclude(c => c.Discount)
                 .Include(c => c.InvoiceDiscounts)
                 .ThenInclude(c => c.Discount)
+                .Include(c => c.Table)
                 .FirstOrDefaultAsync(c => c.Id == request.Id);
 
             if (invoice == null)

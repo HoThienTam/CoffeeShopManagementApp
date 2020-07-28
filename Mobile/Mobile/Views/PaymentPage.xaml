@@ -30,10 +30,6 @@
                         <mr:Grid TappedCommand="{Binding GoBackCommand}" >
                             <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
                         </mr:Grid>
-                        <!--Right text-->
-                        <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2">
-                            <Label Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" TextColor="#2ecc71" Style="{StaticResource CommonIcon}"/>
-                        </mr:Grid>
                     </Grid>
                 </Frame>
                 <Frame VerticalOptions="FillAndExpand">

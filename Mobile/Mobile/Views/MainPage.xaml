@@ -353,7 +353,7 @@
 
                             <!--Title-->
                             <mr:Grid Grid.Column="2" TappedCommand="{Binding SelectTableCommand}">
-                                <Label VerticalOptions="Center" TextColor="Black" Text="{Binding InvoiceBindProp.TableName}" FontSize="Large">
+                                <Label VerticalOptions="Center" TextColor="Black" Text="{Binding InvoiceBindProp.Table.Name}" FontSize="Large">
                                     <Label.Triggers>
                                         <DataTrigger TargetType="Label" Binding="{Binding IsTakeAway}" Value="True">
                                             <Setter Property="Text" Value="MANG ĐI"/>

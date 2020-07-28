@@ -35,6 +35,7 @@ namespace ApplicationCore.InvoiceService
                 .ThenInclude(c => c.Item)
                 .ThenInclude(c => c.ItemDiscounts)
                 .ThenInclude(c => c.Discount)
+                .Include(c => c.Table)
                 .AsNoTracking();
 
             var invoiceDtos = new List<InvoiceDto>();

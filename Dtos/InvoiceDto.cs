@@ -35,12 +35,21 @@ namespace Dtos
         }
         #endregion
 
-        #region TableName
-        private string _TableName;
-        public string TableName
+        //#region TableName
+        //private string _TableName;
+        //public string TableName
+        //{
+        //    get { return _TableName; }
+        //    set { SetProperty(ref _TableName, value); }
+        //}
+        //#endregion
+
+        #region Table
+        private TableDto _Table;
+        public TableDto Table
         {
-            get { return _TableName; }
-            set { SetProperty(ref _TableName, value); }
+            get { return _Table; }
+            set { SetProperty(ref _Table, value); }
         }
         #endregion
 

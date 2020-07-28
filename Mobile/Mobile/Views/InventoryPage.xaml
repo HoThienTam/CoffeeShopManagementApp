@@ -78,100 +78,98 @@
                 </Grid>
             </Frame>
             <!--  danh sach hang ton  -->
-            <Frame VerticalOptions="FillAndExpand" IsVisible="{Binding ListItemVisibleBindProp}">
-                <StackLayout Margin="{StaticResource CommonThickness}">
-                    <!--  Tab hang ton  -->
-                    <tlrGrid:RadDataGrid
+            <Frame IsVisible="{Binding ListItemVisibleBindProp}" VerticalOptions="FillAndExpand">
+                <!--  Tab hang ton  -->
+                <tlrGrid:RadDataGrid
                         Margin="{StaticResource CommonThickness}"
                         AutoGenerateColumns="False"
                         SelectionMode="None"
                         ItemsSource="{Binding ListItemBindProp, Mode=OneWay}"
                         UserEditMode="None" UserFilterMode="Disabled" 
                         UserSortMode="None" UserGroupMode="Disabled">
-                        <tlrGrid:RadDataGrid.Columns>
-                            <tlrGrid:DataGridTextColumn PropertyName="Name" HeaderText="Tên hàng tồn" SizeMode="Stretch">
-                                <tlrGrid:DataGridTextColumn.HeaderStyle>
-                                    <tlrGrid:DataGridColumnHeaderStyle
-                                        TextFontAttributes="Bold"
+                    <tlrGrid:RadDataGrid.Columns>
+                        <tlrGrid:DataGridTextColumn PropertyName="Name" HeaderText="Tên hàng tồn" SizeMode="Stretch">
+                            <tlrGrid:DataGridTextColumn.HeaderStyle>
+                                <tlrGrid:DataGridColumnHeaderStyle
+                                        TextFontAttributes="Bold" TextColor="Black"
                                         BackgroundColor="White" HorizontalTextAlignment="Start" OptionsButtonTextColor="Transparent"
                                         TextFontSize="20" />
-                                </tlrGrid:DataGridTextColumn.HeaderStyle>
-                                <tlrGrid:DataGridTextColumn.CellContentStyle>
-                                    <tlrGrid:DataGridTextCellStyle 
+                            </tlrGrid:DataGridTextColumn.HeaderStyle>
+                            <tlrGrid:DataGridTextColumn.CellContentStyle>
+                                <tlrGrid:DataGridTextCellStyle 
                                         HorizontalTextAlignment="Start"
                                         VerticalTextAlignment="Center"
                                         FontSize="17" />
-                                </tlrGrid:DataGridTextColumn.CellContentStyle>
-                            </tlrGrid:DataGridTextColumn>
+                            </tlrGrid:DataGridTextColumn.CellContentStyle>
+                        </tlrGrid:DataGridTextColumn>
 
-                            <tlrGrid:DataGridNumericalColumn Width="120" HeaderText="Tối thiểu" PropertyName="MinQuantity" SizeMode="Fixed">
-                                <tlrGrid:DataGridNumericalColumn.HeaderStyle>
-                                    <tlrGrid:DataGridColumnHeaderStyle
+                        <tlrGrid:DataGridNumericalColumn Width="120" HeaderText="Tối thiểu" PropertyName="MinQuantity" SizeMode="Fixed">
+                            <tlrGrid:DataGridNumericalColumn.HeaderStyle>
+                                <tlrGrid:DataGridColumnHeaderStyle
                                         TextMargin="0,0,0,6"
                                         TextFontAttributes="Bold" TextColor="Black"
                                         BackgroundColor="White" HorizontalTextAlignment="Center" OptionsButtonTextColor="Transparent"
                                         TextFontSize="20" />
-                                </tlrGrid:DataGridNumericalColumn.HeaderStyle>
-                                <tlrGrid:DataGridNumericalColumn.CellContentStyle>
-                                    <tlrGrid:DataGridTextCellStyle
+                            </tlrGrid:DataGridNumericalColumn.HeaderStyle>
+                            <tlrGrid:DataGridNumericalColumn.CellContentStyle>
+                                <tlrGrid:DataGridTextCellStyle
                                         FontSize="17" HorizontalTextAlignment="Center"
                                         VerticalTextAlignment="Center"/>
-                                </tlrGrid:DataGridNumericalColumn.CellContentStyle>
-                            </tlrGrid:DataGridNumericalColumn>
+                            </tlrGrid:DataGridNumericalColumn.CellContentStyle>
+                        </tlrGrid:DataGridNumericalColumn>
 
-                            <tlrGrid:DataGridTemplateColumn SizeMode="Fixed" Width="50">
-                                <tlrGrid:DataGridTemplateColumn.HeaderStyle>
-                                    <tlrGrid:DataGridColumnHeaderStyle
+                        <tlrGrid:DataGridTemplateColumn SizeMode="Fixed" Width="50">
+                            <tlrGrid:DataGridTemplateColumn.HeaderStyle>
+                                <tlrGrid:DataGridColumnHeaderStyle
                                         TextFontAttributes="Bold" TextColor="Black"
                                         BackgroundColor="White" HorizontalTextAlignment="Center" OptionsButtonTextColor="Transparent"
                                         TextFontSize="20" />
-                                </tlrGrid:DataGridTemplateColumn.HeaderStyle>
-                                <tlrGrid:DataGridTemplateColumn.CellContentTemplate>
-                                    <DataTemplate>
-                                        <mr:Label 
-                                            Style="{StaticResource CommonIcon}" 
-                                            TappedCommand="{Binding BindingContext.AddQuantityCommand, Source={x:Reference inventoryPage}}"
-                                            TappedCommandParameter="{Binding}"
-                                            Text="{x:Static lcModels:FontAwesomeIcon.PlusCircle}"/>
-                                    </DataTemplate>
-                                </tlrGrid:DataGridTemplateColumn.CellContentTemplate>
-                            </tlrGrid:DataGridTemplateColumn>
+                            </tlrGrid:DataGridTemplateColumn.HeaderStyle>
+                            <tlrGrid:DataGridTemplateColumn.CellContentTemplate>
+                                <DataTemplate>
+                                    <mr:Label 
+                                        Style="{StaticResource CommonIcon}" 
+                                        TappedCommand="{Binding BindingContext.AddQuantityCommand, Source={x:Reference inventoryPage}}"
+                                        TappedCommandParameter="{Binding}"
+                                        Text="{x:Static lcModels:FontAwesomeIcon.PlusCircle}"/>
+                                </DataTemplate>
+                            </tlrGrid:DataGridTemplateColumn.CellContentTemplate>
+                        </tlrGrid:DataGridTemplateColumn>
 
-                            <tlrGrid:DataGridNumericalColumn Width="120" HeaderText="Số lượng" PropertyName="CurrentQuantity" SizeMode="Fixed">
-                                <tlrGrid:DataGridNumericalColumn.HeaderStyle>
-                                    <tlrGrid:DataGridColumnHeaderStyle
+                        <tlrGrid:DataGridNumericalColumn Width="120" HeaderText="Số lượng" PropertyName="CurrentQuantity" SizeMode="Fixed">
+                            <tlrGrid:DataGridNumericalColumn.HeaderStyle>
+                                <tlrGrid:DataGridColumnHeaderStyle
                                         TextFontAttributes="Bold" TextColor="Black"
                                         BackgroundColor="White" HorizontalTextAlignment="Center" OptionsButtonTextColor="Transparent"
                                         TextFontSize="20" />
-                                </tlrGrid:DataGridNumericalColumn.HeaderStyle>
-                                <tlrGrid:DataGridNumericalColumn.CellContentStyle>
-                                    <tlrGrid:DataGridTextCellStyle
+                            </tlrGrid:DataGridNumericalColumn.HeaderStyle>
+                            <tlrGrid:DataGridNumericalColumn.CellContentStyle>
+                                <tlrGrid:DataGridTextCellStyle
                                         FontSize="17" HorizontalTextAlignment="Center"
                                         VerticalTextAlignment="Center"/>
-                                </tlrGrid:DataGridNumericalColumn.CellContentStyle>
-                            </tlrGrid:DataGridNumericalColumn>
+                            </tlrGrid:DataGridNumericalColumn.CellContentStyle>
+                        </tlrGrid:DataGridNumericalColumn>
 
-                            <tlrGrid:DataGridTemplateColumn SizeMode="Fixed" Width="50">
-                                <tlrGrid:DataGridTemplateColumn.HeaderStyle>
-                                    <tlrGrid:DataGridColumnHeaderStyle
+                        <tlrGrid:DataGridTemplateColumn SizeMode="Fixed" Width="50">
+                            <tlrGrid:DataGridTemplateColumn.HeaderStyle>
+                                <tlrGrid:DataGridColumnHeaderStyle
                                         TextFontAttributes="Bold" TextColor="Black"
                                         BackgroundColor="White" HorizontalTextAlignment="Center" OptionsButtonTextColor="Transparent"
                                         TextFontSize="20" />
-                                </tlrGrid:DataGridTemplateColumn.HeaderStyle>
-                                <tlrGrid:DataGridTemplateColumn.CellContentTemplate>
-                                    <DataTemplate>
-                                        <mr:Label 
-                                            Style="{StaticResource CommonIcon}" 
-                                            TappedCommand="{Binding BindingContext.ReduceQuantityCommand, Source={x:Reference inventoryPage}}"
-                                            TappedCommandParameter="{Binding}"
-                                            Text="{x:Static lcModels:FontAwesomeIcon.MinusCircle}"/>
-                                    </DataTemplate>
-                                </tlrGrid:DataGridTemplateColumn.CellContentTemplate>
-                            </tlrGrid:DataGridTemplateColumn>
+                            </tlrGrid:DataGridTemplateColumn.HeaderStyle>
+                            <tlrGrid:DataGridTemplateColumn.CellContentTemplate>
+                                <DataTemplate>
+                                    <mr:Label 
+                                        Style="{StaticResource CommonIcon}" 
+                                        TappedCommand="{Binding BindingContext.ReduceQuantityCommand, Source={x:Reference inventoryPage}}"
+                                        TappedCommandParameter="{Binding}"
+                                        Text="{x:Static lcModels:FontAwesomeIcon.MinusCircle}"/>
+                                </DataTemplate>
+                            </tlrGrid:DataGridTemplateColumn.CellContentTemplate>
+                        </tlrGrid:DataGridTemplateColumn>
 
-                        </tlrGrid:RadDataGrid.Columns>
-                    </tlrGrid:RadDataGrid>
-                </StackLayout>
+                    </tlrGrid:RadDataGrid.Columns>
+                </tlrGrid:RadDataGrid>
             </Frame>
             <!--  danh sach hang sap het  -->
             <Frame IsVisible="{Binding ListItemOutOfStockVisibleBindProp}" VerticalOptions="FillAndExpand">
@@ -184,7 +182,7 @@
                         UserEditMode="None" UserFilterMode="Disabled" 
                         UserSortMode="None" UserGroupMode="Disabled">
                         <tlrGrid:RadDataGrid.Columns>
-                            <tlrGrid:DataGridTextColumn PropertyName="ItemName" HeaderText="Tên hàng tồn" SizeMode="Stretch">
+                            <tlrGrid:DataGridTextColumn PropertyName="Name" HeaderText="Tên hàng tồn" SizeMode="Stretch">
                                 <tlrGrid:DataGridTextColumn.HeaderStyle>
                                     <tlrGrid:DataGridColumnHeaderStyle
                                         TextFontAttributes="Bold" TextColor="Black"
@@ -225,6 +223,8 @@
                                     <DataTemplate>
                                         <mr:Label 
                                         Style="{StaticResource CommonIcon}" 
+                                        TappedCommand="{Binding BindingContext.AddQuantityCommand, Source={x:Reference inventoryPage}}"
+                                        TappedCommandParameter="{Binding}"
                                         Text="{x:Static lcModels:FontAwesomeIcon.PlusCircle}"/>
                                     </DataTemplate>
                                 </tlrGrid:DataGridTemplateColumn.CellContentTemplate>
@@ -254,7 +254,9 @@
                                 <tlrGrid:DataGridTemplateColumn.CellContentTemplate>
                                     <DataTemplate>
                                         <mr:Label 
-                                        Style="{StaticResource CommonIcon}" 
+                                        Style="{StaticResource CommonIcon}"
+                                        TappedCommand="{Binding BindingContext.ReduceQuantityCommand, Source={x:Reference inventoryPage}}"
+                                        TappedCommandParameter="{Binding}"
                                         Text="{x:Static lcModels:FontAwesomeIcon.MinusCircle}"/>
                                     </DataTemplate>
                                 </tlrGrid:DataGridTemplateColumn.CellContentTemplate>

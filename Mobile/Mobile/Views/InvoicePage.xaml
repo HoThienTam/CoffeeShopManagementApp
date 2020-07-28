@@ -34,7 +34,7 @@
                         <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
                     </mr:Grid>
                     <!--Title-->
-                    <Label Text="Thống kê" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                    <Label Text="Hoạt động" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
                 </Grid>
             </Frame>
 

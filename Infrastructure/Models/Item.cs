@@ -12,6 +12,7 @@ namespace Infrastructure.Models
         public double Price { get; set; }
         public int MinQuantity { get; set; }
         public int CurrentQuantity { get; set; }
+        public bool IsOutOfStock { get; set; }
         public Guid CategoryId { get; set; }
         public Category Category { get; set; }
         public ICollection<ItemDiscount> ItemDiscounts { get; set; }
