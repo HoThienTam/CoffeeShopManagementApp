@@ -12,7 +12,7 @@ namespace Infrastructure.Models
         public double TotalPrice { get; set; }
         public double PaidAmount { get; set; }
         public double Tip { get; set; }
-        public Guid TableId { get; set; }
+        public Guid? TableId { get; set; }
         public Table Table { get; set; }
         public ICollection<InvoiceItem> InvoiceItems { get; set; }
         public ICollection<InvoiceDiscount> InvoiceDiscounts { get; set; }

@@ -27,8 +27,8 @@ namespace Dtos
         #endregion
 
         #region TableId
-        private Guid _TableId = Guid.Empty;
-        public Guid TableId
+        private Guid? _TableId = null;
+        public Guid? TableId
         {
             get { return _TableId; }
             set { SetProperty(ref _TableId, value); }

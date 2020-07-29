@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200727142912_modify-item-invoice")]
-    partial class modifyiteminvoice
+    [Migration("20200728164310_update-invoice-item")]
+    partial class updateinvoiceitem
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -184,7 +184,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<Guid>("TableId")
+                    b.Property<Guid?>("TableId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Tip")
@@ -585,9 +585,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Infrastructure.Models.Table", "Table")
                         .WithMany()
-                        .HasForeignKey("TableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TableId");
                 });
 
             modelBuilder.Entity("Infrastructure.Models.InvoiceDiscount", b =>

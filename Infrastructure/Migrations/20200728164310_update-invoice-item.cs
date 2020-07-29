@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    public partial class modifyiteminvoice : Migration
+    public partial class updateinvoiceitem : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,6 +17,13 @@ namespace Infrastructure.Migrations
                 nullable: false,
                 defaultValue: false);
 
+            migrationBuilder.AlterColumn<Guid>(
+                name: "TableId",
+                table: "Invoices",
+                nullable: true,
+                oldClrType: typeof(Guid),
+                oldType: "uniqueidentifier");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Invoices_TableId",
                 table: "Invoices",
@@ -27,7 +35,7 @@ namespace Infrastructure.Migrations
                 column: "TableId",
                 principalTable: "Tables",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -43,6 +51,14 @@ namespace Infrastructure.Migrations
             migrationBuilder.DropColumn(
                 name: "IsOutOfStock",
                 table: "Items");
+
+            migrationBuilder.AlterColumn<Guid>(
+                name: "TableId",
+                table: "Invoices",
+                type: "uniqueidentifier",
+                nullable: false,
+                oldClrType: typeof(Guid),
+                oldNullable: true);
 
             migrationBuilder.AddColumn<string>(
                 name: "TableName",

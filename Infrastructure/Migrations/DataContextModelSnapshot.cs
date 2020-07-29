@@ -182,7 +182,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<Guid>("TableId")
+                    b.Property<Guid?>("TableId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Tip")
@@ -583,9 +583,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Infrastructure.Models.Table", "Table")
                         .WithMany()
-                        .HasForeignKey("TableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TableId");
                 });
 
             modelBuilder.Entity("Infrastructure.Models.InvoiceDiscount", b =>

@@ -26,7 +26,7 @@ namespace Dtos
         public double TotalPrice { get; set; }
         public double PaidAmount { get; set; }
         public double Tip { get; set; }
-        public Guid TableId { get; set; }
+        public Guid? TableId { get; set; }
         public ICollection<ItemForInvoiceDto> Items { get; set; }
         public ICollection<DiscountForInvoiceDto> Discounts { get; set; }
     }
