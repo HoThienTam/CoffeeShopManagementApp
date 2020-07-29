@@ -806,6 +806,18 @@ namespace Mobile.ViewModels
         #region PayCommand
 
         public DelegateCommand<object> PayCommand { get; private set; }
+        private bool OnCanPay(object obj)
+        {
+            if (IsBusy)
+            {
+                return false;
+            }
+            if (InvoiceBindProp == null)
+            {
+                return false;
+            }
+            return true;
+        }
         private async void OnPay(object obj)
         {
             if (IsBusy)
@@ -818,6 +830,12 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                if (!Application.Current.Properties.ContainsKey("session"))
+                {
+                    await PageDialogService.DisplayAlertAsync("Thông báo", "Chưa bắt đầu phiên làm việc!", "Đồng ý");
+                    await NavigationService.NavigateAsync(nameof(SessionPage));
+                    return;
+                }
                 var param = new NavigationParameters();
                 param.Add(nameof(InvoiceBindProp), InvoiceBindProp);
                 await NavigationService.NavigateAsync(nameof(PaymentPage), param);
@@ -835,8 +853,9 @@ namespace Mobile.ViewModels
         [Initialize]
         private void InitPayCommand()
         {
-            PayCommand = new DelegateCommand<object>(OnPay);
-            PayCommand.ObservesCanExecute(() => IsNotBusy);
+            PayCommand = new DelegateCommand<object>(OnPay, OnCanPay);
+            PayCommand.ObservesProperty(() => IsNotBusy);
+            PayCommand.ObservesProperty(() => InvoiceBindProp);
         }
 
         #endregion
