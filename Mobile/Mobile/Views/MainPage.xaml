@@ -72,21 +72,18 @@
                         <!--DELETE BILL-->
                         <mr:Grid 
                             TappedCommand="{Binding DeleteCommand}"
-                            TappedCommandParameter="delete"
                             Grid.Column="3"
-                            IsVisible="True"
+                            IsVisible="{Binding IsNotDeleteModeBindProp}"
                             Padding="{StaticResource CommonThickness}">
-                            <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Trash}" TextColor="#ef5350"/>
+                            <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Trash}" TextColor="Red"/>
                         </mr:Grid>
 
                         <mr:Grid
-                            BackgroundColor="#9CCC65"
                             TappedCommand="{Binding DeleteCommand}"
-                            TappedCommandParameter="finish"
-                            IsVisible="False"
+                            IsVisible="{Binding IsDeleteModeBindProp}"
                             Padding="{StaticResource SmallThickness}"
                             Grid.Column="3">
-                            <Label FontSize="Large" TextColor="{StaticResource ContrastColor}" Text="Hoàn tất"/>
+                            <Label FontSize="Large" TextColor="#9CCC65" Text="Hoàn tất"/>
                         </mr:Grid>
                     </Grid>
 
@@ -133,21 +130,27 @@
 
                                         <tlrInput:RadButton
                                             Grid.Row="3"
+                                            IsVisible="{Binding IsNotDeleteModeBindProp, Source={x:Reference mainPage}}"
                                             BackgroundColor="{StaticResource MainColor}"
                                             TextColor="{StaticResource ContrastColor}"
+                                            Command="{Binding BindingContext.InstantPayCommand, Source={x:Reference mainPage}}"
+                                            CommandParameter="{Binding}"
                                             Text="Thanh toán" />
                                         <tlrInput:RadButton
                                             Grid.Row="3" Grid.Column="1"
+                                            IsVisible="{Binding IsNotDeleteModeBindProp, Source={x:Reference mainPage}}"
                                             BackgroundColor="{StaticResource MainColor}"
                                             TextColor="{StaticResource ContrastColor}"
                                             Command="{Binding BindingContext.SelectInvoiceCommand, Source={x:Reference mainPage}}"
                                             CommandParameter="{Binding}"
                                             Text="Xem hóa đơn" />
                                         <tlrInput:RadButton
-                                            IsVisible="False"
+                                            IsVisible="{Binding BindingContext.IsDeleteModeBindProp, Source={x:Reference mainPage}}"
                                             Grid.Row="3" Grid.ColumnSpan="2"
-                                            BackgroundColor="White"
-                                            TextColor="Red"
+                                            Command="{Binding BindingContext.DeleteInvoiceCommand, Source={x:Reference mainPage}}"
+                                            CommandParameter="{Binding}"
+                                            BackgroundColor="Red"
+                                            TextColor="White"
                                             Text="Xóa" />
                                     </Grid>
                                 </tlrPrimitives:RadBorder>

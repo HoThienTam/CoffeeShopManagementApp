@@ -178,6 +178,26 @@ namespace Mobile.ViewModels
         }
         #endregion
 
+        #region IsDeleteModeBindProp
+        private bool _IsDeleteModeBindProp = false;
+        public bool IsDeleteModeBindProp
+        {
+            get { return _IsDeleteModeBindProp; }
+            set 
+            { 
+                SetProperty(ref _IsDeleteModeBindProp, value);
+                RaisePropertyChanged(nameof(IsNotDeleteModeBindProp));
+            }
+        }
+        public bool IsNotDeleteModeBindProp
+        {
+            get
+            {
+                return !_IsDeleteModeBindProp;
+            }
+        }
+        #endregion
+
         #endregion
 
         #region SelectSettingCommand
@@ -512,7 +532,7 @@ namespace Mobile.ViewModels
                     await NavigationService.NavigateAsync(nameof(SessionPage));
                     return;
                 }
-                if (InvoiceBindProp.TableId == Guid.Empty)
+                if (InvoiceBindProp.Table == null)
                 {
                     await PageDialogService.DisplayAlertAsync("Thông báo", "Chưa chọn bàn!", "Đồng ý");
                     var selectedCategory = ListCategoryBindProp.FirstOrDefault(z => z.IsSelected);
@@ -875,6 +895,16 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                using (var client = new HttpClient())
+                {
+                    HttpResponseMessage response = new HttpResponseMessage();
+                    response = await client.DeleteAsync(Properties.Resources.BaseUrl + "invoices/" + obj.Id);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        ListInvoiceBindProp.Remove(obj);
+                    }
+                }
+
             }
             catch (Exception e)
             {
@@ -932,6 +962,50 @@ namespace Mobile.ViewModels
         }
 
         #endregion
+
+        #region DeleteCommand
+
+        public DelegateCommand<object> DeleteCommand { get; private set; }
+        private async void OnDelete(object obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                if (IsDeleteModeBindProp)
+                {
+                    IsDeleteModeBindProp = false;
+                }
+                else
+                {
+                    IsDeleteModeBindProp = true;
+                }
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitDeleteCommand()
+        {
+            DeleteCommand = new DelegateCommand<object>(OnDelete);
+            DeleteCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
 
         private async void StartSignalRAsync()
         {

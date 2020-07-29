@@ -1,6 +1,7 @@
 ﻿using Dtos;
 using Mobile.Models;
 using Newtonsoft.Json;
+using Prism.Commands;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,6 @@ namespace Mobile.ViewModels
         }
         #endregion
 
-
         #region CurrentInvoiceBindProp
         private InvoiceDto _CurrentInvoiceBindProp;
         public InvoiceDto CurrentInvoiceBindProp
@@ -36,6 +36,43 @@ namespace Mobile.ViewModels
             set { SetProperty(ref _CurrentInvoiceBindProp, value); }
         }
         #endregion
+
+        #region SelectInvoiceCommand
+
+        public DelegateCommand<InvoiceDto> SelectInvoiceCommand { get; private set; }
+        private async void OnSelectInvoice(InvoiceDto obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                CurrentInvoiceBindProp = obj;
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectInvoiceCommand()
+        {
+            SelectInvoiceCommand = new DelegateCommand<InvoiceDto>(OnSelectInvoice);
+            SelectInvoiceCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
 
         public async override void OnNavigatedTo(INavigationParameters parameters)
         {

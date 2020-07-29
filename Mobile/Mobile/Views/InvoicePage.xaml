@@ -47,9 +47,7 @@
                     </SearchBar>-->
 
                     <!--  Danh sách hoạt dộng  -->
-                    <dataControls:RadListView
-                            Grid.Row="1"
-                            ItemsSource="{Binding ListInvoiceBindProp, Mode=OneWay}">
+                    <dataControls:RadListView ItemsSource="{Binding ListInvoiceBindProp, Mode=OneWay}">
 
                         <dataControls:RadListView.GroupDescriptors>
                             <listView:PropertyGroupDescriptor PropertyName="CreatedAt" SortOrder="Descending" />
