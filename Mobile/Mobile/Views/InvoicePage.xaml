@@ -39,7 +39,7 @@
             </Frame>
 
             <Frame VerticalOptions="FillAndExpand" Padding="0">
-                <StackLayout>
+                <ScrollView>
                     <!--<SearchBar Placeholder="Tìm kiếm Số biên lai" Text="{Binding}">
                         <SearchBar.Behaviors>
                             <b:EventToCommandBehavior Command="{Binding Command}" CommandParameter="{Binding}" EventName="TextChanged" />
@@ -50,7 +50,7 @@
                     <dataControls:RadListView ItemsSource="{Binding ListInvoiceBindProp, Mode=OneWay}">
 
                         <dataControls:RadListView.GroupDescriptors>
-                            <listView:PropertyGroupDescriptor PropertyName="CreatedAt" SortOrder="Descending" />
+                            <listView:PropertyGroupDescriptor PropertyName="CreatedDate" SortOrder="Descending" />
                         </dataControls:RadListView.GroupDescriptors>
 
                         <dataControls:RadListView.ItemTemplate>
@@ -68,25 +68,24 @@
                                         <Grid Grid.Column="1">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="*" />
-                                                <RowDefinition Height="*" />
                                             </Grid.RowDefinitions>
 
                                             <Label Text="{Binding TotalPrice, StringFormat='{0:C}', Mode=OneWay}"/>
 
-                                            <Label Grid.Row="1" Text="{Binding InvoiceNumber, Mode=OneWay}"/>
+                                            <!--<Label Grid.Row="1" Text="{Binding InvoiceNumber, Mode=OneWay}"/>-->
                                         </Grid>
 
-                                        <Label Grid.Column="2"  Text="{Binding CreatedAt, Mode=OneWay}"/>
+                                        <Label Grid.Column="2"  Text="{Binding CreatedAt, StringFormat='{}{0:hh\\:mm\\:ss tt}', Mode=OneWay}"/>
                                     </mr:Grid>
                                 </listView:ListViewTemplateCell>
                             </DataTemplate>
                         </dataControls:RadListView.ItemTemplate>
                     </dataControls:RadListView>
-                </StackLayout>
+                </ScrollView>
             </Frame>
         </StackLayout>
         <!--  Frame hang ton trai  -->
-        <Frame VerticalOptions="FillAndExpand" Grid.Column="1" >
+        <Frame VerticalOptions="FillAndExpand" Grid.Column="1">
             <!--  Chi tiết hóa đơn  -->
             <Grid  Style="{StaticResource CommonWrapper}" Margin="{StaticResource CommonThickness}">
 
@@ -243,6 +242,6 @@
             </Grid>
         </Frame>
 
-        <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}" />
+        <tlrPrimitives:RadBusyIndicator Grid.ColumnSpan="2" Style="{StaticResource LoadingIndicator}" />
     </Grid>
 </ContentPage>

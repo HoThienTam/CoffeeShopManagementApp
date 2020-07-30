@@ -88,10 +88,7 @@ namespace Mobile.ViewModels
                         if (response.IsSuccessStatusCode)
                         {
                             var invoices = JsonConvert.DeserializeObject<IEnumerable<InvoiceDto>>(await response.Content.ReadAsStringAsync());
-                            foreach (var invoice in invoices)
-                            {
-                                ListInvoiceBindProp.Add(invoice);
-                            }
+                            ListInvoiceBindProp = new ObservableCollection<InvoiceDto>(invoices);
                         }
                     }
                     CurrentInvoiceBindProp = ListInvoiceBindProp.FirstOrDefault();

@@ -28,6 +28,12 @@ namespace ApplicationCore.InvoiceService
         {
             var invoice = await _context.Invoices.FirstOrDefaultAsync(i => i.Id == request.Invoice.Id);
             _mapper.Map(request.Invoice, invoice);
+
+            if (invoice.Table != null)
+            {
+                invoice.Table.IsBeingUsed = true;
+            }
+
             var invoiceItems = _context.InvoiceItems.Where(i => i.InvoiceId == request.Invoice.Id).ToList();
             foreach (var item in request.Invoice.Items)
             {

@@ -17,6 +17,8 @@ namespace Dtos
         public Guid Id { get; set; }
         public DateTime CreatedAt { get; set; }
 
+        public string CreatedDate { get { return CreatedAt.Date.ToShortDateString(); } }
+
         #region TotalPrice
         private double _TotalPrice;
         public double TotalPrice
