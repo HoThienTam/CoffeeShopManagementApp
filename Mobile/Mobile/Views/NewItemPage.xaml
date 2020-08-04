@@ -6,7 +6,9 @@
              xmlns:tlrPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives"
              mc:Ignorable="d"
              xmlns:lcModels="clr-namespace:Mobile.Models"
-             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures" xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input" xmlns:ffImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures" 
+             xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input" 
+             xmlns:ffImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="Mobile.Views.NewItemPage"
              NavigationPage.HasNavigationBar="False">
     <Grid>
@@ -48,16 +50,18 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <StackLayout Grid.Column="1">
-                        <ffImage:CachedImage
-                        Aspect="Fill"
-                        HeightRequest="120"
-                        DownsampleToViewSize="true"
-                        WidthRequest="150"
-                        BackgroundColor="{StaticResource MainColor}"
-                        HorizontalOptions="Center"
-                        Source="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/275px-A_small_cup_of_coffee.JPG" 
-                        Margin="0"
-                        VerticalOptions="Center"/>
+                        <mr:Grid TappedCommand="{Binding SelectItemImageCommand}">
+                            <ffImage:CachedImage
+                                Aspect="Fill"
+                                HeightRequest="120"
+                                DownsampleToViewSize="true"
+                                WidthRequest="150"
+                                BackgroundColor="{StaticResource MainColor}"
+                                HorizontalOptions="Center"
+                                Source="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/275px-A_small_cup_of_coffee.JPG" 
+                                Margin="0"
+                                VerticalOptions="Center"/>
+                        </mr:Grid>
                         <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="Tên mặt hàng" />

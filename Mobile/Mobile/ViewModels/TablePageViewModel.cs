@@ -123,52 +123,6 @@ namespace Mobile.ViewModels
 
         #endregion
 
-        #region DeleteCommand
-
-        public DelegateCommand<object> DeleteCommand { get; private set; }
-        private async void OnDelete(object obj)
-        {
-            if (IsBusy)
-            {
-                return;
-            }
-
-            IsBusy = true;
-
-            try
-            {
-                // Thuc hien cong viec tai day
-                using (var client = new HttpClient())
-                {
-                    HttpResponseMessage response = new HttpResponseMessage();
-                    response = await client.DeleteAsync(Properties.Resources.BaseUrl + "zones/" + TempZone.Id);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var param = new NavigationParameters();
-                        param.Add(nameof(ZoneBindProp), ZoneBindProp);
-                        await NavigationService.GoBackAsync(param);
-                    }
-                };
-            }
-            catch (Exception e)
-            {
-                await ShowErrorAsync(e);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-
-        }
-        [Initialize]
-        private void InitDeleteCommand()
-        {
-            DeleteCommand = new DelegateCommand<object>(OnDelete);
-            DeleteCommand.ObservesCanExecute(() => IsNotBusy);
-        }
-
-        #endregion
-
         #region DeleteTableCommand
 
         public DelegateCommand<TableDto> DeleteTableCommand { get; private set; }
@@ -205,6 +159,56 @@ namespace Mobile.ViewModels
         {
             DeleteTableCommand = new DelegateCommand<TableDto>(OnDeleteTable);
             DeleteTableCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region DeleteZoneCommand
+
+        public DelegateCommand<object> DeleteZoneCommand { get; private set; }
+        private async void OnDeleteZone(object obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                var ok = await DisplayDeleteAlertAsync();
+                if (ok)
+                {
+                    using (var client = new HttpClient())
+                    {
+                        HttpResponseMessage response = new HttpResponseMessage();
+                        response = await client.DeleteAsync(Properties.Resources.BaseUrl + "zones/" + ZoneBindProp.Id);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var param = new NavigationParameters();
+                            param.Add(nameof(ZoneBindProp), ZoneBindProp);
+                            await NavigationService.GoBackAsync(param);
+                        }
+                    };
+                }
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitDeleteZoneCommand()
+        {
+            DeleteZoneCommand = new DelegateCommand<object>(OnDeleteZone);
+            DeleteZoneCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion

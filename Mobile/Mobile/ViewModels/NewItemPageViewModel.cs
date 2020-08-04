@@ -1,5 +1,6 @@
 ﻿using Dtos;
 using Mobile.Models;
+using Mobile.Views;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Navigation;
@@ -176,6 +177,42 @@ namespace Mobile.ViewModels
         {
             DeleteCommand = new DelegateCommand<object>(OnDelete);
             DeleteCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region SelectItemImageCommand
+
+        public DelegateCommand<object> SelectItemImageCommand { get; private set; }
+        private async void OnSelectItemImage(object obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                await NavigationService.NavigateAsync(nameof(ItemPicturePage));
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectItemImageCommand()
+        {
+            SelectItemImageCommand = new DelegateCommand<object>(OnSelectItemImage);
+            SelectItemImageCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion

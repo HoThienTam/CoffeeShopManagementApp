@@ -28,9 +28,15 @@ namespace ApplicationCore.InvoiceService
         public async Task<InvoiceDto> Handle(AddInvoiceCommand request, CancellationToken cancellationToken)
         {
             var invoice = _mapper.Map<Invoice>(request.Invoice);
-            var session = await _context.Sessions.FirstOrDefaultAsync(s => s.Status == 0);
+            var sessionTask = _context.Sessions.FirstOrDefaultAsync(s => s.Status == 0);
+
+            if (invoice.Table != null)
+            {
+                invoice.Table.IsBeingUsed = true;
+            }
 
             await _context.Invoices.AddAsync(invoice);
+
             foreach (var item in request.Invoice.Items)
             {
                 var invoiceItem = new InvoiceItem
@@ -40,7 +46,6 @@ namespace ApplicationCore.InvoiceService
                     Quantity = item.Quantity,
                     Value = item.Value
                 };
-                await _context.InvoiceItems.AddAsync(invoiceItem);
 
                 foreach (var discount in item.Discounts)
                 {
@@ -53,6 +58,8 @@ namespace ApplicationCore.InvoiceService
                     };
                     await _context.ItemDiscounts.AddAsync(itemDiscount);
                 }
+                await _context.InvoiceItems.AddAsync(invoiceItem);
+
             }
 
             foreach (var discount in request.Invoice.Discounts)
@@ -65,9 +72,15 @@ namespace ApplicationCore.InvoiceService
                 };
                 await _context.InvoiceDiscounts.AddAsync(invoiceDiscount);
             }
-            session.Revenue += invoice.TotalPrice;
-            session.ExpectedMoney += invoice.TotalPrice + invoice.Tip;
-            session.Tip += invoice.Tip;
+
+            if (invoice.IsPaid)
+            {
+                var session = await sessionTask;
+                session.Revenue += invoice.TotalPrice;
+                session.ExpectedMoney += invoice.TotalPrice + invoice.Tip;
+                session.Tip += invoice.Tip;
+            }
+
             if (await _context.SaveChangesAsync() > 0)
             {
                 var invoiceToReturn = await _mediator.Send(new GetInvoiceQuery(invoice.Id));

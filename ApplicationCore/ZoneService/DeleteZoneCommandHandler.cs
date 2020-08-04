@@ -23,12 +23,16 @@ namespace ApplicationCore.ZoneService
 
         public async Task<bool> Handle(DeleteZoneCommand request, CancellationToken cancellationToken)
         {
-            var zoneFromDb = await _context.Zones.FirstOrDefaultAsync(i => i.Id == request.Id);
+            var zoneFromDb = await _context.Zones.Include(c => c.Tables).FirstOrDefaultAsync(i => i.Id == request.Id);
             if (zoneFromDb == null)
             {
                 return false;
             }
             zoneFromDb.IsDeleted = true;
+            foreach (var table in zoneFromDb.Tables)
+            {
+                table.IsDeleted = true;
+            }
             if (await _context.SaveChangesAsync() > 0)
             {
                 return true;

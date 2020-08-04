@@ -17,11 +17,17 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackLayout Spacing="{StaticResource LargeThickness}" Grid.Column="1">
+        <StackLayout VerticalOptions="CenterAndExpand" Spacing="{StaticResource LargeThickness}" Grid.Column="1">
             <Label Style="{StaticResource CommonIcon}" FontFamily="{StaticResource FontAwesomeBrands}" FontSize="Header" Text="{x:Static lcModels:FontAwesomeIcon.Pagelines}"/>
 
             <Label
                 FontAttributes="Bold" FontSize="Large" HorizontalOptions="CenterAndExpand" Text="ĐĂNG NHẬP" />
+            
+            <Label               
+                VerticalOptions="Center"
+                Text="{Binding ErrorBindProp}" 
+                HorizontalOptions="CenterAndExpand"
+                TextColor="Red"/>
 
             <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
                 <tlrInput:RadEntry                      
