@@ -1,5 +1,6 @@
 ﻿using Dtos;
 using Mobile.Models;
+using Mobile.Views;
 using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Navigation;
@@ -107,6 +108,15 @@ namespace Mobile.ViewModels
         }
         #endregion
 
+        #region DateRangeBindProp
+        private DateTimeRange _DateRangeBindProp = null;
+        public DateTimeRange DateRangeBindProp
+        {
+            get { return _DateRangeBindProp; }
+            set { SetProperty(ref _DateRangeBindProp, value); }
+        }
+        #endregion
+
         #region Data
         private ObservableCollection<CategoricalData> _Data = null;
         public ObservableCollection<CategoricalData> Data
@@ -131,15 +141,6 @@ namespace Mobile.ViewModels
         {
             get { return _Interval; }
             set { SetProperty(ref _Interval, value); }
-        }
-        #endregion
-
-        #region DateRangeBindProp
-        private DateTimeRange _DateRangeBindProp = null;
-        public DateTimeRange DateRangeBindProp
-        {
-            get { return _DateRangeBindProp; }
-            set { SetProperty(ref _DateRangeBindProp, value); }
         }
         #endregion
 
@@ -206,7 +207,45 @@ namespace Mobile.ViewModels
 
         #endregion
 
-        
+        #region OpenCalendarCommand
+
+        public DelegateCommand<object> OpenCalendarCommand { get; private set; }
+        private async void OnOpenCalendar(object obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                var param = new NavigationParameters();
+                param.Add(nameof(DateRangeBindProp), DateRangeBindProp);
+                await NavigationService.NavigateAsync(nameof(CalendarPage), param);
+                
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitOpenCalendarCommand()
+        {
+            OpenCalendarCommand = new DelegateCommand<object>(OnOpenCalendar);
+            OpenCalendarCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
         private async void GetOverallData()
         {
             try
@@ -326,12 +365,17 @@ namespace Mobile.ViewModels
             switch (parameters.GetNavigationMode())
             {
                 case NavigationMode.Back:
+                    if (parameters.ContainsKey(nameof(DateRangeBindProp)))
+                    {
+                        DateRangeBindProp = parameters[nameof(DateRangeBindProp)] as DateTimeRange;
+                    }
                     break;
                 case NavigationMode.New:
                     using (var client = new HttpClient())
                     {
                         var invoiceTask = client.GetAsync(Properties.Resources.BaseUrl + "invoices/GetPaidInvoices");
                         DateRangeBindProp = new DateTimeRange(DateTime.Today.Date, DateTime.Today.Date);
+                        SelectedDateBindProp = DateTime.Now;
                         _listInvoice = new List<InvoiceDto>();
                         var response = await invoiceTask;
                         if (response.IsSuccessStatusCode)

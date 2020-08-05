@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mr="clr-namespace:MR.Gestures;assembly=MR.Gestures" 
+             xmlns:tlrInput="clr-namespace:Telerik.XamarinForms.Input;assembly=Telerik.XamarinForms.Input"
+             xmlns:lcModels="clr-namespace:Mobile.Models"
+             mc:Ignorable="d"
+             NavigationPage.HasNavigationBar="False"
+             x:Class="Mobile.Views.CalendarPage">
+    
+    <Grid BackgroundColor="{StaticResource MainColor}" ColumnSpacing="1" RowSpacing="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackLayout Spacing="1">
+            <Frame Padding="0">
+                <!-- Navigation bar -->
+                <Grid Style="{StaticResource CommonWrapper}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <mr:Grid TappedCommand="{Binding GoBackCommand}" >
+                        <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.ArrowLeft}" />
+                    </mr:Grid>
+                    <!--Title-->
+                    <Label Text="Thống kê" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+
+                    <mr:Grid TappedCommand="{Binding SaveCommand}" Grid.Column="2" >
+                        <Label Style="{StaticResource CommonIcon}" TextColor="#2ecc71" Text="{x:Static lcModels:FontAwesomeIcon.CheckCircle}" />
+                    </mr:Grid>
+                </Grid>
+            </Frame>
+            
+            <Frame VerticalOptions="FillAndExpand">
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <tlrInput:RadCalendar
+                          ViewMode="Month"
+                          SelectedRange="{Binding DateRangeBindProp, Mode=TwoWay}"
+                          SelectionMode="Range" />
+
+                    <StackLayout Grid.Column="1" Margin="10,20">
+                        <Button 
+                                Command="{Binding SelectTimeCommand}"
+                                BackgroundColor="{StaticResource MainColor}"
+                                CommandParameter="today"
+                                Text="Hôm nay"/>
+                        <Button 
+                                Command="{Binding SelectTimeCommand}"
+                                BackgroundColor="{StaticResource MainColor}"
+                                CommandParameter="yesterday"
+                                Text="Hôm qua"/>
+                        <Button 
+                                Command="{Binding SelectTimeCommand}"
+                                BackgroundColor="{StaticResource MainColor}"
+                                CommandParameter="thisweek"
+                                Text="Tuần này"/>
+                        <Button 
+                                Command="{Binding SelectTimeCommand}"
+                                BackgroundColor="{StaticResource MainColor}"
+                                CommandParameter="lastweek"
+                                Text="Tuần trước"/>
+                        <Button
+                                Command="{Binding SelectTimeCommand}"
+                                BackgroundColor="{StaticResource MainColor}"
+                                CommandParameter="thismonth"
+                                Text="Tháng này"/>
+                        <Button
+                                Command="{Binding SelectTimeCommand}"
+                                BackgroundColor="{StaticResource MainColor}"
+                                CommandParameter="lastmonth"                                  
+                                Text="Tháng trước"/>
+                    </StackLayout>
+                </Grid>
+            </Frame>
+        </StackLayout>
+    </Grid>
+</ContentPage>
