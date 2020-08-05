@@ -61,6 +61,7 @@ namespace Mobile
             containerRegistry.RegisterForNavigation<LoginPage, LoginPageViewModel>();
             containerRegistry.RegisterForNavigation<CategoryPage, CategoryPageViewModel>();
             containerRegistry.RegisterForNavigation<ItemPage, ItemPageViewModel>();
+            containerRegistry.RegisterForNavigation<ItemPicturePage, ItemPicturePageViewModel>();
             containerRegistry.RegisterForNavigation<DiscountPage, DiscountPageViewModel>();
             containerRegistry.RegisterForNavigation<ZonePage, ZonePageViewModel>();
             containerRegistry.RegisterForNavigation<TablePage, TablePageViewModel>();

@@ -67,7 +67,13 @@ namespace Mobile.ViewModels
                     {
                         Application.Current.Properties["token"] = token;
                         await Application.Current.SavePropertiesAsync();
-                        await NavigationService.NavigateAsync(nameof(MainPage));
+                        await NavigationService.NavigateAsync("/MainPage");
+                    }
+                    else
+                    {
+                        ErrorBindProp = "Tài khoản hoặc mật khẩu không chính xác!";
+                        UsernameBindProp = string.Empty;
+                        PasswordBindProp = string.Empty;
                     }
                 }
             }
@@ -88,6 +94,15 @@ namespace Mobile.ViewModels
             LoginCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
+        #endregion
+
+        #region ErrorBindProp
+        private string _ErrorBindProp;
+        public string ErrorBindProp
+        {
+            get { return _ErrorBindProp; }
+            set { SetProperty(ref _ErrorBindProp, value); }
+        }
         #endregion
 
     }

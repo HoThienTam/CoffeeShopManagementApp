@@ -28,6 +28,7 @@ namespace ApplicationCore.InvoiceService
         {
             var invoice = await _context.Invoices.FirstOrDefaultAsync(i => i.Id == request.Invoice.Id);
             _mapper.Map(request.Invoice, invoice);
+            var sessionTask = _context.Sessions.FirstOrDefaultAsync(s => s.Status == 0);
 
             if (invoice.Table != null)
             {
@@ -46,7 +47,6 @@ namespace ApplicationCore.InvoiceService
                         Quantity = item.Quantity,
                         Value = item.Value
                     };
-                    await _context.InvoiceItems.AddAsync(invoiceItem);
 
                     foreach (var discount in item.Discounts)
                     {
@@ -59,6 +59,7 @@ namespace ApplicationCore.InvoiceService
                         };
                         await _context.ItemDiscounts.AddAsync(itemDiscount);
                     }
+                    await _context.InvoiceItems.AddAsync(invoiceItem);
                 }
             }
 
@@ -75,6 +76,15 @@ namespace ApplicationCore.InvoiceService
                     await _context.InvoiceDiscounts.AddAsync(invoiceDiscount);
                 }
             }
+
+            if (invoice.IsPaid)
+            {
+                var session = await sessionTask;
+                session.Revenue += invoice.TotalPrice;
+                session.ExpectedMoney += invoice.TotalPrice + invoice.Tip;
+                session.Tip += invoice.Tip;
+            }
+
             if (await _context.SaveChangesAsync() > 0)
             {
 

@@ -13,5 +13,15 @@ namespace Dtos
             set { SetProperty(ref _Name, value); }
         }
         #endregion
+
+        #region IsBeingUsed
+        private bool _IsBeingUsed;
+        public bool IsBeingUsed
+        {
+            get { return _IsBeingUsed; }
+            set { SetProperty(ref _IsBeingUsed, value); }
+        }
+        #endregion
+
     }
 }

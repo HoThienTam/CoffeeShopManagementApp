@@ -187,7 +187,6 @@ namespace Mobile.ViewModels
                         }
                         if (response.IsSuccessStatusCode)
                         {
-
                             var session = Application.Current.Properties["session"] as SessionDto;
                             session.Revenue += InvoiceBindProp.TotalPrice;
                             session.Tip += TipBindProp;
