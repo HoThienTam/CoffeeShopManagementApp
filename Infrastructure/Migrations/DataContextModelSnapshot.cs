@@ -417,6 +417,9 @@ namespace Infrastructure.Migrations
                     b.Property<double>("InitMoney")
                         .HasColumnType("float");
 
+                    b.Property<bool>("IsClosed")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -436,9 +439,6 @@ namespace Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.Property<double>("Tip")
                         .HasColumnType("float");

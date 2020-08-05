@@ -13,6 +13,6 @@ namespace Infrastructure.Models
         public double ExpectedMoney { get; set; }
         public double RealMoney { get; set; }
         public double Difference { get; set; }
-        public int Status { get; set; }
+        public bool IsClosed { get; set; }
     }
 }

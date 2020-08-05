@@ -28,7 +28,7 @@ namespace ApplicationCore.InvoiceService
         {
             var invoice = await _context.Invoices.FirstOrDefaultAsync(i => i.Id == request.Invoice.Id);
             _mapper.Map(request.Invoice, invoice);
-            var sessionTask = _context.Sessions.FirstOrDefaultAsync(s => s.Status == 0);
+            var session = await _context.Sessions.FirstOrDefaultAsync(s => !s.IsClosed);
 
             if (invoice.Table != null)
             {
@@ -79,7 +79,6 @@ namespace ApplicationCore.InvoiceService
 
             if (invoice.IsPaid)
             {
-                var session = await sessionTask;
                 session.Revenue += invoice.TotalPrice;
                 session.ExpectedMoney += invoice.TotalPrice + invoice.Tip;
                 session.Tip += invoice.Tip;
@@ -90,6 +89,7 @@ namespace ApplicationCore.InvoiceService
 
                 return true;
             }
+
             return false;
         }
     }

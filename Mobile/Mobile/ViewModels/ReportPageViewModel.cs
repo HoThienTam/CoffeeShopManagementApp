@@ -368,6 +368,14 @@ namespace Mobile.ViewModels
                     if (parameters.ContainsKey(nameof(DateRangeBindProp)))
                     {
                         DateRangeBindProp = parameters[nameof(DateRangeBindProp)] as DateTimeRange;
+                        if (OverallVisibleBindProp == true)
+                        {
+                            GetOverallData();
+                        }
+                        else
+                        {
+                            GetTopSeller();
+                        }
                     }
                     break;
                 case NavigationMode.New:

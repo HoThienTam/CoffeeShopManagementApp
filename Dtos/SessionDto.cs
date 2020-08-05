@@ -60,15 +60,6 @@ namespace Dtos
 
         public double RealMoney { get; set; }
         public double Difference { get; set; }
-
-        #region Status
-        private int _Status;
-        public int Status
-        {
-            get { return _Status; }
-            set { SetProperty(ref _Status, value); }
-        }
-        #endregion
-
+        public bool IsClosed { get; set; }
     }
 }

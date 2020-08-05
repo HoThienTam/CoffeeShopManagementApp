@@ -940,6 +940,12 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                if (!Application.Current.Properties.ContainsKey("session"))
+                {
+                    await PageDialogService.DisplayAlertAsync("Thông báo", "Chưa bắt đầu phiên làm việc!", "Đồng ý");
+                    await NavigationService.NavigateAsync(nameof(SessionPage));
+                    return;
+                }
                 var param = new NavigationParameters();
                 param.Add(nameof(InvoiceBindProp), obj);
                 await NavigationService.NavigateAsync(nameof(PaymentPage), param);
@@ -1005,7 +1011,6 @@ namespace Mobile.ViewModels
         }
 
         #endregion
-
 
         private async void StartSignalRAsync()
         {

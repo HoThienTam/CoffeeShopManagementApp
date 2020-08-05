@@ -50,5 +50,18 @@ namespace Api.Controllers
                 return BadRequest("Không thể tạo mới!");
             }
         }
+        [HttpPut]
+        public async Task<IActionResult> EndSession([FromBody] double initMoney)
+        {
+            var session = await _mediator.Send(new EndSessionCommand(initMoney));
+            if (session != null)
+            {
+                return Ok(session);
+            }
+            else
+            {
+                return BadRequest("Không thể đóng phiên làm việc!");
+            }
+        }
     }
 }

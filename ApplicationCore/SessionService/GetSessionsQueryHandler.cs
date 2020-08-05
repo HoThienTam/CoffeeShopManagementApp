@@ -24,7 +24,7 @@ namespace ApplicationCore.SessionService
         }
         public async Task<IEnumerable<SessionDto>> Handle(GetSessionsQuery request, CancellationToken cancellationToken)
         {
-            var sessions = _context.Sessions.Where(c => c.Status != 0).AsNoTracking().OrderBy(c => c.ClosedAt);
+            var sessions = _context.Sessions.Where(c => c.IsClosed).AsNoTracking().OrderBy(c => c.ClosedAt);
             var sessionDtos = _mapper.Map<IEnumerable<SessionDto>>(sessions);
             return sessionDtos;
         }

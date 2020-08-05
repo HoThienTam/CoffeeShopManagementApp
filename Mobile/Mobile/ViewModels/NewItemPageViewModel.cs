@@ -223,6 +223,10 @@ namespace Mobile.ViewModels
             switch (parameters.GetNavigationMode())
             {
                 case NavigationMode.Back:
+                    if (parameters.ContainsKey("Image"))
+                    {
+                        ItemBindProp.Image = parameters["Image"] as string;
+                    }
                     break;
                 case NavigationMode.New:
                     TempItem = new ItemDto(ItemBindProp);

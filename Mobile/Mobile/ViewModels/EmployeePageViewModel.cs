@@ -169,6 +169,7 @@ namespace Mobile.ViewModels
                 if (ok)
                 {
                     ListEmployeeBindProp.Remove(EmployeeBindProp);
+                    EmployeeBindProp = null;
                 }
             }
             catch (Exception e)

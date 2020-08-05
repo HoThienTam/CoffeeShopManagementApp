@@ -43,6 +43,8 @@
                     </Grid.ColumnDefinitions>
                     <tlrInput:RadCalendar
                           ViewMode="Month"
+                          MinDate="2018/10/15"
+                          MaxDate="{Binding TodayBindProp}"
                           SelectedRange="{Binding DateRangeBindProp, Mode=TwoWay}"
                           SelectionMode="Range" />
 

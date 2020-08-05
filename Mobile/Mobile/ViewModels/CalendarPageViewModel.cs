@@ -22,18 +22,28 @@ namespace Mobile.ViewModels
         private DateTime _lastMonthEnd;
         public CalendarPageViewModel(InitParams initParams) : base(initParams)
         {
-            DateTime baseDate = DateTime.Today;
-            _today = baseDate;
-            _yesterday = baseDate.AddDays(-1);
-            _thisWeekStart = baseDate.AddDays(-(int)baseDate.DayOfWeek);
+            TodayBindProp = DateTime.Today;
+            _today = TodayBindProp;
+            _yesterday = TodayBindProp.AddDays(-1);
+            _thisWeekStart = TodayBindProp.AddDays(-(int)TodayBindProp.DayOfWeek + 1);
             _thisWeekEnd = _thisWeekStart.AddDays(7).AddSeconds(-1);
             _lastWeekStart = _thisWeekStart.AddDays(-7);
             _lastWeekEnd = _thisWeekStart.AddSeconds(-1);
-            _thisMonthStart = baseDate.AddDays(1 - baseDate.Day);
+            _thisMonthStart = TodayBindProp.AddDays(1 - TodayBindProp.Day);
             _thisMonthEnd = _thisMonthStart.AddMonths(1).AddSeconds(-1);
             _lastMonthStart = _thisMonthStart.AddMonths(-1);
             _lastMonthEnd = _thisMonthStart.AddSeconds(-1);
         }
+
+
+        #region TodayBindProp
+        private DateTime _TodayBindProp;
+        public DateTime TodayBindProp
+        {
+            get { return _TodayBindProp; }
+            set { SetProperty(ref _TodayBindProp, value); }
+        }
+        #endregion
 
         #region DateRangeBindProp
         private DateTimeRange _DateRangeBindProp = null;
@@ -68,7 +78,7 @@ namespace Mobile.ViewModels
                         DateRangeBindProp = new DateTimeRange(_yesterday.Date, _yesterday.Date);
                         break;
                     case "thisweek":
-                        DateRangeBindProp = new DateTimeRange(_thisWeekStart.Date, _lastWeekEnd.Date);
+                        DateRangeBindProp = new DateTimeRange(_thisWeekStart.Date, _thisWeekEnd.Date);
                         break;
                     case "lastweek":
                         DateRangeBindProp = new DateTimeRange(_lastWeekStart.Date, _lastWeekEnd.Date);
@@ -101,10 +111,11 @@ namespace Mobile.ViewModels
 
         #endregion
 
+
         #region SaveCommand
 
-        public DelegateCommand<string> SaveCommand { get; private set; }
-        private async void OnSave(string time)
+        public DelegateCommand<object> SaveCommand { get; private set; }
+        private async void OnSave(object obj)
         {
             if (IsBusy)
             {
@@ -119,7 +130,6 @@ namespace Mobile.ViewModels
                 var param = new NavigationParameters();
                 param.Add(nameof(DateRangeBindProp), DateRangeBindProp);
                 await NavigationService.GoBackAsync(param);
-
             }
             catch (Exception e)
             {
@@ -134,10 +144,11 @@ namespace Mobile.ViewModels
         [Initialize]
         private void InitSaveCommand()
         {
-            SaveCommand = new DelegateCommand<string>(OnSave);
+            SaveCommand = new DelegateCommand<object>(OnSave);
             SaveCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion
+
     }
 }

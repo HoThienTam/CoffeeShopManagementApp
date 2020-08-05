@@ -61,12 +61,6 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                ItemForInvoiceBindProp.SubItems.Add(new ItemDto
-                {
-                    Id = ItemBindProp.Id,
-                    Name = "Đơn giá",
-                    Price = ItemBindProp.Price
-                });
                 ItemForInvoiceBindProp.Value += ItemBindProp.Price * ItemForInvoiceBindProp.Quantity;
 
                 ListDiscountBindProp.Where(d => d.IsSelected).OrderBy(d => d.IsPercentage).ForEach(discount =>

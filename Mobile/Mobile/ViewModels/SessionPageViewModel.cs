@@ -18,8 +18,7 @@ namespace Mobile.ViewModels
     {
         public SessionPageViewModel(InitParams initParams) : base(initParams)
         {
-            ListOpenSessionBindProp = new ObservableCollection<SessionDto>();
-            ListClosedSessionBindProp = new ObservableCollection<SessionDto>(); 
+            ListClosedSessionBindProp = new ObservableCollection<SessionDto>();
             SideBarBindProp = new ObservableCollection<SelectionModel>
             {
                 new SelectionModel{ Name = "Phiên làm việc của két tiền", IsSelected = true },
@@ -27,6 +26,15 @@ namespace Mobile.ViewModels
             };
             Title = "Phiên làm việc của két tiền";
         }
+
+        #region IsOpenPopupBindProp
+        private bool _IsOpenPopupBindProp;
+        public bool IsOpenPopupBindProp
+        {
+            get { return _IsOpenPopupBindProp; }
+            set { SetProperty(ref _IsOpenPopupBindProp, value); }
+        }
+        #endregion
 
         #region SideBarBindProp
         private ObservableCollection<SelectionModel> _SideBarBindProp;
@@ -82,12 +90,12 @@ namespace Mobile.ViewModels
         }
         #endregion
 
-        #region ListOpenSessionBindProp
-        private ObservableCollection<SessionDto> _ListOpenSessionBindProp;
-        public ObservableCollection<SessionDto> ListOpenSessionBindProp
+        #region EndMoneyBindProp
+        private double _EndMoneyBindProp = 0;
+        public double EndMoneyBindProp
         {
-            get { return _ListOpenSessionBindProp; }
-            set { SetProperty(ref _ListOpenSessionBindProp, value); }
+            get { return _EndMoneyBindProp; }
+            set { SetProperty(ref _EndMoneyBindProp, value); }
         }
         #endregion
 
@@ -227,7 +235,23 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                Application.Current.Properties.Remove("Session");
+                var json = JsonConvert.SerializeObject(EndMoneyBindProp);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                using (var client = new HttpClient())
+                {
+                    var response = await client.PutAsync(Properties.Resources.BaseUrl + "sessions", content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var session = JsonConvert.DeserializeObject<SessionDto>(await response.Content.ReadAsStringAsync());
+                        SessionBindProp = null;
+                        ListClosedSessionBindProp.Add(session);
+                        Application.Current.Properties.Remove("session");
+                        await Application.Current.SavePropertiesAsync();
+                        SessionDetailVisibleBindProp = false;
+                        SessionVisibleBindProp = true;
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -244,6 +268,49 @@ namespace Mobile.ViewModels
         {
             EndSessionCommand = new DelegateCommand<object>(OnEndSession);
             EndSessionCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region OpenPopupCommand
+
+        public DelegateCommand<object> OpenPopupCommand { get; private set; }
+        private async void OnOpenPopup(object obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                if (IsOpenPopupBindProp == true)
+                {
+                    IsOpenPopupBindProp = false;
+                }
+                else
+                {
+                    IsOpenPopupBindProp = true;
+                }
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitOpenPopupCommand()
+        {
+            OpenPopupCommand = new DelegateCommand<object>(OnOpenPopup);
+            OpenPopupCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion
@@ -271,15 +338,7 @@ namespace Mobile.ViewModels
                             var sessions = JsonConvert.DeserializeObject<IEnumerable<SessionDto>>(await response.Content.ReadAsStringAsync());
                             foreach (var session in sessions)
                             {
-                                switch (session.Status)
-                                {
-                                    case (int)SessionStatus.Open:
-                                        ListOpenSessionBindProp.Add(session);
-                                        break;
-                                    case (int)SessionStatus.Closed:
-                                        ListClosedSessionBindProp.Add(session);
-                                        break;
-                                }
+                                ListClosedSessionBindProp.Add(session);
                             }
                         }
                     }

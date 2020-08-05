@@ -19,7 +19,7 @@
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
+
         <StackLayout Spacing="1">
             <Frame Padding="0">
                 <!-- Navigation bar -->
@@ -63,189 +63,122 @@
             </Frame>
         </StackLayout>
         <Grid Grid.Column="1">
-        <StackLayout Spacing="1">
-            <Frame Padding="0">
-                <!-- Navigation bar -->
-                <Grid Style="{StaticResource CommonWrapper}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <!--Title-->
-                    <Label Text="{Binding Title}" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
-                </Grid>
-            </Frame>
-            <Frame VerticalOptions="FillAndExpand" IsVisible="{Binding SessionVisibleBindProp}">
-                
-                <ScrollView Padding="{StaticResource CommonThickness}">
-                    <StackLayout>
-                        <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                            <StackLayout Orientation="Horizontal">
-                                <Label Margin="{StaticResource CommonThickness}" Text="Tiền mặt đầu kỳ"/>
+            <StackLayout Spacing="1">
+                <Frame Padding="0">
+                    <!-- Navigation bar -->
+                    <Grid Style="{StaticResource CommonWrapper}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <!--Title-->
+                        <Label Text="{Binding Title}" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                    </Grid>
+                </Frame>
+                <Frame VerticalOptions="FillAndExpand" IsVisible="{Binding SessionVisibleBindProp}">
 
-                                <tlrInput:RadNumericInput
+                    <ScrollView Padding="{StaticResource CommonThickness}">
+                        <StackLayout>
+                            <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Margin="{StaticResource CommonThickness}" Text="Tiền mặt đầu kỳ"/>
+
+                                    <tlrInput:RadNumericInput
                                     HorizontalOptions="FillAndExpand"                                  
                                     ControlTemplate="{StaticResource CustomNumericInput}"
                                     Minimum="0" StringFormat="{}{0:C}"                                
                                     Value="{Binding InitMoneyBindProp, Mode=TwoWay, TargetNullValue=0}" />
-                            </StackLayout>
-                        </tlrPrimitives:RadBorder>
+                                </StackLayout>
+                            </tlrPrimitives:RadBorder>
 
-                        <Button
+                            <Button
                             HorizontalOptions="Fill"
                             Text="Bắt đầu thu tiền"
                             Command="{Binding StartSessionCommand, Mode=OneWay}" />
-                    </StackLayout>
-                </ScrollView>
-            </Frame>
+                        </StackLayout>
+                    </ScrollView>
+                </Frame>
 
-            <Frame VerticalOptions="FillAndExpand" IsVisible="{Binding SessionDetailVisibleBindProp}">
-                <ScrollView Padding="{StaticResource CommonThickness}">
-                    <StackLayout Margin="50,10" Spacing="0">
+                <Frame VerticalOptions="FillAndExpand" IsVisible="{Binding SessionDetailVisibleBindProp}">
+                    <ScrollView Padding="{StaticResource CommonThickness}">
+                        <StackLayout Margin="50,10" Spacing="0">
 
-                        <!--  Thoi gian bat dau  -->
-                        <Grid>
-                            <BoxView Style="{StaticResource CommonTitleRule}" />
-                            <Label Text="{Binding SessionBindProp.CreatedAt}" Style="{StaticResource CommonTitle}" />
-                        </Grid>
-                        <!--  Tien mat dau ky  -->
-                        <StackLayout Orientation="Horizontal">
-                            <Label Margin="{StaticResource CommonThickness}" Text="Tiền mặt đầu kỳ"/>
+                            <!--  Thoi gian bat dau  -->
+                            <Grid>
+                                <BoxView Style="{StaticResource CommonTitleRule}" />
+                                <Label Text="{Binding SessionBindProp.CreatedAt}" Style="{StaticResource CommonTitle}" />
+                            </Grid>
+                            <!--  Tien mat dau ky  -->
+                            <StackLayout Orientation="Horizontal">
+                                <Label Margin="{StaticResource CommonThickness}" Text="Tiền mặt đầu kỳ"/>
 
-                            <Label  
+                                <Label  
                                 HorizontalOptions="FillAndExpand"
                                 Text="{Binding SessionBindProp.InitMoney, StringFormat='{0:C}'}"
                                 HorizontalTextAlignment="End"/>
-                        </StackLayout>
-                        <BoxView Style="{StaticResource CommonTitleRule}" />
-                        <!--  Doanh thu tien mat  -->
-                        <StackLayout Orientation="Horizontal">
-                            <Label Margin="{StaticResource CommonThickness}" Text="Doanh thu tiền mặt" />
+                            </StackLayout>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+                            <!--  Doanh thu tien mat  -->
+                            <StackLayout Orientation="Horizontal">
+                                <Label Margin="{StaticResource CommonThickness}" Text="Doanh thu tiền mặt" />
 
-                            <Label
+                                <Label
                                 HorizontalOptions="FillAndExpand"
                                 Text="{Binding SessionBindProp.Revenue, StringFormat='{0:C}'}"
                                 HorizontalTextAlignment="End"/>
-                        </StackLayout>
-                        <BoxView Style="{StaticResource CommonTitleRule}" />
-                        <!--  Thu tien/tra tien  -->
-                        <mr:StackLayout TappedCommand="{Binding BindingContext.ExpandCommand}" Orientation="Horizontal">
-                            
-                            <Label Margin="{StaticResource CommonThickness}" Text="Thu tiền/Trả tiền"/>
+                            </StackLayout>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+                            <!--  Thu tien/tra tien  -->
+                            <mr:StackLayout TappedCommand="{Binding BindingContext.ExpandCommand}" Orientation="Horizontal">
 
-                            <Label Grid.Column="1" Text="{x:Static lcModels:FontAwesomeIcon.AngleUp}" Style="{StaticResource CommonIcon}">
-                                <Label.Triggers>
-                                    <DataTrigger Binding="{Binding CollectingAndSpendingVisibleBindProp, Mode=OneWay}" TargetType="Label" Value="true">
-                                        <Setter Property="Text" Value="{x:Static lcModels:FontAwesomeIcon.AngleDown}" />
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
+                                <Label Margin="{StaticResource CommonThickness}" Text="Thu tiền/Trả tiền"/>
 
-                            <Label
+                                <Label Grid.Column="1" Text="{x:Static lcModels:FontAwesomeIcon.AngleUp}" Style="{StaticResource CommonIcon}">
+                                    <Label.Triggers>
+                                        <DataTrigger Binding="{Binding CollectingAndSpendingVisibleBindProp, Mode=OneWay}" TargetType="Label" Value="true">
+                                            <Setter Property="Text" Value="{x:Static lcModels:FontAwesomeIcon.AngleDown}" />
+                                        </DataTrigger>
+                                    </Label.Triggers>
+                                </Label>
+
+                                <Label
                                 HorizontalOptions="FillAndExpand"
                                 Text="{Binding CollectingAndSpending, StringFormat='{0:C}'}"
                                 HorizontalTextAlignment="End"/>
-                        </mr:StackLayout>
-                        <BoxView Style="{StaticResource CommonTitleRule}" />
-                        <!--  List thu tien/tra tien  -->
-                        <StackLayout BindableLayout.ItemsSource="{Binding ColectingAndSpendingBindProp, Mode=OneWay}">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate>
-                                    <StackLayout Spacing="0"  BackgroundColor="#e6ffff" Orientation="Horizontal">
-                                        <Label Margin="{StaticResource CommonThickness}" Text="{Binding Note}"/>
+                            </mr:StackLayout>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+                            <!--  Tien tip  -->
+                            <StackLayout Orientation="Horizontal">
+                                <Label Margin="{StaticResource CommonThickness}" Text="Tiền tip" />
 
-                                            <Label
-                                                HorizontalOptions="End"
-                                                Text="{Binding Money, StringFormat='{0:C}'}"
-                                                HorizontalTextAlignment="End"/>
-                                        <BoxView Style="{StaticResource CommonTitleRule}" />
-                                    </StackLayout>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
-                        </StackLayout>
-                        <!--  Tien tip  -->
-                        <StackLayout Orientation="Horizontal">
-                            <Label Margin="{StaticResource CommonThickness}" Text="Tiền tip" />
-
-                            <Label
+                                <Label
                                 HorizontalOptions="FillAndExpand"
                                 Text="{Binding SessionBindProp.Tip, StringFormat='{0:C}'}"
                                 HorizontalTextAlignment="End"/>
-                        </StackLayout>
-                        <BoxView Style="{StaticResource CommonTitleRule}" />
-                        <!--  So tien du kien trong ket  -->
-                        <StackLayout Orientation="Horizontal">
-                            <Label Margin="{StaticResource CommonThickness}" Text="Số tiền dự kiến trong két"/>
+                            </StackLayout>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+                            <!--  So tien du kien trong ket  -->
+                            <StackLayout Orientation="Horizontal">
+                                <Label Margin="{StaticResource CommonThickness}" Text="Số tiền dự kiến trong két"/>
 
-                            <Label
+                                <Label
                                 HorizontalOptions="FillAndExpand"
                                 Text="{Binding SessionBindProp.ExpectedMoney, StringFormat='{0:C}'}"
                                 HorizontalTextAlignment="End"/>
-                        </StackLayout>
-                        <BoxView Style="{StaticResource CommonTitleRule}" />
-                        <!--  Button thu tien/tra tien  -->
-                        <tlrPrimitives:RadBorder
-                                Margin="{StaticResource CommonVerticalThickness}"
-                                Style="{x:StaticResource CommonBorder}">
-                            <mr:StackLayout Orientation="Horizontal" TappedCommand="{Binding BindingContext.CollectingOrSpendingCommand}">
-                                <Label Margin="{StaticResource CommonThickness}" Text="Thu tiền/Trả tiền" HorizontalOptions="FillAndExpand"/>
-
-                                <Label
-                                    Margin="{StaticResource CommonThickness}"
-                                    HorizontalOptions="End"
-                                    Text="{x:Static lcModels:FontAwesomeIcon.AngleRight}"
-                                    Style="{StaticResource CommonIcon}" />
-                            </mr:StackLayout>
-                        </tlrPrimitives:RadBorder>
-                        <!--  Button ket thuc thu tien  -->
-                        <Button
+                            </StackLayout>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+                            <!--  Button ket thuc thu tien  -->
+                            <Button
                             HorizontalOptions="Fill"
                             Text="Kết thúc thu tiền"
-                            Command="{Binding EndSessionCommand}" />
-                    </StackLayout>
-                </ScrollView>
-            </Frame>
-
-            <Frame VerticalOptions="FillAndExpand" IsVisible="{Binding SessionHistoryVisibleBindProp}">
-                <ScrollView Padding="{StaticResource CommonThickness}" IsVisible="{Binding LichSuVisibleBindProp, Mode=OneWay}">
-                    <StackLayout Margin="50,10" Spacing="0">
-                        <Grid>
-                            <BoxView Style="{StaticResource CommonTitleRule}" />
-                            <Label Text="Két tiền mở" Style="{StaticResource CommonTitle}" />
-                        </Grid>
-
-                        <StackLayout BindableLayout.ItemsSource="{Binding ListOpenSessionBindProp, Mode=OneWay}">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate>
-                                    <tlrPrimitives:RadBorder Margin="0" Style="{StaticResource CommonBorder}">
-                                        <mr:StackLayout 
-                                            Orientation="Horizontal"
-                                            TappedCommand="{Binding BindingContext.SelectSessionCommand, Source={x:Reference sessionPage}, Mode=OneWay}" 
-                                            TappedCommandParameter="{Binding}">
-                                            <Label Text="{Binding ClosedAt}"/>
-
-                                            <Label
-                                                HorizontalOptions="End"
-                                                Text="{x:Static lcModels:FontAwesomeIcon.AngleRight}"
-                                                Style="{StaticResource CommonIcon}" />
-
-                                        </mr:StackLayout>
-                                    </tlrPrimitives:RadBorder>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
+                            Command="{Binding OpenPopupCommand}" />
                         </StackLayout>
+                    </ScrollView>
+                </Frame>
 
-                        <Label
-                                Margin="{StaticResource CommonThickness}"
-                                Text="Nhập số tiền thực tế trong két để đóng két"
-                                FontSize="Small"
-                                HorizontalTextAlignment="Center" />
-
-                        <Grid>
-                            <BoxView Style="{StaticResource CommonTitleRule}" />
-                            <Label Text="Lần thu tiền trước" Style="{StaticResource CommonTitle}" />
-                        </Grid>
+                <Frame VerticalOptions="FillAndExpand" IsVisible="{Binding SessionHistoryVisibleBindProp}">
+                    <ScrollView Padding="{StaticResource CommonThickness}" IsVisible="{Binding LichSuVisibleBindProp, Mode=OneWay}">
 
                         <StackLayout BindableLayout.ItemsSource="{Binding ListClosedSessionBindProp, Mode=OneWay}">
                             <BindableLayout.ItemTemplate>
@@ -260,7 +193,8 @@
 
                                             <Label
                                                 Margin="{StaticResource CommonThickness}"
-                                                HorizontalOptions="End"
+                                                HorizontalOptions="FillAndExpand"
+                                                HorizontalTextAlignment="End"
                                                 Text="{Binding Difference, StringFormat='Chênh lệch {0:C}'}"/>
 
                                             <Label
@@ -273,14 +207,62 @@
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
-                    </StackLayout>
-                </ScrollView>
+                    </ScrollView>
 
-            </Frame>
+                </Frame>
 
-        </StackLayout>
+            </StackLayout>
             <tlrPrimitives:RadBusyIndicator Style="{StaticResource LoadingIndicator}"/>
 
         </Grid>
+
+        <tlrPrimitives:RadPopup.Popup>
+            <tlrPrimitives:RadPopup
+                    Placement="Center"
+                    OutsideBackgroundColor="#6F000000"
+                    IsOpen="{Binding IsOpenPopupBindProp}"
+                    IsModal="True">
+                <tlrPrimitives:RadBorder
+                        Style="{StaticResource CommonBorder}" 
+                        BackgroundColor="White"
+                        Margin="{StaticResource CommonThickness}">
+                    <StackLayout>
+                        <!-- Navigation bar -->
+                        <Grid Style="{StaticResource CommonWrapper}" WidthRequest="300">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <mr:Grid TappedCommand="{Binding OpenPopupCommand}" >
+                                <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Times}" />
+                            </mr:Grid>
+                            <!--Title-->
+                            <Label Text="Đóng két tiền" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
+                        </Grid>
+
+                        <BoxView BackgroundColor="{StaticResource MainColor}" HeightRequest="1"/>
+
+                        <StackLayout Margin="{StaticResource CommonThickness}">
+                            <Label Margin="{StaticResource CommonThickness}" Text="Nhập số tiền thực tế để chốt phiên"/>
+
+                            <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
+
+                                <tlrInput:RadNumericInput
+                                            HorizontalOptions="FillAndExpand"                                  
+                                            ControlTemplate="{StaticResource CustomNumericInput}"
+                                            Minimum="0" StringFormat="{}{0:C}"                                
+                                            Value="{Binding EndMoneyBindProp, Mode=TwoWay, TargetNullValue=0}" />
+                            </tlrPrimitives:RadBorder>
+
+                            <Button
+                                    HorizontalOptions="Fill"
+                                    Text="Kết thúc thu tiền"
+                                    Command="{Binding EndSessionCommand, Mode=OneWay}" />
+                        </StackLayout>
+                    </StackLayout>
+                </tlrPrimitives:RadBorder>
+            </tlrPrimitives:RadPopup>
+        </tlrPrimitives:RadPopup.Popup>
     </Grid>
 </ContentPage>

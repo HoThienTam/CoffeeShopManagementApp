@@ -24,7 +24,7 @@ namespace ApplicationCore.SessionService
         }
         public async Task<SessionDto> Handle(GetCurrentSessionQuery request, CancellationToken cancellationToken)
         {
-            var session = await _context.Sessions.AsNoTracking().FirstOrDefaultAsync(s => s.Status == 0);
+            var session = await _context.Sessions.AsNoTracking().FirstOrDefaultAsync(s => !s.IsClosed);
 
             if (session == null)
             {

@@ -28,7 +28,7 @@ namespace ApplicationCore.InvoiceService
         public async Task<InvoiceDto> Handle(AddInvoiceCommand request, CancellationToken cancellationToken)
         {
             var invoice = _mapper.Map<Invoice>(request.Invoice);
-            var sessionTask = _context.Sessions.FirstOrDefaultAsync(s => s.Status == 0);
+            var sessionTask = _context.Sessions.FirstOrDefaultAsync(s => !s.IsClosed);
 
             if (invoice.Table != null)
             {

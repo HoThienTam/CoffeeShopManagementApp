@@ -171,6 +171,7 @@ namespace Mobile.ViewModels
                     invoiceToCreate.Tip = TipBindProp;
                     invoiceToCreate.IsPaid = true;
                     invoiceToCreate.ClosedAt = DateTime.Now;
+                    invoiceToCreate.PaidAmount = ReceivedMoneyBindProp;
                     var json = JsonConvert.SerializeObject(invoiceToCreate);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
                     // Thuc hien cong viec tai day
