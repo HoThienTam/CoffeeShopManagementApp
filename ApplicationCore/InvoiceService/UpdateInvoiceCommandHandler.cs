@@ -29,15 +29,25 @@ namespace ApplicationCore.InvoiceService
             var invoice = await _context.Invoices.FirstOrDefaultAsync(i => i.Id == request.Invoice.Id);
             _mapper.Map(request.Invoice, invoice);
             var session = await _context.Sessions.FirstOrDefaultAsync(s => !s.IsClosed);
+            var table = await _context.Tables.FirstOrDefaultAsync(s => s.Id == invoice.TableId);
 
-            if (invoice.Table != null)
+            if (!invoice.IsPaid)
             {
-                invoice.Table.IsBeingUsed = true;
+                table.IsBeingUsed = true;
+            }
+            else
+            {
+                table.IsBeingUsed = false;
             }
 
             var invoiceItems = _context.InvoiceItems.Where(i => i.InvoiceId == request.Invoice.Id).ToList();
             foreach (var item in request.Invoice.Items)
             {
+                if (invoice.IsPaid)
+                {
+                    var itemDb = await _context.Items.FirstOrDefaultAsync(i => i.Id == item.Id);
+                    itemDb.CurrentQuantity -= item.Quantity;
+                }
                 if (!item.IsAdded)
                 {
                     var invoiceItem = new InvoiceItem

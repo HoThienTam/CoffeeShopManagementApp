@@ -99,21 +99,21 @@ namespace Mobile.ViewModels
         }
         #endregion
 
-        #region SelectedDateBindProp
-        private DateTime _SelectedDateBindProp;
-        public DateTime SelectedDateBindProp
-        {
-            get { return _SelectedDateBindProp; }
-            set { SetProperty(ref _SelectedDateBindProp, value); }
-        }
-        #endregion
-
         #region DateRangeBindProp
         private DateTimeRange _DateRangeBindProp = null;
         public DateTimeRange DateRangeBindProp
         {
             get { return _DateRangeBindProp; }
             set { SetProperty(ref _DateRangeBindProp, value); }
+        }
+        #endregion
+
+        #region IsDateRange
+        private bool _IsDateRange = false;
+        public bool IsDateRange
+        {
+            get { return _IsDateRange; }
+            set { SetProperty(ref _IsDateRange, value); }
         }
         #endregion
 
@@ -368,8 +368,24 @@ namespace Mobile.ViewModels
                     if (parameters.ContainsKey(nameof(DateRangeBindProp)))
                     {
                         DateRangeBindProp = parameters[nameof(DateRangeBindProp)] as DateTimeRange;
+                        if (DateRangeBindProp.From != DateRangeBindProp.To)
+                        {
+                            IsDateRange = true;
+                        }
+                        else
+                        {
+                            IsDateRange = false;
+                        }
                         if (OverallVisibleBindProp == true)
                         {
+                            if (IsDateRange)
+                            {
+                                RevenuePerDayVisibleBindProp = true;
+                            }
+                            else
+                            {
+                                RevenuePerDayVisibleBindProp = false;
+                            }
                             GetOverallData();
                         }
                         else
@@ -383,7 +399,6 @@ namespace Mobile.ViewModels
                     {
                         var invoiceTask = client.GetAsync(Properties.Resources.BaseUrl + "invoices/GetPaidInvoices");
                         DateRangeBindProp = new DateTimeRange(DateTime.Today.Date, DateTime.Today.Date);
-                        SelectedDateBindProp = DateTime.Now;
                         _listInvoice = new List<InvoiceDto>();
                         var response = await invoiceTask;
                         if (response.IsSuccessStatusCode)

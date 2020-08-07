@@ -64,5 +64,6 @@ namespace Dtos
         }
         #endregion
         public DateTime ClosedAt { get; set; }
+        public double PaidAmount { get; set; }
     }
 }
