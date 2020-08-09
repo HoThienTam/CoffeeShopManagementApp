@@ -50,12 +50,12 @@
                                         Spacing="0" 
                                         TappedCommand="{Binding BindingContext.SelectEmployeeCommand, Source={x:Reference employeePage}}" 
                                         TappedCommandParameter="{Binding}">
+                                        <StackLayout.Triggers>
+                                            <DataTrigger TargetType="StackLayout" Binding="{Binding IsSelected}" Value="True">
+                                                <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
+                                            </DataTrigger>
+                                        </StackLayout.Triggers>
                                         <Grid Style="{StaticResource CommonWrapper}" Padding="{StaticResource CommonVerticalThickness}">
-                                            <Grid.Triggers>
-                                                <DataTrigger TargetType="Grid" Binding="{Binding IsSelected}" Value="True">
-                                                    <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
-                                                </DataTrigger>
-                                            </Grid.Triggers>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
@@ -131,12 +131,9 @@
                         </Grid>
                         <!--  Họ tên  -->
                         <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
-                            <mr:StackLayout Orientation="Horizontal" Spacing="0" TappedCommand="{Binding UpdateEmployeeCommand}">
+                            <mr:StackLayout Orientation="Horizontal" Spacing="0">
                                 <tlrInput:RadEntry InputTransparent="True" Text="Họ tên" />
                                 <Label Text="{Binding EmployeeBindProp.Fullname, Mode=OneWay}"/>
-                                <Label
-                                    Style="{StaticResource CommonIcon}"
-                                    Text="{x:Static lcModels:FontAwesomeIcon.AngleRight}"/>
                             </mr:StackLayout>
                         </tlrPrimitives:RadBorder>
 
@@ -147,9 +144,16 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             
-                            <Button Command="{Binding UpdateEmployeeCommand, Mode=OneWay}" Text="Đổi mật khẩu"/>
-                            
-                            <Button Grid.Column="1" Command="{Binding DeleteCommand, Mode=OneWay}" Text="Xóa nhân viên" BackgroundColor="Red"/>
+                            <Button Command="{Binding UpdateEmployeeCommand, Mode=OneWay}" Text="Đổi thông tin"/>
+
+                            <Button Grid.Column="1" Command="{Binding DeleteCommand, Mode=OneWay}" Text="Xóa nhân viên" BackgroundColor="Red">
+                                <Button.Triggers>
+                                    <DataTrigger TargetType="Button" Binding="{Binding IsSelfBindProp}" Value="True">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Setter Property="BackgroundColor" Value="Gray"/>
+                                    </DataTrigger>
+                                </Button.Triggers>
+                            </Button>
                         </Grid>
                     </StackLayout>
                 </ScrollView>

@@ -181,8 +181,8 @@ namespace Mobile.ViewModels
         public bool IsDeleteModeBindProp
         {
             get { return _IsDeleteModeBindProp; }
-            set 
-            { 
+            set
+            {
                 SetProperty(ref _IsDeleteModeBindProp, value);
                 RaisePropertyChanged(nameof(IsNotDeleteModeBindProp));
             }
@@ -193,6 +193,15 @@ namespace Mobile.ViewModels
             {
                 return !_IsDeleteModeBindProp;
             }
+        }
+        #endregion
+
+        #region CurrentUserBindProp
+        private UserDto _CurrentUserBindProp;
+        public UserDto CurrentUserBindProp
+        {
+            get { return _CurrentUserBindProp; }
+            set { SetProperty(ref _CurrentUserBindProp, value); }
         }
         #endregion
 
@@ -1010,6 +1019,43 @@ namespace Mobile.ViewModels
 
         #endregion
 
+        #region SignOutCommand
+
+        public DelegateCommand<object> SignOutCommand { get; private set; }
+        private async void OnSignOut(object obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                Xamarin.Essentials.Preferences.Clear();
+                await NavigationService.NavigateAsync("/LoginPage");
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSignOutCommand()
+        {
+            SignOutCommand = new DelegateCommand<object>(OnSignOut);
+            SignOutCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
         private async void StartSignalRAsync()
         {
             _connection = new HubConnectionBuilder()
@@ -1135,12 +1181,12 @@ namespace Mobile.ViewModels
                             }
                             allTasks.Remove(finished);
                         }
-                        var response = await client.GetAsync(Properties.Resources.BaseUrl + "sessions/current");
+                        var id = Xamarin.Essentials.Preferences.Get("token", "token");
+                        var response = await client.GetAsync(Properties.Resources.BaseUrl + "users/" + id);
                         if (response.IsSuccessStatusCode)
                         {
-                            var session = JsonConvert.DeserializeObject<SessionDto>(await response.Content.ReadAsStringAsync());
-                            Application.Current.Properties["session"] = session;
-                            await Application.Current.SavePropertiesAsync();
+                            var user = JsonConvert.DeserializeObject<UserDto>(await response.Content.ReadAsStringAsync());
+                            CurrentUserBindProp = user;
                         }
                     }
                     break;

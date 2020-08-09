@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 
 namespace Mobile.ViewModels
 {
@@ -35,6 +34,15 @@ namespace Mobile.ViewModels
         {
             get { return _ListEmployeeBindProp; }
             set { SetProperty(ref _ListEmployeeBindProp, value); }
+        }
+        #endregion
+
+        #region IsSelfBindProp
+        private bool _IsSelfBindProp;
+        public bool IsSelfBindProp
+        {
+            get { return _IsSelfBindProp; }
+            set { SetProperty(ref _IsSelfBindProp, value); }
         }
         #endregion
 
@@ -89,6 +97,17 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
+                ListEmployeeBindProp.ToList().ForEach(c => c.IsSelected = false);
+                var id = Xamarin.Essentials.Preferences.Get("token", string.Empty);
+                if (obj.Id == Guid.Parse(id))
+                {
+                    IsSelfBindProp = true;
+                }
+                else
+                {
+                    IsSelfBindProp = false;
+                }
+                obj.IsSelected = true;
                 EmployeeBindProp = obj;
             }
             catch (Exception e)
@@ -109,7 +128,6 @@ namespace Mobile.ViewModels
         }
 
         #endregion
-
 
         #region UpdateEmployeeCommand
 
@@ -148,7 +166,6 @@ namespace Mobile.ViewModels
         }
 
         #endregion
-
 
         #region DeleteCommand
 
@@ -207,6 +224,7 @@ namespace Mobile.ViewModels
                     using (var client = new HttpClient())
                     {
                         var response = await client.GetAsync(Properties.Resources.BaseUrl + "users/");
+                        var id = Xamarin.Essentials.Preferences.Get("token", string.Empty);
                         if (response.IsSuccessStatusCode)
                         {
                             var employees = JsonConvert.DeserializeObject<IEnumerable<UserDto>>(await response.Content.ReadAsStringAsync());
@@ -214,7 +232,10 @@ namespace Mobile.ViewModels
                             {
                                 ListEmployeeBindProp.Add(employee);
                             }
-                            EmployeeBindProp = ListEmployeeBindProp.FirstOrDefault();
+                            var em = ListEmployeeBindProp.FirstOrDefault(e => e.Id == Guid.Parse(id));
+                            em.IsSelected = true;
+                            EmployeeBindProp = em;
+                            IsSelfBindProp = true;
                         }
                         else
                         {

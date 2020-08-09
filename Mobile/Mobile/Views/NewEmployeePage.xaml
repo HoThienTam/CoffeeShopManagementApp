@@ -86,7 +86,7 @@
                                         HorizontalOptions="FillAndExpand"
                                         HorizontalTextAlignment="End"
                                         IsPassword="True"
-                                        Text="{Binding PasswordBindProp}"
+                                        Text="{Binding PasswordBindProp, Mode=TwoWay}"
                                         WatermarkText="Mật khẩu" />
                                 </mr:StackLayout>
                             </tlrPrimitives:RadBorder>
@@ -99,7 +99,7 @@
 
                                     <tlrInput:RadEntry
                                         IsPassword="True" 
-                                        Text="{Binding ConfirmedPasswordBindProp}"
+                                        Text="{Binding ConfirmedPasswordBindProp, Mode=TwoWay}"
                                         HorizontalOptions="FillAndExpand"
                                         HorizontalTextAlignment="End"
                                         WatermarkText="Xác nhận mật khẩu"/>

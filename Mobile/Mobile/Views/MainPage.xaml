@@ -625,6 +625,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.Resources>
                     <ResourceDictionary>
@@ -697,7 +698,7 @@
                 </mr:Grid>
                 
                 <!--Thu Vien-->
-                <mr:Grid
+                <mr:Grid                  
                     Grid.Column="3" WidthRequest="{StaticResource CommonWidth}"
                     Padding="{StaticResource CommonThickness}"
                     TappedCommand="{Binding SelectFrameCommand}" 
@@ -706,6 +707,9 @@
                         <DataTrigger TargetType="Grid" Binding="{Binding SettingFrameVisibleBindProp}" Value="True">
                             <Setter Property="BackgroundColor" Value="{StaticResource SubColor}"/>
                         </DataTrigger>
+                        <DataTrigger TargetType="Grid" Binding="{Binding CurrentUserBindProp.Role}" Value="0">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
                     </Grid.Triggers>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -713,6 +717,18 @@
                     </Grid.RowDefinitions>
                     <Label Style="{StaticResource CommonIcon}" TextColor="{StaticResource ContrastColor}" Text="{x:Static lcModels:FontAwesomeIcon.Cogs}" />
                     <Label Grid.Row="1" TextColor="{StaticResource ContrastColor}" Text="Thư viện" HorizontalOptions="Center" />
+                </mr:Grid>
+
+                <mr:Grid
+                    Grid.Column="4" WidthRequest="120"
+                    Padding="{StaticResource CommonThickness}"
+                    TappedCommand="{Binding SignOutCommand}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label Style="{StaticResource CommonIcon}" TextColor="{StaticResource ContrastColor}" Text="{x:Static lcModels:FontAwesomeIcon.SignOut}" />
+                    <Label Grid.Row="1" TextColor="{StaticResource ContrastColor}" Text="Đăng xuất" HorizontalOptions="Center" />
                 </mr:Grid>
             </Grid>
                      

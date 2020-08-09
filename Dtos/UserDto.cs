@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dtos
 {
-    public class UserDto
+    public class UserDto : BaseDto
     {
         public UserDto()
         {
@@ -18,10 +18,35 @@ namespace Dtos
             Role = user.Role;
         }
 
-        public Guid Id { get; set; }
-        public string Username { get; set; }
+        #region Username
+        private string _Username;
+        public string Username
+        {
+            get { return _Username; }
+            set { SetProperty(ref _Username, value); }
+        }
+        #endregion
+
         public string Password { get; set; }
-        public string Fullname { get; set; }
-        public int Role { get; set; }
+
+
+        #region Fullname
+        private string _Fullname;
+        public string Fullname
+        {
+            get { return _Fullname; }
+            set { SetProperty(ref _Fullname, value); }
+        }
+        #endregion
+
+        #region Role
+        private int _Role;
+        public int Role
+        {
+            get { return _Role; }
+            set { SetProperty(ref _Role, value); }
+        }
+        #endregion
+
     }
 }

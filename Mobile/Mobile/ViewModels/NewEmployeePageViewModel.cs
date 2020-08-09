@@ -25,8 +25,13 @@ namespace Mobile.ViewModels
         public bool IsEditing
         {
             get { return _IsEditing; }
-            set { SetProperty(ref _IsEditing, value); }
+            set
+            {
+                SetProperty(ref _IsEditing, value);
+                RaisePropertyChanged(nameof(IsNotEditing));
+            }
         }
+        public bool IsNotEditing { get { return !_IsEditing; } }
         #endregion
 
         #region EmployeeBindProp
@@ -84,51 +89,48 @@ namespace Mobile.ViewModels
                 {
                     await PageDialogService.DisplayAlertAsync("Lỗi", "Tên tài khoản không được để trống", "Đóng");
                 }
-                else if (string.IsNullOrWhiteSpace(TempEmployee.Fullname))
+                if (string.IsNullOrWhiteSpace(TempEmployee.Fullname))
                 {
                     await PageDialogService.DisplayAlertAsync("Lỗi", "Tên nhân viên không được để trống", "Đóng");
                 }
-                else if (string.IsNullOrWhiteSpace(PasswordBindProp) || PasswordBindProp.Length < 8)
+                if (string.IsNullOrWhiteSpace(PasswordBindProp) || PasswordBindProp.Length < 8)
                 {
                     await PageDialogService.DisplayAlertAsync("Lỗi", "Mật khẩu phải tối thiểu 8 ký tự", "Đóng");
                 }
-                else if (!ConfirmedPasswordBindProp.SequenceEqual(PasswordBindProp))
+                if (!ConfirmedPasswordBindProp.SequenceEqual(PasswordBindProp))
                 {
                     await PageDialogService.DisplayAlertAsync("Lỗi", "Mật khẩu xác nhận không trùng khớp", "Đóng");
                 }
-                else
+                TempEmployee.Password = PasswordBindProp;
+                TempEmployee.Username = TempEmployee.Username.ToLower().Trim();
+                var json = JsonConvert.SerializeObject(TempEmployee);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                // Thuc hien cong viec tai day
+                using (var client = new HttpClient())
                 {
-                    TempEmployee.Password = PasswordBindProp;
-                    TempEmployee.Username = TempEmployee.Username.ToLower().Trim();
-                    var json = JsonConvert.SerializeObject(TempEmployee);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    // Thuc hien cong viec tai day
-                    using (var client = new HttpClient())
+                    HttpResponseMessage response = new HttpResponseMessage();
+                    if (!IsEditing)
                     {
-                        HttpResponseMessage response = new HttpResponseMessage();
-                        if (!IsEditing)
+                        response = await client.PostAsync(Properties.Resources.BaseUrl + "users/register", content);
+                        if (response.IsSuccessStatusCode)
                         {
-                            response = await client.PostAsync(Properties.Resources.BaseUrl + "users/register", content);
-                            if (response.IsSuccessStatusCode)
-                            {
-                                var user = JsonConvert.DeserializeObject<UserDto>(await response.Content.ReadAsStringAsync());
-                                var param = new NavigationParameters();
-                                param.Add(nameof(EmployeeBindProp), user);
-                                await NavigationService.GoBackAsync(param);
-                            }
+                            var user = JsonConvert.DeserializeObject<UserDto>(await response.Content.ReadAsStringAsync());
+                            var param = new NavigationParameters();
+                            param.Add(nameof(EmployeeBindProp), user);
+                            await NavigationService.GoBackAsync(param);
                         }
-                        else
+                    }
+                    else
+                    {
+                        response = await client.PutAsync(Properties.Resources.BaseUrl + "users/", content);
+                        if (response.IsSuccessStatusCode)
                         {
-                            response = await client.PutAsync(Properties.Resources.BaseUrl + "users/", content);
-                            if (response.IsSuccessStatusCode)
-                            {
-                                EmployeeBindProp.Fullname = TempEmployee.Fullname;
-                                EmployeeBindProp.Role = TempEmployee.Role;
-                                await NavigationService.GoBackAsync();
-                            }
+                            EmployeeBindProp.Fullname = TempEmployee.Fullname;
+                            EmployeeBindProp.Role = TempEmployee.Role;
+                            await NavigationService.GoBackAsync();
                         }
-                    };
-                }
+                    }
+                };
             }
             catch (Exception e)
             {
@@ -158,9 +160,12 @@ namespace Mobile.ViewModels
                     break;
                 case NavigationMode.New:
                     TempEmployee = new UserDto(EmployeeBindProp);
+                    Title = "Đổi thông tin";
                     if (TempEmployee.Id != Guid.Empty)
                     {
                         IsEditing = true;
+                        PasswordBindProp = TempEmployee.Password;
+                        ConfirmedPasswordBindProp = TempEmployee.Password;
                     }
                     break;
                 case NavigationMode.Forward:
