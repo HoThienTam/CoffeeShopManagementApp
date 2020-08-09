@@ -225,7 +225,8 @@ namespace Mobile.ViewModels
                 case NavigationMode.Back:
                     if (parameters.ContainsKey("Image"))
                     {
-                        ItemBindProp.Image = parameters["Image"] as string;
+                        TempItem.Image = parameters["ImagePath"] as string;
+                        TempItem.ImageFile = parameters["Image"] as byte[];
                     }
                     break;
                 case NavigationMode.New:

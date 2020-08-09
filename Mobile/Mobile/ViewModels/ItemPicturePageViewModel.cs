@@ -1,4 +1,7 @@
-﻿using Mobile.Models;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using FFImageLoading;
+using Mobile.Models;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using Plugin.Permissions;
@@ -6,6 +9,7 @@ using Plugin.Permissions.Abstractions;
 using Prism.Commands;
 using Prism.Navigation;
 using System;
+using System.IO;
 
 namespace Mobile.ViewModels
 {
@@ -22,6 +26,15 @@ namespace Mobile.ViewModels
         {
             get { return _ImagePathBindProp; }
             set { SetProperty(ref _ImagePathBindProp, value); }
+        }
+        #endregion
+
+        #region ImageBindProp
+        private byte[] _ImageBindProp;
+        public byte[] ImageBindProp
+        {
+            get { return _ImageBindProp; }
+            set { SetProperty(ref _ImageBindProp, value); }
         }
         #endregion
 
@@ -48,7 +61,8 @@ namespace Mobile.ViewModels
                 // Thuc hien cong viec tai day
 
                 var param = new NavigationParameters();
-                param.Add("Image", ImagePathBindProp);
+                param.Add("ImagePath", ImagePathBindProp);
+                param.Add("Image", ImageBindProp);
                 await NavigationService.GoBackAsync(param);
 
             }
@@ -91,7 +105,6 @@ namespace Mobile.ViewModels
 
             var fileName = $"{Guid.NewGuid()}.jpg";
             var filePath = "";
-
             try
             {
                 // Thuc hien cong viec tai day
@@ -116,9 +129,9 @@ namespace Mobile.ViewModels
                             DefaultCamera = CameraDevice.Front,
                             SaveToAlbum = true,
                         });
-
                         if (file != null)
                         {
+                            ImageBindProp = file.GetStream().ToByteArray();
                             filePath = file.Path;
                         }
                     }
@@ -132,13 +145,14 @@ namespace Mobile.ViewModels
                     await PageDialogService.DisplayAlertAsync("Yêu cầu bị từ chối", "Không thể chụp ảnh.", "Đóng");
                 }
 
-                if (string.IsNullOrEmpty(filePath) == false)
+                if (!string.IsNullOrEmpty(filePath))
                 {
                     ImagePathBindProp = filePath;
                 }
                 else
                 {
                     ImagePathBindProp = "";
+                    ImageBindProp = null;
                 }
             }
             catch (Exception e)
@@ -205,6 +219,7 @@ namespace Mobile.ViewModels
 
                         if (file != null)
                         {
+                            ImageBindProp = file.GetStream().ToByteArray();
                             filePath = file.Path;
                         }
                     }
@@ -225,6 +240,7 @@ namespace Mobile.ViewModels
                 else
                 {
                     ImagePathBindProp = "";
+                    ImageBindProp = null;
                 }
             }
             catch (Exception e)

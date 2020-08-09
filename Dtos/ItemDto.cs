@@ -1,6 +1,7 @@
 ﻿using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Dtos
@@ -42,6 +43,7 @@ namespace Dtos
         #endregion
 
         public string Image { get; set; }
+        public byte[] ImageFile { get; set; }
 
         #region IsManaged
         private bool _IsManaged;

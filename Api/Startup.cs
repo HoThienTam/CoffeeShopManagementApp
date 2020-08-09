@@ -1,3 +1,4 @@
+using ApplicationCore.Extensions;
 using AutoMapper;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
@@ -31,6 +32,7 @@ namespace Api
         {
             services.AddDbContext<DataContext>(h => h.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.ConfigureAuthentication(Configuration);
             services.ConfigureMediatR();
             services.AddAutoMapper(Assembly.Load("ApplicationCore"));
