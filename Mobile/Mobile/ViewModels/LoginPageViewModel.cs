@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Mobile.ViewModels
@@ -65,8 +66,7 @@ namespace Mobile.ViewModels
                     var token = await response.Content.ReadAsStringAsync();
                     if (!string.IsNullOrEmpty(token))
                     {
-                        Application.Current.Properties["token"] = token;
-                        await Application.Current.SavePropertiesAsync();
+                        Preferences.Set("token", token);
                         await NavigationService.NavigateAsync("/MainPage");
                     }
                     else

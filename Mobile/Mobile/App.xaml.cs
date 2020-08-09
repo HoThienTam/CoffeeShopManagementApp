@@ -9,6 +9,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using Dtos;
 using System.Text;
+using Xamarin.Essentials;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Mobile
@@ -31,7 +32,7 @@ namespace Mobile
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("vi-VN");
             CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("vi-VN");
             GetCurrentSession();
-            if (Application.Current.Properties.ContainsKey("token"))
+            if (Preferences.ContainsKey("token"))
             {
                 await NavigationService.NavigateAsync("NavigationPage/MainPage");
             }

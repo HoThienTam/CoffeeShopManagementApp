@@ -5,7 +5,6 @@ using Mobile.Models;
 using Mobile.Views;
 using Newtonsoft.Json;
 using Prism.Commands;
-using Prism.Mvvm;
 using Prism.Navigation;
 using System;
 using System.Collections.Generic;
@@ -15,7 +14,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Telerik.XamarinForms.Input.Calendar;
 using Xamarin.Forms;
 
 namespace Mobile.ViewModels

@@ -57,7 +57,8 @@ namespace ApplicationCore.UserService
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
 
-            return tokenHandler.WriteToken(token);
+            //return tokenHandler.WriteToken(token);
+            return dbUser.Id.ToString();
         }
 
         public async Task<User> LoginAsync(string username, string password)

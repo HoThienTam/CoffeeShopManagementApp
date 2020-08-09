@@ -197,6 +197,7 @@ namespace Mobile.ViewModels
                             TempDiscount.Value = DiscountBindProp.Value;
                             TempDiscount.MaxValue = DiscountBindProp.MaxValue;
                             TempDiscount.IsPercentage = DiscountBindProp.IsPercentage;
+                            TempDiscount = null;
                             break;
                         case HttpStatusCode.Created:
                             var discount = JsonConvert.DeserializeObject<DiscountDto>(await response.Content.ReadAsStringAsync());
@@ -242,6 +243,14 @@ namespace Mobile.ViewModels
             {
                 TempDiscount = discount;
                 DiscountBindProp = new DiscountDto(discount);
+                if (discount.IsPercentage)
+                {
+                    PercentBindProp = DiscountBindProp.Value;                   
+                }
+                else
+                {
+                    ValueBindProp = DiscountBindProp.Value;
+                }
                 IsOpen = true;
             }
             catch (Exception e)

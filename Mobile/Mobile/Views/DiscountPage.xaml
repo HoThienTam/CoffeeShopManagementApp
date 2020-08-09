@@ -62,7 +62,16 @@
 
                                         <StackLayout VerticalOptions="Center" Grid.Column="1" Margin="{StaticResource CommonHorizontalThickness}">
                                             <Label Text="{Binding Name}" FontSize="Large" TextColor="{StaticResource ContrastColor}"/>
-                                            <Label Text="{Binding Value, StringFormat='{}{0:C}'}" FontAttributes="Italic" FontSize="Small" TextColor="{StaticResource ContrastColor}"/>
+                                            <Label Text="{Binding Value, StringFormat='{}{0:C}'}" 
+                                                   FontAttributes="Italic" 
+                                                   FontSize="Small" 
+                                                   TextColor="{StaticResource ContrastColor}">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding IsPercentage}" Value="True">
+                                                        <Setter Property="Text" Value="{Binding Value, StringFormat='{}{0}%'}"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
                                         </StackLayout>
                                     </Grid>
                                 </mr:Frame>
@@ -161,7 +170,7 @@
                                                 HorizontalOptions="FillAndExpand"
                                                 ControlTemplate="{StaticResource CustomNumericInput}"
                                                 Maximum="1000000000" Minimum="0"                                  
-                                                Value="{Binding DiscountBindProp.MaxValue, Mode=TwoWay, StringFormat='{}%'}" />
+                                                Value="{Binding DiscountBindProp.MaxValue, Mode=TwoWay}" />
                                             </StackLayout>
                                         </tlrPrimitives:RadBorder>
                                     </StackLayout>
@@ -182,7 +191,7 @@
                                             HorizontalOptions="FillAndExpand" 
                                             Minimum="0"                                        
                                             Maximum="1000000000"                               
-                                            Value="{Binding ValueBindProp, Mode=TwoWay, StringFormat='{0:C}'}"/>
+                                            Value="{Binding ValueBindProp, Mode=TwoWay}"/>
                                         </mr:StackLayout>
                                     </tlrPrimitives:RadBorder>
 

@@ -18,7 +18,7 @@ namespace Mobile.ViewModels
         public NewEmployeePageViewModel(InitParams initParams) : base(initParams)
         {
             Title = "Nhân viên mới";
-        } 
+        }
 
         #region IsEditing
         private bool _IsEditing;
@@ -145,53 +145,6 @@ namespace Mobile.ViewModels
         {
             SaveCommand = new DelegateCommand<object>(OnSave);
             SaveCommand.ObservesCanExecute(() => IsNotBusy);
-        }
-
-        #endregion
-
-        #region SelectedChangedCommand
-
-        public DelegateCommand<string> SelectedChangedCommand { get; private set; }
-        private async void OnSelectedChanged(string obj)
-        {
-            if (IsBusy)
-            {
-                return;
-            }
-
-            IsBusy = true;
-
-            try
-            {
-                // Thuc hien cong viec tai day         
-                switch (obj)
-                {
-                    case "Nhân viên":
-                        TempEmployee.Role = (int)Role.Staff;
-                        break;
-                    case "Quản lý":
-                        TempEmployee.Role = (int)Role.Manager;
-                        break;
-                    default:
-                        TempEmployee.Role = (int)Role.Staff;
-                        break;
-                }
-            }
-            catch (Exception e)
-            {
-                await ShowErrorAsync(e);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-
-        }
-        [Initialize]
-        private void InitSelectedChangedCommand()
-        {
-            SelectedChangedCommand = new DelegateCommand<string>(OnSelectedChanged);
-            SelectedChangedCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion

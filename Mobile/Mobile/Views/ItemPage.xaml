@@ -70,24 +70,6 @@
                                 IsOpen="{Binding IsOpen}"
                                 IsModal="False">
                                     <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}" WidthRequest="200" BackgroundColor="White">
-                                        <!--<FlexLayout>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Beer}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Coffee}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.CoffeeTogo}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Cocktail}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Burrito}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.BurgerSoda}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.FrenchFries}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.BreadSlice}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Salad}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Soup}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Pie}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.WineGlass}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Pizza}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.IceCream}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.Sandwich}" Style="{StaticResource CommonIcon}"/>
-                                        <Label Text="{x:Static lcModels:FontAwesomeIcon.MugTea}" Style="{StaticResource CommonIcon}"/>
-                                    </FlexLayout>-->
                                         <dataControls:RadListView ItemsSource="{Binding ListIconBindProp, Mode=OneWay}">
 
                                             <dataControls:RadListView.LayoutDefinition>

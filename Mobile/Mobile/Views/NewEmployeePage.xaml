@@ -116,16 +116,14 @@
                                         Margin="{StaticResource CommonHorizontalThickness}"
                                         x:Name="picker"
                                         Title="Chọn quyền nhân viên"
+                                        SelectedIndex="{Binding TempEmployee.Role}"
                                         HorizontalOptions="EndAndExpand">
-                                        <Picker.ItemsSource>
+                                        <custom:CustomPicker.ItemsSource>
                                             <x:Array Type="{x:Type x:String}">
                                                 <x:String>Nhân viên</x:String>
                                                 <x:String>Quản lý</x:String>
                                             </x:Array>
-                                        </Picker.ItemsSource>
-                                        <Picker.Behaviors>
-                                            <b:EventToCommandBehavior Command="{Binding SelectedChangedCommand}" CommandParameter="{Binding}" EventName="SelectedIndexChanged"/>
-                                        </Picker.Behaviors>
+                                        </custom:CustomPicker.ItemsSource>
                                     </custom:CustomPicker>
                                 </mr:StackLayout>
                             </tlrPrimitives:RadBorder>
