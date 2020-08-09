@@ -88,8 +88,10 @@
                 <ScrollView Padding="{StaticResource CommonThickness}">
                     <!--  Detail  -->
                     <StackLayout Spacing="{StaticResource CommonThickness}">
-                        <Label Text="{Binding SelectedDateBindProp, StringFormat='{}{0:dd\\ - MM\\ - yyyy}'}"></Label>
-
+                        <StackLayout Orientation="Horizontal" Spacing="0">
+                            <Label Margin="0" Text="{Binding DateRangeBindProp.From, StringFormat='{}{0:dd/MM/yyyy}'}"/>
+                            <Label Margin="0" IsVisible="{Binding IsDateRange}" Text="{Binding DateRangeBindProp.To, StringFormat='{}{0: - dd/MM/yyyy}'}"/>
+                        </StackLayout>
                         <!--Doanh thu theo gio-->
                         <tlrPrimitives:RadBorder Padding="{StaticResource CommonThickness}" IsVisible="{Binding RevenuePerHourVisibleBindProp}" Style="{StaticResource CommonBorder}">
                             <StackLayout Orientation="Vertical">
@@ -120,7 +122,7 @@
                                         FontAttributes="Bold"
                                         HorizontalOptions="StartAndExpand" Text="Doanh thu theo ngày"/>
                                     <Label
-                                        HorizontalOptions="EndAndExpand" Text="{Binding SelectedDateBindProp}"/>
+                                        HorizontalOptions="EndAndExpand" Text="{Binding DateRangeBindProp.From}"/>
                                 </StackLayout>
                                 <tlrChart:RadCartesianChart>
                                     <tlrChart:RadCartesianChart.HorizontalAxis>
@@ -201,7 +203,10 @@
                 <ScrollView Padding="{StaticResource CommonThickness}">
                     <!--  Detail  -->
                     <StackLayout>
-                        <Label Text="{Binding SelectedDateBindProp, StringFormat='{}{0:dd\\ - MM\\ - yyyy}'}"></Label>
+                        <StackLayout Orientation="Horizontal" Spacing="0">
+                            <Label Margin="0" Text="{Binding DateRangeBindProp.From, StringFormat='{}{0:dd/MM/yyyy}'}"/>
+                            <Label Margin="0" IsVisible="{Binding IsDateRange}" Text="{Binding DateRangeBindProp.To, StringFormat='{}{0: - dd/MM/yyyy}'}"/>
+                        </StackLayout>
 
                         <tlrGrid:RadDataGrid
                             Margin="{StaticResource CommonVerticalThickness}"

@@ -28,11 +28,12 @@ namespace ApplicationCore.InvoiceService
         public async Task<InvoiceDto> Handle(AddInvoiceCommand request, CancellationToken cancellationToken)
         {
             var invoice = _mapper.Map<Invoice>(request.Invoice);
-            var sessionTask = _context.Sessions.FirstOrDefaultAsync(s => !s.IsClosed);
+            var session = await _context.Sessions.FirstOrDefaultAsync(s => !s.IsClosed);
 
-            if (invoice.Table != null)
+            if (invoice.Table != null && !invoice.IsPaid)
             {
-                invoice.Table.IsBeingUsed = true;
+                var table = await _context.Tables.FirstOrDefaultAsync(s => s.Id == invoice.TableId);
+                table.IsBeingUsed = true;
             }
 
             await _context.Invoices.AddAsync(invoice);
@@ -46,6 +47,12 @@ namespace ApplicationCore.InvoiceService
                     Quantity = item.Quantity,
                     Value = item.Value
                 };
+
+                if (invoice.IsPaid)
+                {
+                    var itemDb = await _context.Items.FirstOrDefaultAsync(i => i.Id == item.Id);
+                    itemDb.CurrentQuantity -= item.Quantity;
+                }
 
                 foreach (var discount in item.Discounts)
                 {
@@ -75,7 +82,6 @@ namespace ApplicationCore.InvoiceService
 
             if (invoice.IsPaid)
             {
-                var session = await sessionTask;
                 session.Revenue += invoice.TotalPrice;
                 session.ExpectedMoney += invoice.TotalPrice + invoice.Tip;
                 session.Tip += invoice.Tip;

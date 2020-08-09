@@ -94,7 +94,7 @@
                                     Text="Dùng tại bàn"
                                     VerticalOptions="Center">
                                 <Label.Triggers>
-                                    <DataTrigger TargetType="Label" Binding="{Binding IsTakeAway}" Value="1">
+                                    <DataTrigger TargetType="Label" Binding="{Binding TableId}" Value="Null">
                                         <Setter Property="Text" Value="Mang đi"/>
                                     </DataTrigger>
                                 </Label.Triggers>
@@ -179,7 +179,7 @@
                                     VerticalOptions="Center" />
                             <Label
                                     HorizontalOptions="End"
-                                    Text="{Binding CurrentInvoiceBindProp.PaidAmount, Mode=OneWay}"
+                                    Text="{Binding CurrentInvoiceBindProp.PaidAmount, StringFormat='{0:C}', Mode=OneWay}"
                                     VerticalOptions="Center" />
                         </StackLayout>
 
