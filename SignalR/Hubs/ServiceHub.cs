@@ -13,9 +13,13 @@ namespace SignalR.Hubs
         {
             await Clients.All.SendAsync("ReceiveInvoice", invoice);
         }
-        public async Task SendSession(SessionDto session)
+        public async Task UpdateInvoice(InvoiceDto invoice)
         {
-            await Clients.All.SendAsync("ReceiveSession", session);
+            await Clients.All.SendAsync("UpdateInvoice", invoice);
+        }
+        public async Task DeleteInvoice(Guid invoiceId)
+        {
+            await Clients.All.SendAsync("DeleteInvoice", invoiceId);
         }
     }
 }

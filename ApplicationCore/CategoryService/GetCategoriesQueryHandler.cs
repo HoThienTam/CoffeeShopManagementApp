@@ -31,7 +31,7 @@ namespace ApplicationCore.CategoryService
                 .Include(c => c.Items)
                 .Select(c => new Category
                 {
-                    Id = c.Id, Name = c.Name, Icon = c.Icon, Items = c.Items.Where(i => !i.IsDeleted).ToList()
+                    Id = c.Id, Name = c.Name, Icon = c.Icon, Items = c.Items.Where(i => !i.IsDeleted && !i.IsOutOfStock).ToList()
                 })
                 .AsNoTracking();
             var cateDtos = _mapper.Map<IEnumerable<CategoryDto>>(categories);

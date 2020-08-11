@@ -47,6 +47,10 @@ namespace ApplicationCore.InvoiceService
                 {
                     var itemDb = await _context.Items.FirstOrDefaultAsync(i => i.Id == item.Id);
                     itemDb.CurrentQuantity -= item.Quantity;
+                    if (itemDb.CurrentQuantity <= 0)
+                    {
+                        itemDb.IsOutOfStock = true;
+                    }
                 }
                 if (!item.IsAdded)
                 {

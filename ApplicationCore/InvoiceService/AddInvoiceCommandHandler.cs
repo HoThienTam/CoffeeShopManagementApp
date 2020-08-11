@@ -47,11 +47,16 @@ namespace ApplicationCore.InvoiceService
                     Quantity = item.Quantity,
                     Value = item.Value
                 };
+                await _context.InvoiceItems.AddAsync(invoiceItem);
 
                 if (invoice.IsPaid)
                 {
                     var itemDb = await _context.Items.FirstOrDefaultAsync(i => i.Id == item.Id);
                     itemDb.CurrentQuantity -= item.Quantity;
+                    if (itemDb.CurrentQuantity <= 0)
+                    {
+                        itemDb.IsOutOfStock = true;
+                    }
                 }
 
                 foreach (var discount in item.Discounts)
@@ -65,7 +70,6 @@ namespace ApplicationCore.InvoiceService
                     };
                     await _context.ItemDiscounts.AddAsync(itemDiscount);
                 }
-                await _context.InvoiceItems.AddAsync(invoiceItem);
 
             }
 
