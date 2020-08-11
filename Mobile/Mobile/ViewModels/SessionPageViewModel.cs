@@ -72,6 +72,15 @@ namespace Mobile.ViewModels
         }
         #endregion
 
+        #region CurrentSessionDetailVisibleBindProp
+        private bool _CurrentSessionDetailVisibleBindProp;
+        public bool CurrentSessionDetailVisibleBindProp
+        {
+            get { return _CurrentSessionDetailVisibleBindProp; }
+            set { SetProperty(ref _CurrentSessionDetailVisibleBindProp, value); }
+        }
+        #endregion
+
         #region SessionBindProp
         private SessionDto _SessionBindProp;
         public SessionDto SessionBindProp
@@ -87,6 +96,15 @@ namespace Mobile.ViewModels
         {
             get { return _InitMoneyBindProp; }
             set { SetProperty(ref _InitMoneyBindProp, value); }
+        }
+        #endregion
+
+        #region CurrentSessionBindProp
+        private SessionDto _CurrentSessionBindProp;
+        public SessionDto CurrentSessionBindProp
+        {
+            get { return _CurrentSessionBindProp; }
+            set { SetProperty(ref _CurrentSessionBindProp, value); }
         }
         #endregion
 
@@ -144,6 +162,7 @@ namespace Mobile.ViewModels
                         SessionHistoryVisibleBindProp = true;
                         break;
                 }
+                CurrentSessionDetailVisibleBindProp = false;
             }
             catch (Exception e)
             {
@@ -311,6 +330,81 @@ namespace Mobile.ViewModels
         {
             OpenPopupCommand = new DelegateCommand<object>(OnOpenPopup);
             OpenPopupCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region SelectSessionCommand
+
+        public DelegateCommand<SessionDto> SelectSessionCommand { get; private set; }
+        private async void OnSelectSession(SessionDto session)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                CurrentSessionDetailVisibleBindProp = true;
+                SessionHistoryVisibleBindProp = false;
+                CurrentSessionBindProp = session;
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitSelectSessionCommand()
+        {
+            SelectSessionCommand = new DelegateCommand<SessionDto>(OnSelectSession);
+            SelectSessionCommand.ObservesCanExecute(() => IsNotBusy);
+        }
+
+        #endregion
+
+        #region ReturnCommand
+
+        public DelegateCommand<object> ReturnCommand { get; private set; }
+        private async void OnReturn(object obj)
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            IsBusy = true;
+
+            try
+            {
+                // Thuc hien cong viec tai day
+                CurrentSessionDetailVisibleBindProp = false;
+                SessionHistoryVisibleBindProp = true;
+            }
+            catch (Exception e)
+            {
+                await ShowErrorAsync(e);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+
+        }
+        [Initialize]
+        private void InitReturnCommand()
+        {
+            ReturnCommand = new DelegateCommand<object>(OnReturn);
+            ReturnCommand.ObservesCanExecute(() => IsNotBusy);
         }
 
         #endregion

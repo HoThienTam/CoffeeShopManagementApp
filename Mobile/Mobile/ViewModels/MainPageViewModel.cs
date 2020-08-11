@@ -109,7 +109,10 @@ namespace Mobile.ViewModels
         public ObservableCollection<InvoiceDto> ListInvoiceBindProp
         {
             get { return _ListInvoiceBindProp; }
-            set { SetProperty(ref _ListInvoiceBindProp, value); }
+            set
+            {
+                SetProperty(ref _ListInvoiceBindProp, value);
+            }
         }
         #endregion
 
@@ -155,6 +158,15 @@ namespace Mobile.ViewModels
         {
             get { return _InvoiceBindProp; }
             set { SetProperty(ref _InvoiceBindProp, value); }
+        }
+        #endregion
+
+        #region TempInvoiceBindProp
+        private InvoiceDto _TempInvoiceBindProp;
+        public InvoiceDto TempInvoiceBindProp
+        {
+            get { return _TempInvoiceBindProp; }
+            set { SetProperty(ref _TempInvoiceBindProp, value); }
         }
         #endregion
 
@@ -440,6 +452,7 @@ namespace Mobile.ViewModels
                                 SettingFrameVisibleBindProp = true;
                                 DiscountFrameVisibleBindProp = false;
                                 InvoiceBindProp = null;
+                                TempInvoiceBindProp = null;
                             }
                         }
                         else
@@ -457,6 +470,7 @@ namespace Mobile.ViewModels
                             if (ok)
                             {
                                 InvoiceBindProp = null;
+                                TempInvoiceBindProp = null;
                                 MenuFrameVisibleBindProp = false;
                                 InvoiceFrameVisibleBindProp = true;
                                 SettingFrameVisibleBindProp = false;
@@ -573,9 +587,18 @@ namespace Mobile.ViewModels
                         {
                             case HttpStatusCode.Created:
                                 var invoice = JsonConvert.DeserializeObject<InvoiceDto>(await response.Content.ReadAsStringAsync());
-                                ListInvoiceBindProp.Add(invoice);
                                 await _connection.InvokeAsync("SendInvoice", invoice);
                                 InvoiceBindProp = null;
+                                MenuFrameVisibleBindProp = false;
+                                InvoiceFrameVisibleBindProp = true;
+                                SettingFrameVisibleBindProp = false;
+                                DiscountFrameVisibleBindProp = false;
+                                break;
+                            case HttpStatusCode.NoContent:
+                                //await _connection.InvokeAsync("UpdateInvoice", InvoiceBindProp);
+                                TempInvoiceBindProp = InvoiceBindProp;
+                                InvoiceBindProp = null;
+                                TempInvoiceBindProp = null;
                                 MenuFrameVisibleBindProp = false;
                                 InvoiceFrameVisibleBindProp = true;
                                 SettingFrameVisibleBindProp = false;
@@ -801,9 +824,11 @@ namespace Mobile.ViewModels
             try
             {
                 // Thuc hien cong viec tai day
-                InvoiceBindProp = obj;
+                InvoiceBindProp = new InvoiceDto(obj);
+                TempInvoiceBindProp = obj;
                 var selectedCategory = ListCategoryBindProp.FirstOrDefault();
                 selectedCategory.IsSelected = true;
+                CurrentCategory = selectedCategory;
                 InvoiceFrameVisibleBindProp = false;
                 MenuFrameVisibleBindProp = true;
                 ItemFrameVisibleBindProp = true;
@@ -890,7 +915,7 @@ namespace Mobile.ViewModels
         #region DeleteInvoiceCommand
 
         public DelegateCommand<InvoiceDto> DeleteInvoiceCommand { get; private set; }
-        private async void OnDeleteInvoice(InvoiceDto obj)
+        private async void OnDeleteInvoice(InvoiceDto invoice)
         {
             if (IsBusy)
             {
@@ -905,10 +930,10 @@ namespace Mobile.ViewModels
                 using (var client = new HttpClient())
                 {
                     HttpResponseMessage response = new HttpResponseMessage();
-                    response = await client.DeleteAsync(Properties.Resources.BaseUrl + "invoices/" + obj.Id);
+                    response = await client.DeleteAsync(Properties.Resources.BaseUrl + "invoices/" + invoice.Id);
                     if (response.IsSuccessStatusCode)
                     {
-                        ListInvoiceBindProp.Remove(obj);
+                        await _connection.InvokeAsync("DeleteInvoice", invoice.Id);
                     }
                 }
 
@@ -1076,6 +1101,16 @@ namespace Mobile.ViewModels
                 });
             });
 
+            _connection.On<Guid>("DeleteInvoice", (invoiceId) =>
+            {
+                var invoice = ListInvoiceBindProp.FirstOrDefault(i => i.Id == invoiceId);
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    ListInvoiceBindProp.Remove(invoice);
+                });
+            });
+
+
             try
             {
                 await _connection.StartAsync();
@@ -1103,8 +1138,10 @@ namespace Mobile.ViewModels
                     if (parameters.ContainsKey(nameof(InvoiceBindProp)))
                     {
                         var invoice = parameters[nameof(InvoiceBindProp)] as InvoiceDto;
-                        ListInvoiceBindProp.Remove(invoice);
+                        await _connection.InvokeAsync("DeleteInvoice", InvoiceBindProp.Id);
+                        //ListInvoiceBindProp.Remove(invoice);
                         InvoiceBindProp = null;
+                        TempInvoiceBindProp = null;
                     }
                     break;
                 case NavigationMode.New:

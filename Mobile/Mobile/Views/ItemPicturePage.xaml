@@ -51,7 +51,7 @@
                                 Margin="0,0,0,20"
                                 Aspect="Fill"
                                 DownsampleToViewSize="true"
-                                HeightRequest="100"
+                                HeightRequest="120"
                                 BackgroundColor="{StaticResource MainColor}"
                                 HorizontalOptions="Center"
                                 Source="{Binding ImagePathBindProp}"

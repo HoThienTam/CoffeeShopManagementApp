@@ -52,15 +52,15 @@
                     <StackLayout Grid.Column="1">
                         <mr:Grid TappedCommand="{Binding SelectItemImageCommand}">
                             <ffImage:CachedImage
+                                Margin="0,0,0,20"
                                 Aspect="Fill"
-                                HeightRequest="120"
                                 DownsampleToViewSize="true"
-                                WidthRequest="150"
+                                HeightRequest="100"
                                 BackgroundColor="{StaticResource MainColor}"
                                 HorizontalOptions="Center"
-                                Source="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/275px-A_small_cup_of_coffee.JPG" 
-                                Margin="0"
-                                VerticalOptions="Center"/>
+                                Source="{Binding TempItem.Image}"
+                                VerticalOptions="Center"
+                                WidthRequest="150" />
                         </mr:Grid>
                         <tlrPrimitives:RadBorder Style="{StaticResource CommonBorder}">
                             <StackLayout Orientation="Horizontal">

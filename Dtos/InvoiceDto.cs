@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 
 namespace Dtos
@@ -13,7 +14,28 @@ namespace Dtos
             Items = new ObservableCollection<ItemForInvoiceDto>();
             Discounts = new ObservableCollection<DiscountForInvoiceDto>();
         }
-       
+        public InvoiceDto(InvoiceDto invoice)
+        {
+            Id = invoice.Id;
+            TotalPrice = invoice.TotalPrice;
+            TableId = invoice.TableId;
+            Table = invoice.Table;
+            Items = new ObservableCollection<ItemForInvoiceDto>(invoice.Items.Select(t => new ItemForInvoiceDto
+            {
+                Id = t.Id,
+                Name = t.Name,
+                Discounts = t.Discounts,
+                Quantity = t.Quantity,
+                Value = t.Value
+            }).ToList());
+            Discounts = new ObservableCollection<DiscountForInvoiceDto>(invoice.Discounts.Select(t => new DiscountForInvoiceDto
+            {
+                Id = t.Id,
+                Name = t.Name,
+                Value = t.Value
+            }).ToList());
+        }
+
         public Guid Id { get; set; }
         public DateTime CreatedAt { get; set; }
 
