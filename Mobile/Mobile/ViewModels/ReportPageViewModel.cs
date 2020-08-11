@@ -180,11 +180,21 @@ namespace Mobile.ViewModels
                         OverallVisibleBindProp = true;
                         TopSellersVisibleBindProp = false;
                         Title = "Doanh thu tổng quan";
+                        if (IsDateRange)
+                        {
+                            RevenuePerDayVisibleBindProp = true;
+                        }
+                        else
+                        {
+                            RevenuePerDayVisibleBindProp = false;
+                        }
+                        GetOverallData();
                         break;
                     case "Mặt hàng bán chạy":
                         TopSellersVisibleBindProp = true;
                         OverallVisibleBindProp = false;
                         Title = "Mặt hàng bán chạy";
+                        GetTopSeller();
                         break;
                 }
             }

@@ -23,7 +23,7 @@ namespace Mobile.ViewModels
         private HubConnection _connection;
         public MainPageViewModel(InitParams initParams) : base(initParams)
         {
-            //StartSignalRAsync();
+            StartSignalRAsync();
             ListCategoryBindProp = new ObservableCollection<CategoryDto>();
             ListDiscountBindProp = new ObservableCollection<DiscountDto>();
             ListInvoiceBindProp = new ObservableCollection<InvoiceDto>();
@@ -574,7 +574,7 @@ namespace Mobile.ViewModels
                             case HttpStatusCode.Created:
                                 var invoice = JsonConvert.DeserializeObject<InvoiceDto>(await response.Content.ReadAsStringAsync());
                                 ListInvoiceBindProp.Add(invoice);
-                                //await _connection.InvokeAsync("SendInvoice", invoice);
+                                await _connection.InvokeAsync("SendInvoice", invoice);
                                 InvoiceBindProp = null;
                                 MenuFrameVisibleBindProp = false;
                                 InvoiceFrameVisibleBindProp = true;

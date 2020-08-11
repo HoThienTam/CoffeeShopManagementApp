@@ -130,7 +130,7 @@
                             </StackLayout>
                             <BoxView Style="{StaticResource CommonTitleRule}" />
                             <!--  Thu tien/tra tien  -->
-                            <mr:StackLayout TappedCommand="{Binding BindingContext.ExpandCommand}" Orientation="Horizontal">
+                            <!--<mr:StackLayout TappedCommand="{Binding BindingContext.ExpandCommand}" Orientation="Horizontal">
 
                                 <Label Margin="{StaticResource CommonThickness}" Text="Thu tiền/Trả tiền"/>
 
@@ -147,7 +147,7 @@
                                 Text="{Binding CollectingAndSpending, StringFormat='{0:C}'}"
                                 HorizontalTextAlignment="End"/>
                             </mr:StackLayout>
-                            <BoxView Style="{StaticResource CommonTitleRule}" />
+                            <BoxView Style="{StaticResource CommonTitleRule}" />-->
                             <!--  Tien tip  -->
                             <StackLayout Orientation="Horizontal">
                                 <Label Margin="{StaticResource CommonThickness}" Text="Tiền tip" />

@@ -41,22 +41,23 @@ namespace ApplicationCore.ItemService
         public async Task<ItemDto> Handle(AddItemCommand request, CancellationToken cancellationToken)
         {
             var item = _mapper.Map<Item>(request.ItemDto);
-            var uploadResult = new ImageUploadResult();
-            if (request.ItemDto.ImageFile.Length > 0)
-            {
-                using (var stream = new MemoryStream(request.ItemDto.ImageFile))
-                {
-                    var uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription(item.Name, stream),
-                        Transformation = new Transformation()
-                            .Width(150).Height(100).Crop("fill").Gravity("face")
-                    };
+            //if (request.ItemDto.ImageFile.Length > 0)
+            //{
+            //    var uploadResult = new ImageUploadResult();
 
-                    uploadResult = await _cloudinary.UploadAsync(uploadParams);
-                }
-            }
-            item.Image = uploadResult.Url.ToString();
+            //    using (var stream = new MemoryStream(request.ItemDto.ImageFile))
+            //    {
+            //        var uploadParams = new ImageUploadParams()
+            //        {
+            //            File = new FileDescription(item.Name, stream),
+            //            Transformation = new Transformation()
+            //                .Width(150).Height(100).Crop("fill").Gravity("face")
+            //        };
+
+            //        uploadResult = await _cloudinary.UploadAsync(uploadParams);
+            //    }
+            //    item.Image = uploadResult.Url.ToString();
+            //}
             await _context.Items.AddAsync(item);
 
             if (await _context.SaveChangesAsync() > 0)

@@ -670,7 +670,7 @@
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
-                                    <Label Style="{StaticResource CommonIcon}" TextColor="{StaticResource ContrastColor}" Text="{x:Static lcModels:FontAwesomeIcon.Receipt}"/>
+                                    <Label Style="{StaticResource CommonIcon}" TextColor="{StaticResource ContrastColor}" Text="{Binding Icon}"/>
                                     <Label Grid.Row="1" HorizontalOptions="CenterAndExpand" TextColor="{StaticResource ContrastColor}" Text="{Binding Name}"  LineBreakMode="TailTruncation" />
                                 </mr:Grid>
                             </DataTemplate>
