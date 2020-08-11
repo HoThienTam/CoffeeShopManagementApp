@@ -120,7 +120,7 @@
                                                     WidthRequest="100"
                                                     BackgroundColor="{StaticResource SubColor}"
                                                     HorizontalOptions="Center"
-                                                    Source="https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/275px-A_small_cup_of_coffee.JPG" 
+                                                    Source="{Binding Image}"
                                                     Margin="0"
                                                     VerticalOptions="Center"/>
 

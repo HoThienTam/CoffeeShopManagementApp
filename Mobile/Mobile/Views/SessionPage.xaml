@@ -72,6 +72,9 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
+                        <mr:Grid TappedCommand="{Binding ReturnCommand}" IsVisible="{Binding CurrentSessionDetailVisibleBindProp}">
+                            <Label Style="{StaticResource CommonIcon}" Text="{x:Static lcModels:FontAwesomeIcon.Times}" />
+                        </mr:Grid>
                         <!--Title-->
                         <Label Text="{Binding Title}" VerticalOptions="Start" Style="{StaticResource CommonHeader}"/>
                     </Grid>
@@ -209,6 +212,95 @@
                         </StackLayout>
                     </ScrollView>
 
+                </Frame>
+
+                <Frame VerticalOptions="FillAndExpand" IsVisible="{Binding CurrentSessionDetailVisibleBindProp}">
+                    <ScrollView Padding="{StaticResource CommonThickness}">
+                        <StackLayout Margin="50,10" Spacing="0">
+
+                            <!--  Thoi gian bat dau  -->
+                            <StackLayout Orientation="Horizontal">
+                                <Label Margin="{StaticResource CommonThickness}" Text="Thơi gian bắt đầu"/>
+
+                                <Label  
+                                HorizontalOptions="FillAndExpand"
+                                Text="{Binding CurrentSessionBindProp.CreatedAt}"
+                                HorizontalTextAlignment="End"/>
+                            </StackLayout>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+  
+                            <StackLayout Orientation="Horizontal">
+                                <Label Margin="{StaticResource CommonThickness}" Text="Thơi gian kết thúc"/>
+
+                                <Label  
+                                HorizontalOptions="FillAndExpand"
+                                Text="{Binding CurrentSessionBindProp.ClosedAt}"
+                                HorizontalTextAlignment="End"/>
+                            </StackLayout>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+                            <!--  Tien mat dau ky  -->
+                            <StackLayout Orientation="Horizontal">
+                                <Label Margin="{StaticResource CommonThickness}" Text="Tiền mặt đầu kỳ"/>
+
+                                <Label  
+                                HorizontalOptions="FillAndExpand"
+                                Text="{Binding CurrentSessionBindProp.InitMoney, StringFormat='{0:C}'}"
+                                HorizontalTextAlignment="End"/>
+                            </StackLayout>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+                            <!--  Doanh thu tien mat  -->
+                            <StackLayout Orientation="Horizontal">
+                                <Label Margin="{StaticResource CommonThickness}" Text="Doanh thu tiền mặt" />
+
+                                <Label
+                                HorizontalOptions="FillAndExpand"
+                                Text="{Binding CurrentSessionBindProp.Revenue, StringFormat='{0:C}'}"
+                                HorizontalTextAlignment="End"/>
+                            </StackLayout>
+                            
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+
+                            <StackLayout Orientation="Horizontal">
+                                <Label Margin="{StaticResource CommonThickness}" Text="Tiền tip" />
+
+                                <Label
+                                HorizontalOptions="FillAndExpand"
+                                Text="{Binding CurrentSessionBindProp.Tip, StringFormat='{0:C}'}"
+                                HorizontalTextAlignment="End"/>
+                            </StackLayout>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+                            <!--  So tien du kien trong ket  -->
+                            <StackLayout Orientation="Horizontal">
+                                <Label Margin="{StaticResource CommonThickness}" Text="Số tiền dự kiến trong két"/>
+
+                                <Label
+                                HorizontalOptions="FillAndExpand"
+                                Text="{Binding CurrentSessionBindProp.ExpectedMoney, StringFormat='{0:C}'}"
+                                HorizontalTextAlignment="End"/>
+                            </StackLayout>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+
+                            <StackLayout Orientation="Horizontal">
+                                <Label Margin="{StaticResource CommonThickness}" Text="Số tiền thực tế"/>
+
+                                <Label
+                                HorizontalOptions="FillAndExpand"
+                                Text="{Binding CurrentSessionBindProp.RealMoney, StringFormat='{0:C}'}"
+                                HorizontalTextAlignment="End"/>
+                            </StackLayout>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+
+                            <StackLayout Orientation="Horizontal">
+                                <Label Margin="{StaticResource CommonThickness}" Text="Chênh lệch"/>
+
+                                <Label
+                                HorizontalOptions="FillAndExpand"
+                                Text="{Binding CurrentSessionBindProp.Difference, StringFormat='{0:C}'}"
+                                HorizontalTextAlignment="End"/>
+                            </StackLayout>
+                            <BoxView Style="{StaticResource CommonTitleRule}" />
+                        </StackLayout>
+                    </ScrollView>
                 </Frame>
 
             </StackLayout>

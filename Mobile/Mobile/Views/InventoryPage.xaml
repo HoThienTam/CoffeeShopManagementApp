@@ -178,7 +178,7 @@
                         Margin="{StaticResource CommonThickness}"
                         AutoGenerateColumns="False"
                         SelectionMode="None"
-                        ItemsSource="{Binding ListRunOutItemBindProp, Mode=OneWay}"
+                        ItemsSource="{Binding ListItemOutOfStockBindProp, Mode=OneWay}"
                         UserEditMode="None" UserFilterMode="Disabled" 
                         UserSortMode="None" UserGroupMode="Disabled">
                         <tlrGrid:RadDataGrid.Columns>
