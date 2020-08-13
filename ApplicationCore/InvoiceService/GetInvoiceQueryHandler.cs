@@ -69,7 +69,9 @@ namespace ApplicationCore.InvoiceService
 
             foreach (var discount in invoice.InvoiceDiscounts)
             {
-                discounts.Add(_mapper.Map<DiscountForInvoiceDto>(discount.Discount));
+                var discountForInvoice = _mapper.Map<DiscountForInvoiceDto>(discount.Discount);
+                discountForInvoice.Value = discount.Value;
+                discounts.Add(discountForInvoice);
             }
 
             invoiceDto.Items = new ObservableCollection<ItemForInvoiceDto>(items);
